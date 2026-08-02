@@ -3,7 +3,7 @@
 import { useEffect, use } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Contact";
-import infithraCaseStudy from "@/components/case-studies/infithra";
+import infithraCaseStudy from "@/components/case-studies/Infithra";
 import RiftCaseStudy from "@/components/case-studies/Rift";
 import ProofHubCaseStudy from "@/components/case-studies/ProofHub";
 
