@@ -5,3 +5,10 @@ out/
 *.log
 .DS_Store
 next-env.d.ts
+
+# Agent rules
+Agents.md
+Claude.md
+.agents/
+.claude/
+.gemini/

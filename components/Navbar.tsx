@@ -1,17 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 const LINKS = [
   { label: "Home", href: "#home" },
+  { label: "About", href: "#about" },
   { label: "Work", href: "#work" },
-  { label: "Stack", href: "#toolkit" },
-  { label: "Resume", href: "#resume" },
+  { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#resume" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("Home");
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 100);
@@ -23,9 +27,14 @@ export default function Navbar() {
   const smoothTo = (e: React.MouseEvent, href: string, label?: string) => {
     e.preventDefault();
     if (label) setActive(label);
-    document
-      .querySelector(href)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    
+    if (pathname === "/") {
+      document
+        .querySelector(href)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      router.push(`/${href}`);
+    }
   };
 
   return (

@@ -6,9 +6,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import LoadingScreen from "@/components/LoadingScreen";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import AboutMe from "@/components/AboutMe";
 import Works from "@/components/Works";
 import MoreWork from "@/components/MoreWork";
-import Explorations from "@/components/Explorations";
+import SkillsConstellation from "@/components/SkillsConstellation";
 import Stats from "@/components/Stats";
 import Contact from "@/components/Contact";
 
@@ -40,9 +41,10 @@ export default function Index() {
           >
             <Navbar />
             <Hero />
+            <AboutMe />
             <Works />
             <MoreWork />
-            <Explorations />
+            <SkillsConstellation />
             <Stats />
             <Contact />
           </motion.main>

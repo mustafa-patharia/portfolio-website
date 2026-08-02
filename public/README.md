@@ -13,7 +13,7 @@ the full-width banner, so give it something wide — **1920×560**.
 
 | File | Card |
 |---|---|
-| `infithra` | Infithra — HRMS Platform |
+| `infithra` | infithra — HRMS Platform |
 | `smartscan` | SmartScan |
 | `promax-global` | Promax Global |
 | `odoo-netsuite-pos` | Odoo–NetSuite POS |

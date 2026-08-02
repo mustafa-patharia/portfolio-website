@@ -49,9 +49,12 @@ export default function Hero() {
       className="relative flex min-h-screen items-center justify-center overflow-hidden"
     >
       <div className="absolute inset-0 overflow-hidden">
-        <HlsVideo />
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-bg to-transparent" />
+        {/* Adjust the height of this wrapper to change the video's height */}
+        <div className="absolute top-0 inset-x-0 h-[50%] overflow-hidden">
+          <HlsVideo className="!top-0 !translate-y-0 object-top" />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-bg to-transparent" />
+        </div>
       </div>
 
       <div className="relative z-10 flex flex-col items-center px-6 text-center">
@@ -71,7 +74,7 @@ export default function Hero() {
           >
             {ROLES[roleIndex]}
           </span>{" "}
-          engineer, building from anywhere.
+          engineer, architecting the systems that scale.
         </p>
 
         <p className="blur-in mb-12 max-w-md text-sm text-muted md:text-base">

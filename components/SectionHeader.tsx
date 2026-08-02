@@ -44,6 +44,8 @@ export default function SectionHeader({
       {action && (
         <a
           href={action.href}
+          target={action.href.startsWith("http") ? "_blank" : undefined}
+          rel={action.href.startsWith("http") ? "noopener noreferrer" : undefined}
           className="group relative hidden shrink-0 rounded-full md:inline-flex"
         >
           <span

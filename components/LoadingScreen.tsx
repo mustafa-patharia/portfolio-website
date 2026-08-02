@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-const WORDS = ["Design", "Create", "Inspire"];
+const WORDS = ["Design", "Develop", "Deploy"];
 const DURATION = 2700;
 
 export default function LoadingScreen({

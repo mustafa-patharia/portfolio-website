@@ -123,7 +123,7 @@ export default function Explorations() {
     <section
       id="toolkit"
       ref={sectionRef}
-      className="relative min-h-[300vh] overflow-hidden bg-bg"
+      className="relative min-h-[300vh] overflow-hidden"
     >
       {/* Layer 1 — pinned center */}
       <div

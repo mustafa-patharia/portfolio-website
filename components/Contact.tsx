@@ -27,9 +27,9 @@ export default function Contact() {
   }, []);
 
   return (
-    <footer
+    <section
       id="contact"
-      className="relative overflow-hidden bg-bg pb-8 pt-16 md:pb-12 md:pt-20"
+      className="relative overflow-hidden pb-8 pt-16 md:pb-12 md:pt-20"
     >
       <div className="absolute inset-0 overflow-hidden">
         <HlsVideo className="scale-y-[-1]" />
@@ -38,7 +38,7 @@ export default function Contact() {
       </div>
 
       <div className="relative z-10">
-        {/* Marquee */}
+        {/* Marquee (Hidden per request)
         <div className="mb-16 overflow-hidden md:mb-24">
           <div ref={marqueeRef} className="flex w-max whitespace-nowrap">
             {Array.from({ length: 10 }).map((_, i) => (
@@ -51,6 +51,7 @@ export default function Contact() {
             ))}
           </div>
         </div>
+        */}
 
         {/* CTA */}
         <div className="mx-auto max-w-[1200px] px-6 text-center md:px-10 lg:px-16">
@@ -113,6 +114,6 @@ export default function Contact() {
           </div>
         </div>
       </div>
-    </footer>
+    </section>
   );
 }
