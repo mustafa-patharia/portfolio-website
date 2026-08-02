@@ -3,7 +3,7 @@
 import { useEffect, use } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Contact";
-import infithraCaseStudy from "@/components/case-studies/Infithra";
+import InfithraCaseStudy from "@/components/case-studies/Infithra";
 import RiftCaseStudy from "@/components/case-studies/Rift";
 import ProofHubCaseStudy from "@/components/case-studies/ProofHub";
 
@@ -22,7 +22,7 @@ export default function CaseStudyPage({ params }: CaseStudyProps) {
     <div className="min-h-screen bg-bg text-text-primary selection:bg-text-primary selection:text-bg">
       <Navbar />
 
-      {slug === "infithra" && <infithraCaseStudy />}
+      {slug === "infithra" && <InfithraCaseStudy />}
       {slug === "rift" && <RiftCaseStudy />}
       {slug === "proofhub-task-timer" && <ProofHubCaseStudy />}
 
