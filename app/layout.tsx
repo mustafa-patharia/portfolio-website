@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import GlobalBackground from "@/components/GlobalBackground";
-
+import { Analytics } from "@vercel/analytics/next";
 export const metadata: Metadata = {
   metadataBase: new URL("https://mustafapatharia.com"), // Provide the base URL for resolving relative OG/Twitter images
   title: "Mustafa Patharia | Senior Software Engineer & AI Engineer",
@@ -60,6 +60,7 @@ export default function RootLayout({
       <body className="text-text-primary bg-transparent relative">
         <GlobalBackground />
         {children}
+        <Analytics />
       </body>
     </html>
   );
