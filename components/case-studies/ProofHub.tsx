@@ -1,4 +1,38 @@
 import { motion } from "framer-motion";
+import TechPill from "@/components/TechPill";
+import ArchitectureDiagram, {
+  type ArchNode,
+  type ArchWire,
+} from "../ArchitectureDiagram";
+
+const ARCH_BANDS = [
+  { label: "Interface", h: 76 },
+  { label: "Coordinator", h: 64 },
+  { label: "Local data & security", h: 76 },
+  { label: "External · network", h: 64 },
+];
+
+const ARCH_NODES: ArchNode[] = [
+  { id: "content", band: 0, colFrac: 0.18, icon: "window", title: "ContentView", sub: ["Menu-bar root"] },
+  { id: "tasks", band: 0, colFrac: 0.5, icon: "queue", title: "ProjectsTasksView", sub: ["Task list · timers"] },
+  { id: "settings", band: 0, colFrac: 0.82, icon: "terminal", title: "SettingsView", sub: ["Subdomain · project config"] },
+  { id: "appstate", band: 1, colFrac: 0.32, w: 260, icon: "cpu", title: "AppState", sub: ["Timer engine · sync coordinator"], variant: "seam" },
+  { id: "shift", band: 1, colFrac: 0.72, w: 220, icon: "layers", title: "ShiftEnforcer", sub: ["Concurrent timer rules"] },
+  { id: "swiftdata", band: 2, colFrac: 0.28, icon: "db", title: "SwiftData Store", sub: ["Offline-first cache", "Paused timers · prefs"] },
+  { id: "keychain", band: 2, colFrac: 0.72, icon: "lock", title: "Keychain", sub: ["API key · encrypted"] },
+  { id: "api", band: 3, colFrac: 0.5, icon: "cloud", title: "ProofHub Cloud", sub: ["Bolt REST API"], variant: "ext" },
+];
+
+const ARCH_WIRES: ArchWire[] = [
+  { from: "content", to: "appstate", type: "ctrl" },
+  { from: "tasks", to: "appstate", type: "ctrl" },
+  { from: "settings", to: "appstate", type: "ctrl" },
+  { from: "appstate", to: "shift", type: "ctrl" },
+  { from: "appstate", to: "swiftdata", type: "data" },
+  { from: "shift", to: "swiftdata", type: "data" },
+  { from: "keychain", to: "api", type: "net" },
+  { from: "appstate", to: "api", type: "net" },
+];
 
 export default function ProofHubCaseStudy() {
   return (
@@ -20,14 +54,11 @@ export default function ProofHubCaseStudy() {
           ProofHub <br className="hidden md:block" />
           <span className="font-sans font-normal not-italic text-muted">Task Timer</span>
         </h1>
-        <div className="flex flex-wrap gap-4 text-xs uppercase tracking-[0.15em] text-muted md:text-sm">
-          <span>Swift</span>
-          <span>·</span>
-          <span>SwiftData</span>
-          <span>·</span>
-          <span>ProofHub API</span>
-          <span>·</span>
-          <span>macOS Menu Bar</span>
+        <div className="flex flex-wrap gap-2">
+          <TechPill name="Swift" />
+          <TechPill name="SwiftData" />
+          <TechPill name="ProofHub API" />
+          <TechPill name="macOS Menu Bar" />
         </div>
 
         <div className="mt-10">
@@ -48,14 +79,13 @@ export default function ProofHubCaseStudy() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-        className="group relative mb-24 aspect-[21/9] w-full overflow-hidden rounded-3xl bg-surface"
+        className="group relative mb-24 aspect-[21/9] w-full overflow-hidden rounded-3xl"
       >
         <img
           src={`/projects/proofhub-task-timer.png`}
           alt={`ProofHub Task Timer hero poster`}
-          className="absolute inset-0 h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
+          className="absolute inset-0 h-full w-full object-contain"
         />
-        <div className="pointer-events-none absolute inset-0 rounded-3xl border-2 border-text-primary/10 transition-colors duration-500 group-hover:border-text-primary/30" />
       </motion.div>
 
       {/* Article Content */}
@@ -108,65 +138,15 @@ export default function ProofHubCaseStudy() {
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <h2 className="mb-10 font-display text-3xl italic text-text-primary md:text-4xl text-center">
-              Data Sync Architecture
+              Under the Hood
             </h2>
-            
-            <div className="rounded-3xl border border-stroke bg-surface/50 p-8 md:p-12 overflow-hidden relative">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-text-primary/5 via-bg/0 to-transparent pointer-events-none" />
-              
-              {/* Diagram Layout */}
-              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-                
-                {/* Node 1: SwiftUI Menu Bar */}
-                <div className="w-full md:w-1/3 p-6 rounded-2xl bg-surface border border-stroke shadow-xl flex flex-col items-center text-center">
-                  <div className="h-12 w-12 rounded-full bg-accent/20 text-accent flex items-center justify-center mb-4">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                  </div>
-                  <h4 className="text-text-primary font-bold mb-2">Native UI</h4>
-                  <p className="text-xs text-muted">SwiftUI Menu Bar App<br/>& Timer Engine</p>
-                </div>
 
-                {/* Arrow */}
-                <div className="hidden md:flex flex-col items-center justify-center text-muted">
-                  <span className="text-xs mb-1">Local State</span>
-                  <svg width="60" height="24" viewBox="0 0 60 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M0 12h58M50 4l8 8-8 8" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M10 20l-8-8 8-8" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.3"/>
-                  </svg>
-                </div>
-
-                {/* Node 2: SwiftData */}
-                <div className="w-full md:w-1/3 p-6 rounded-2xl bg-surface border border-stroke shadow-xl flex flex-col items-center text-center relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-text-primary" />
-                  <div className="h-12 w-12 rounded-full bg-text-primary/10 text-text-primary flex items-center justify-center mb-4">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-                  </div>
-                  <h4 className="text-text-primary font-bold mb-2">SwiftData Store</h4>
-                  <p className="text-xs text-muted">Offline Persistence &<br/>Query Caching</p>
-                </div>
-
-                {/* Arrow */}
-                <div className="hidden md:flex flex-col items-center justify-center text-muted">
-                  <span className="text-xs mb-1">Bolt APIs</span>
-                  <svg width="60" height="24" viewBox="0 0 60 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M0 12h58M50 4l8 8-8 8" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-
-                {/* Node 3: ProofHub API */}
-                <div className="w-full md:w-1/3 p-6 rounded-2xl bg-[#0070f3]/10 border border-[#0070f3]/20 shadow-xl flex flex-col items-center text-center">
-                  <div className="h-12 w-12 rounded-full bg-[#0070f3]/20 text-[#0070f3] flex items-center justify-center mb-4">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                  </div>
-                  <h4 className="text-text-primary font-bold mb-2">ProofHub Cloud</h4>
-                  <p className="text-xs text-muted">Remote Projects<br/>& Bolt Integration</p>
-                </div>
-              </div>
-            </div>
-            
-            <p className="mt-6 text-sm text-center text-muted max-w-2xl mx-auto">
-              SwiftData acts as an intermediate offline-first caching layer. This allows the app to query large lists of projects and tasks instantly. When timers are stopped, the data is pushed to the remote ProofHub Bolt APIs.
-            </p>
+            <ArchitectureDiagram
+              bands={ARCH_BANDS}
+              nodes={ARCH_NODES}
+              wires={ARCH_WIRES}
+              note="AppState is the single source of truth for every running timer. SwiftData caches projects and tasks for instant browsing; nothing reaches ProofHub's Bolt API until a timer is explicitly saved."
+            />
           </motion.section>
 
           {/* Key Features (Vertical Timeline) */}

@@ -3,19 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import SectionHeader from "./SectionHeader";
-
-/**
- * Resume region mapping — each entry maps a country code to a specific PDF.
- * Add new PDFs to /public/resumes/ and register them here.
- */
-const RESUME_MAP: Record<string, { label: string; file: string }> = {
-  IN: { label: "India", file: "/resumes/resume-india.pdf" },
-  // Add more regions as needed:
-  // AE: { label: "UAE", file: "/resumes/resume-uae.pdf" },
-  // US: { label: "United States", file: "/resumes/resume-us.pdf" },
-};
-
-const DEFAULT_RESUME = { label: "International", file: "/resumes/resume-international.pdf" };
+import { RESUME_MAP, DEFAULT_RESUME } from "@/lib/resumes";
 
 const EXPERIENCE = [
   {
@@ -208,6 +196,50 @@ export default function Stats() {
                     </h3>
                     <p className="mt-2 text-sm text-muted">
                       University of Mumbai · Aug 2016 – Oct 2020
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Resume — closes the timeline: the whole story in one file */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
+                className="relative pl-8 md:pl-16"
+              >
+                <div className="absolute left-0 top-[6px] h-4 w-4 rounded-full border-4 border-bg bg-[#89AACC] transition-transform duration-300 hover:scale-125 md:left-[-2px] md:h-5 md:w-5" />
+
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
+                  <div className="md:col-span-4">
+                    <span className="text-xs uppercase tracking-[0.3em] text-muted">
+                      Full history
+                    </span>
+                  </div>
+                  <div className="md:col-span-8">
+                    <a
+                      href={resumeInfo.file}
+                      download
+                      className="cosmic-btn group relative inline-flex rounded-full transition-transform duration-300 hover:-translate-y-0.5"
+                    >
+                      <span
+                        className="accent-gradient-animated pointer-events-none absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        style={{ inset: "-2px" }}
+                      />
+                      <span className="relative inline-flex items-center gap-2 rounded-full bg-text-primary px-7 py-3.5 text-sm text-bg transition-colors duration-300 group-hover:bg-bg group-hover:text-text-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                          <polyline points="7 10 12 15 17 10" />
+                          <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Download Resume
+                      </span>
+                    </a>
+                    <p className="mt-3 text-xs text-muted">
+                      {isDetecting
+                        ? "Detecting your region…"
+                        : `${resumeInfo.label} version, matched to your location.`}
                     </p>
                   </div>
                 </div>

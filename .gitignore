@@ -3,8 +3,10 @@ node_modules/
 out/
 .env*
 *.log
+*.tsbuildinfo
 .DS_Store
 next-env.d.ts
+public/prototypes/
 
 # Agent rules
 Agents.md
@@ -12,3 +14,7 @@ Claude.md
 .agents/
 .claude/
 .gemini/
+.codegraph
+docs
+.vscode
+.remember

@@ -1,7 +1,12 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import GlobalBackground from "@/components/GlobalBackground";
+import CalEmbed from "@/components/CalEmbed";
+import ChatWidget from "@/components/ChatWidget";
 import { Analytics } from "@vercel/analytics/next";
+
+const GA_MEASUREMENT_ID = "G-69RBNWHM1D";
 export const metadata: Metadata = {
   metadataBase: new URL("https://mustafapatharia.com"), // Provide the base URL for resolving relative OG/Twitter images
   title: "Mustafa Patharia | Senior Software Engineer & AI Engineer",
@@ -58,8 +63,22 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="text-text-primary bg-transparent relative">
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
         <GlobalBackground />
+        <CalEmbed />
         {children}
+        <ChatWidget />
         <Analytics />
       </body>
     </html>

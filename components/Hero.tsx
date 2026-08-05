@@ -83,31 +83,35 @@ export default function Hero() {
         </p>
 
         <div className="blur-in inline-flex flex-wrap items-center justify-center gap-4">
-          <a
-            href="#work"
-            onClick={(e) => scrollTo(e, "#work")}
-            className="group relative rounded-full transition-transform duration-300 hover:scale-105"
+          <button
+            data-cal-link="mustafa-patharia/quick-chat"
+            data-cal-namespace="quick-chat"
+            data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+            className="cosmic-btn group relative rounded-full transition-transform duration-300 hover:scale-105"
           >
             <span
               className="accent-gradient-animated pointer-events-none absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
               style={{ inset: "-2px" }}
             />
-            <span className="relative block rounded-full bg-text-primary px-7 py-3.5 text-sm text-bg transition-colors duration-300 group-hover:bg-bg group-hover:text-text-primary">
-              See Works
+            <span className="relative flex items-center gap-2 rounded-full bg-text-primary px-7 py-3.5 text-sm text-bg transition-colors duration-300 group-hover:bg-bg group-hover:text-text-primary">
+              Schedule Meet
+              <span aria-hidden className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+                →
+              </span>
             </span>
-          </a>
+          </button>
 
           <a
-            href="#contact"
-            onClick={(e) => scrollTo(e, "#contact")}
-            className="group relative rounded-full transition-transform duration-300 hover:scale-105"
+            href="#work"
+            onClick={(e) => scrollTo(e, "#work")}
+            className="cosmic-btn group relative rounded-full transition-transform duration-300 hover:scale-105"
           >
             <span
               className="accent-gradient-animated pointer-events-none absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
               style={{ inset: "-2px" }}
             />
             <span className="relative block rounded-full border-2 border-stroke bg-bg px-7 py-3.5 text-sm text-text-primary transition-colors duration-300 group-hover:border-transparent">
-              Reach out&hellip;
+              See Works
             </span>
           </a>
         </div>

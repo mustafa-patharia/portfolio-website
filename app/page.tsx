@@ -26,30 +26,36 @@ export default function Index() {
 
   const handleComplete = useCallback(() => setIsLoading(false), []);
 
+  // Sections don't exist in the DOM until loading finishes, so a hash from a
+  // cross-page nav (e.g. /#skills) can't be scrolled to until now.
+  useEffect(() => {
+    if (!isLoading && window.location.hash) {
+      document
+        .querySelector(window.location.hash)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [isLoading]);
+
   return (
     <>
       <AnimatePresence>
         {isLoading && <LoadingScreen onComplete={handleComplete} />}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {!isLoading && (
-          <motion.main
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            <Navbar />
-            <Hero />
-            <AboutMe />
-            <Works />
-            <MoreWork />
-            <SkillsConstellation />
-            <Stats />
-            <Contact />
-          </motion.main>
-        )}
-      </AnimatePresence>
+      <motion.main
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+      >
+        <Navbar />
+        <Hero />
+        <AboutMe />
+        <Works />
+        <MoreWork />
+        <SkillsConstellation />
+        <Stats />
+        <Contact />
+      </motion.main>
     </>
   );
 }

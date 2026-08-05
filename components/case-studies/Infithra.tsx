@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import TechPill from "@/components/TechPill";
 
 export default function infithraCaseStudy() {
   return (
@@ -20,18 +21,13 @@ export default function infithraCaseStudy() {
           infithra <br className="hidden md:block" />
           <span className="font-sans font-normal not-italic text-muted">HRMS Platform</span>
         </h1>
-        <div className="flex flex-wrap gap-4 text-xs uppercase tracking-[0.15em] text-muted md:text-sm">
-          <span>Node.js</span>
-          <span>·</span>
-          <span>Angular</span>
-          <span>·</span>
-          <span>Next.js</span>
-          <span>·</span>
-          <span>AWS</span>
-          <span>·</span>
-          <span>PostgreSQL</span>
-          <span>·</span>
-          <span>Redis</span>
+        <div className="flex flex-wrap gap-2">
+          <TechPill name="Node.js" />
+          <TechPill name="Angular" />
+          <TechPill name="Next.js" />
+          <TechPill name="AWS" />
+          <TechPill name="PostgreSQL" />
+          <TechPill name="Redis" />
         </div>
 
         <div className="mt-10">
@@ -82,7 +78,10 @@ export default function infithraCaseStudy() {
                 Overview
               </h2>
               <p className="leading-relaxed text-muted md:text-lg">
-                infithra is a comprehensive, multi-tenant HRMS platform engineered from the ground up to serve businesses in the UAE. It handles the complete employee lifecycle—from onboarding and complex payroll processing to leave management and attendance tracking—all while remaining fully configurable to meet varying company policies and stringent UAE Labour Law compliance.
+                infithra is a multi-tenant HRMS platform I helped build from an empty repository into a system running the full employee lifecycle — onboarding, payroll, leave, attendance — for thousands of daily users across dozens of UAE-based companies, each with its own policies and Labour Law obligations.
+              </p>
+              <p className="mt-6 leading-relaxed text-muted md:text-lg">
+                I joined before the first schema existed. What follows is the technical story: the decisions that held up, the ones that had to be revisited, and what building enterprise software from zero actually looks like from the inside.
               </p>
             </div>
             <div className="rounded-3xl border border-stroke bg-surface p-8 md:p-10">
@@ -122,13 +121,13 @@ export default function infithraCaseStudy() {
               <div>
                 <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-muted">The Role</span>
                 <p className="leading-relaxed text-text-primary md:text-lg">
-                  Acting as the <span className="font-display italic">Lead Architect and Developer</span>, the objective was establishing the core technical foundation and deployment standards. The focus remained squarely on designing bulletproof data isolation, granular permissions, and robust automated workflows to ensure the platform could scale effortlessly.
+                  <span className="font-display italic">Founding / Lead Engineer.</span> There was no legacy code to inherit and no prior architecture to defend — every early call on data isolation, permissions, and deployment became the standard the rest of the platform would be built on. I later grew and led the 6–8 engineer team that took the platform from first tenant to production scale.
                 </p>
               </div>
               <div>
                 <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-muted">The Impact</span>
                 <p className="leading-relaxed text-text-primary md:text-lg">
-                  The platform successfully scaled to support thousands of daily active users across multiple organizations. By prioritizing robust multi-tenancy and granular data isolation, the architecture seamlessly handles complex, region-specific payroll and HR compliance at scale without compromising performance or security.
+                  The platform now runs 800+ production APIs, sustains 99.9% uptime, and handles region-specific payroll and compliance for dozens of tenants without a single reported cross-tenant data leak — the one failure mode that would have been unrecoverable for a product built on this model.
                 </p>
               </div>
             </div>
@@ -203,7 +202,7 @@ export default function infithraCaseStudy() {
             <div className="mb-12 border-t border-stroke" />
             <h3 className="mb-6 font-display text-2xl italic text-text-primary">Key Takeaways</h3>
             <p className="leading-relaxed text-muted md:text-lg">
-              In enterprise software, data architecture is destiny. While over-engineering abstractions early can introduce friction, investing heavily in the foundation—specifically around multi-tenancy, strict data isolation, and robust access controls—pays massive dividends when scaling an application to serve hundreds of distinct organizations securely.
+              In enterprise software, data architecture is destiny — a mistake made in the tenant model on day one is a mistake every future feature has to work around. What surprised me most wasn't the payroll math or the permission matrix; it was how much of &ldquo;architecture&rdquo; is really about writing down defaults so a growing team doesn't have to relitigate the same decision five different ways. I over-built a few abstractions early that never got used, and under-built others that had to be rewritten under load — both are part of learning what actually needs to be generic versus what just needs to work.
             </p>
           </motion.section>
 

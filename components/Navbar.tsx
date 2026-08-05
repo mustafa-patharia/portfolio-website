@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const LINKS = [
   { label: "Home", href: "#home" },
@@ -9,13 +9,13 @@ const LINKS = [
   { label: "Work", href: "#work" },
   { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#resume" },
+  { label: "Case Studies", href: "/case-studies", page: true },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("Home");
   const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 100);
@@ -33,7 +33,7 @@ export default function Navbar() {
         .querySelector(href)
         ?.scrollIntoView({ behavior: "smooth", block: "start" });
     } else {
-      router.push(`/${href}`);
+      window.location.href = `/${href}`;
     }
   };
 
@@ -61,20 +61,34 @@ export default function Navbar() {
 
         <span className="mx-1 hidden h-5 w-px bg-stroke sm:block" />
 
-        {LINKS.map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            onClick={(e) => smoothTo(e, link.href, link.label)}
-            className={`rounded-full px-3 py-1.5 text-xs transition-colors duration-200 sm:px-4 sm:py-2 sm:text-sm ${
-              active === link.label
-                ? "bg-stroke/50 text-text-primary"
-                : "text-muted hover:bg-stroke/50 hover:text-text-primary"
-            }`}
-          >
-            {link.label}
-          </a>
-        ))}
+        {LINKS.map((link) =>
+          link.page ? (
+            <a
+              key={link.label}
+              href={link.href}
+              className={`rounded-full px-3 py-1.5 text-xs transition-colors duration-200 sm:px-4 sm:py-2 sm:text-sm ${
+                pathname === link.href
+                  ? "bg-stroke/50 text-text-primary"
+                  : "text-muted hover:bg-stroke/50 hover:text-text-primary"
+              }`}
+            >
+              {link.label}
+            </a>
+          ) : (
+            <a
+              key={link.label}
+              href={link.href}
+              onClick={(e) => smoothTo(e, link.href, link.label)}
+              className={`rounded-full px-3 py-1.5 text-xs transition-colors duration-200 sm:px-4 sm:py-2 sm:text-sm ${
+                active === link.label
+                  ? "bg-stroke/50 text-text-primary"
+                  : "text-muted hover:bg-stroke/50 hover:text-text-primary"
+              }`}
+            >
+              {link.label}
+            </a>
+          )
+        )}
 
         <span className="mx-1 hidden h-5 w-px bg-stroke sm:block" />
 

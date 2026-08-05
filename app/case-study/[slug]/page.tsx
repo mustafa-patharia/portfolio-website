@@ -1,38 +1,67 @@
-"use client";
-
-import { useEffect, use } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Contact";
-import InfithraCaseStudy from "@/components/case-studies/Infithra";
-import RiftCaseStudy from "@/components/case-studies/Rift";
-import ProofHubCaseStudy from "@/components/case-studies/ProofHub";
+import type { Metadata } from "next";
+import CaseStudyClient from "@/components/CaseStudyClient";
+import { CASE_STUDIES, getCaseStudy } from "@/lib/case-studies";
 
 interface CaseStudyProps {
   params: Promise<{ slug: string }>;
 }
 
-export default function CaseStudyPage({ params }: CaseStudyProps) {
-  const { slug } = use(params);
+export function generateStaticParams() {
+  return CASE_STUDIES.map((c) => ({ slug: c.slug }));
+}
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+export async function generateMetadata({
+  params,
+}: CaseStudyProps): Promise<Metadata> {
+  const { slug } = await params;
+  const study = getCaseStudy(slug);
+  if (!study) return { title: "Case Study | Mustafa Patharia" };
+
+  const url = `https://mustafapatharia.com/case-study/${study.slug}`;
+
+  return {
+    title: `${study.title} | Case Study | Mustafa Patharia`,
+    description: study.description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      url,
+      title: study.title,
+      description: study.description,
+      images: [{ url: study.image, width: 1200, height: 630, alt: study.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: study.title,
+      description: study.description,
+      images: [study.image],
+    },
+  };
+}
+
+export default async function CaseStudyPage({ params }: CaseStudyProps) {
+  const { slug } = await params;
+  const study = getCaseStudy(slug);
 
   return (
-    <div className="min-h-screen bg-bg text-text-primary selection:bg-text-primary selection:text-bg">
-      <Navbar />
-
-      {slug === "infithra" && <InfithraCaseStudy />}
-      {slug === "rift" && <RiftCaseStudy />}
-      {slug === "proofhub-task-timer" && <ProofHubCaseStudy />}
-
-      {slug !== "infithra" && slug !== "rift" && slug !== "proofhub-task-timer" && (
-        <div className="flex h-[60vh] items-center justify-center">
-          <h1 className="text-2xl text-muted">Case study not found.</h1>
-        </div>
+    <>
+      {study && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "CreativeWork",
+              name: study.title,
+              description: study.description,
+              author: { "@type": "Person", name: "Mustafa Patharia" },
+              url: `https://mustafapatharia.com/case-study/${study.slug}`,
+              image: `https://mustafapatharia.com${study.image}`,
+            }),
+          }}
+        />
       )}
-
-      <Footer />
-    </div>
+      <CaseStudyClient slug={slug} />
+    </>
   );
 }
