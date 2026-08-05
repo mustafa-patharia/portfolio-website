@@ -17,7 +17,7 @@ export async function generateMetadata({
   const study = getCaseStudy(slug);
   if (!study) return { title: "Case Study | Mustafa Patharia" };
 
-  const url = `https://mustafapatharia.com/case-study/${study.slug}`;
+  const url = `https://mustafapatharia.vercel.app/case-study/${study.slug}`;
 
   return {
     title: `${study.title} | Case Study | Mustafa Patharia`,
@@ -55,8 +55,8 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
               name: study.title,
               description: study.description,
               author: { "@type": "Person", name: "Mustafa Patharia" },
-              url: `https://mustafapatharia.com/case-study/${study.slug}`,
-              image: `https://mustafapatharia.com${study.image}`,
+              url: `https://mustafapatharia.vercel.app/case-study/${study.slug}`,
+              image: `https://mustafapatharia.vercel.app${study.image}`,
             }),
           }}
         />

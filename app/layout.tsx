@@ -8,7 +8,7 @@ import { Analytics } from "@vercel/analytics/next";
 
 const GA_MEASUREMENT_ID = "G-69RBNWHM1D";
 export const metadata: Metadata = {
-  metadataBase: new URL("https://mustafapatharia.com"), // Provide the base URL for resolving relative OG/Twitter images
+  metadataBase: new URL("https://mustafapatharia.vercel.app"), // Provide the base URL for resolving relative OG/Twitter images
   title: "Mustafa Patharia | Senior Software Engineer & AI Engineer",
   description:
     "Five years architecting multi-tenant SaaS platforms, distributed backends, and the agentic tooling that builds them faster.",
@@ -23,17 +23,19 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Mustafa Patharia" }],
   creator: "Mustafa Patharia",
+  alternates: { canonical: "https://mustafapatharia.vercel.app" },
+  robots: { index: true, follow: true },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://mustafapatharia.com", // Adjust as necessary
+    url: "https://mustafapatharia.vercel.app", // Adjust as necessary
     title: "Mustafa Patharia | Senior Software Engineer",
     description:
       "Five years architecting multi-tenant SaaS platforms, distributed backends, and the agentic tooling that builds them faster.",
     siteName: "Mustafa Patharia Portfolio",
     images: [
       {
-        url: "/projects/infithra.jpg",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Mustafa Patharia Portfolio Preview",
@@ -46,7 +48,7 @@ export const metadata: Metadata = {
     description:
       "Architecting multi-tenant SaaS platforms and the agentic tooling that builds them faster.",
     creator: "@MustafaPatharia",
-    images: ["/projects/infithra.jpg"],
+    images: ["/og-image.jpg"],
   },
 };
 

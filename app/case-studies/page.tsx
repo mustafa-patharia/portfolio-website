@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Case Studies | Mustafa Patharia",
   description:
     "Deep-dive engineering case studies — multi-tenant SaaS architecture, native macOS apps, and the systems behind them.",
-  alternates: { canonical: "https://mustafapatharia.com/case-studies" },
+  alternates: { canonical: "https://mustafapatharia.vercel.app/case-studies" },
 };
 
 export default function CaseStudiesPage() {
