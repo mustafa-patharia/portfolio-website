@@ -38,7 +38,7 @@ I'm immediately available for new work, no notice period, and can commit 40-45 h
 Based in the UAE, working full-time as a freelancer while looking for the right product-based company to grow with. For calls, use the "Schedule Meet" button on this site to pick a time directly. Payment via Indian or UAE bank account/UPI; happy to work out other regions on a case-by-case basis.
 
 **Technical depth**
-Primary stack: Node.js, NestJS, Angular, Next.js, PostgreSQL, Redis. I'm primarily an individual contributor but have led and mentored a team of 6-8 developers. Hands-on with CI/CD, testing, and code review automation — built GitHub Actions pipelines for automated tests and quality checks pre-merge, and deployed/managed infra on AWS with Terraform. On the AI/agentic side, I've built MCP servers for real workflows, including github.com/MustafaPatharia/proofhub-mcp.
+Primary stack: Node.js, NestJS, Angular, Next.js, PostgreSQL, Redis. I'm primarily an individual contributor but have led and mentored a team of 6-8 developers. Hands-on with CI/CD, testing, and code review automation — built GitHub Actions pipelines for automated tests and quality checks pre-merge, and deployed/managed infra on AWS with Terraform. On the AI/agentic side, I've built MCP servers for real workflows, including github.com/mustafa-patharia/proofhub-mcp.
 
 Biggest technical challenge: building infithra's payroll module from scratch — processing payroll for hundreds of employees in seconds instead of the hours typical ERPs take, with per-employee configurability (attendance rules, leave policies, salary components, nationality/labour-law variations) and UAE WPS-compliant output. I implemented a hybrid RBAC/ABAC model so access to employees, subsidiaries, and reports was scoped correctly, plus session and idempotency controls to stop duplicate/concurrent payroll runs from corrupting data.
 
@@ -46,8 +46,8 @@ Biggest technical challenge: building infithra's payroll module from scratch —
 Why I went freelance: I'd grown deeply in the HRMS domain at KPI and wanted to broaden into new products and industries rather than stay in one platform type. Strengths: fast learner, ask the right questions before building instead of assuming, and I take ownership of outcomes, not just tasks. That same thoroughness is my weakness too — I can over-invest in polishing one task, though I've gotten better at balancing that against deadlines. On disagreement: I focus on what's best for the product, weigh trade-offs on evidence (technical cost, user impact, delivery time, maintainability), and back the stronger approach whoever it comes from. On tight deadlines: I plan carefully, communicate early if something's at risk, prioritize, and put in extra effort when it matters — without cutting quality.
 
 **Proof & personal**
-Code samples: github.com/MustafaPatharia. Open to a paid trial task — happy to discuss. Outside coding: sketching, music, movies/TV, and I'm a big Marvel/superhero fan (Spider-Man's my favorite) — always up for talking about the next Marvel release.
+Code samples: github.com/mustafa-patharia. Open to a paid trial task — happy to discuss. Outside coding: sketching, music, movies/TV, and I'm a big Marvel/superhero fan (Spider-Man's my favorite) — always up for talking about the next Marvel release.
 
 ## Contact & links
-Email: patharia52@gmail.com. GitHub: github.com/MustafaPatharia. LinkedIn: linkedin.com/in/mustafa-patharia. Twitter/X: @MustafaPatharia. Open to freelance/full-time work — visitors can use the "Schedule Meet" button to book a call directly.
+Email: patharia52@gmail.com. GitHub: github.com/mustafa-patharia. LinkedIn: linkedin.com/in/mustafa-patharia. Twitter/X: @mustafa-patharia. Open to freelance/full-time work — visitors can use the "Schedule Meet" button to book a call directly.
 `.trim();

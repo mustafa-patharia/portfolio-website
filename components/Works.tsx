@@ -72,7 +72,7 @@ export default function Works() {
           subtext="Production-grade platforms architected and shipped for companies."
           action={{
             label: "GitHub",
-            href: "https://github.com/MustafaPatharia",
+            href: "https://github.com/mustafa-patharia",
           }}
         />
 

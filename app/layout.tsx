@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     title: "Mustafa Patharia | Senior Software Engineer",
     description:
       "Architecting multi-tenant SaaS platforms and the agentic tooling that builds them faster.",
-    creator: "@MustafaPatharia",
+    creator: "@mustafa-patharia",
     images: ["/og-image.jpg"],
   },
 };

@@ -148,7 +148,7 @@ export default function Explorations() {
         </p>
 
         <a
-          href="https://github.com/MustafaPatharia"
+          href="https://github.com/mustafa-patharia"
           target="_blank"
           rel="noreferrer"
           className="group relative rounded-full"

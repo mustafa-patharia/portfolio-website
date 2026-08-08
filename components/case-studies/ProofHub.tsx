@@ -63,7 +63,7 @@ export default function ProofHubCaseStudy() {
 
         <div className="mt-10">
           <a
-            href="https://github.com/MustafaPatharia/Proofhub-Task-Timer"
+            href="https://github.com/mustafa-patharia/Proofhub-Task-Timer"
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 rounded-full border border-stroke bg-surface px-6 py-3 text-sm transition-colors hover:border-text-primary/30"
@@ -95,7 +95,7 @@ export default function ProofHubCaseStudy() {
         transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <div className="mt-16 flex flex-col gap-24">
-          
+
           {/* Overview Section */}
           <motion.section
             initial={{ opacity: 0, y: 30 }}

@@ -117,7 +117,7 @@ export default function RiftCaseStudy() {
           </a>
 
           <a
-            href="https://github.com/MustafaPatharia/rift-music-app"
+            href="https://github.com/mustafa-patharia/rift-music-app"
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 rounded-full border border-stroke bg-surface px-6 py-3 text-sm transition-colors hover:border-text-primary/30"
@@ -149,7 +149,7 @@ export default function RiftCaseStudy() {
         transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <div className="mt-16 flex flex-col gap-24">
-          
+
           {/* Overview Section */}
           <motion.section
             initial={{ opacity: 0, y: 30 }}
@@ -286,10 +286,10 @@ export default function RiftCaseStudy() {
 
           {/* Controls */}
           <button onClick={prevSlide} className="absolute left-0 top-1/2 -translate-y-1/2 p-3 rounded-full border border-stroke bg-bg/60 backdrop-blur-md text-text-primary transition-all duration-300 hover:scale-110 hover:border-text-primary/40 z-10 hidden md:group-hover:flex">
-             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
           </button>
           <button onClick={nextSlide} className="absolute right-0 top-1/2 -translate-y-1/2 p-3 rounded-full border border-stroke bg-bg/60 backdrop-blur-md text-text-primary transition-all duration-300 hover:scale-110 hover:border-text-primary/40 z-10 hidden md:group-hover:flex">
-             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
           </button>
         </div>
 
@@ -299,11 +299,10 @@ export default function RiftCaseStudy() {
             <button
               key={s.src}
               onClick={() => goTo(idx)}
-              className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 md:h-16 md:w-16 ${
-                idx === currentIndex
+              className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 md:h-16 md:w-16 ${idx === currentIndex
                   ? "border-text-primary/60 scale-105"
                   : "border-stroke opacity-50 hover:opacity-90"
-              }`}
+                }`}
             >
               <img src={s.src} alt={s.label} className="h-full w-full object-cover" />
             </button>

@@ -42,7 +42,7 @@ export default function MoreWork() {
           subtext="Tools, apps, and components built and shared with the community."
           action={{
             label: "View all",
-            href: "https://github.com/MustafaPatharia",
+            href: "https://github.com/mustafa-patharia",
           }}
         />
 
@@ -89,7 +89,7 @@ export default function MoreWork() {
                 <span className="hidden shrink-0 max-w-[280px] truncate text-xs uppercase tracking-[0.15em] text-muted lg:block">
                   {entry.stack}
                 </span>
-                
+
                 <span className="ml-4 mr-2 hidden items-center justify-center text-muted transition-transform duration-300 group-hover:translate-x-1 group-hover:text-text-primary sm:flex">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </span>
