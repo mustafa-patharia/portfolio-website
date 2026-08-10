@@ -2,7 +2,7 @@ export interface CaseStudyMeta {
   slug: string;
   title: string;
   kicker: string;
-  stack: string;
+  stack?: string;
   description: string;
   image: string;
 }
@@ -10,11 +10,10 @@ export interface CaseStudyMeta {
 export const CASE_STUDIES: CaseStudyMeta[] = [
   {
     slug: "infithra",
-    title: "infithra — HRMS Platform",
-    kicker: "Enterprise · Multi-Tenant SaaS",
-    stack: "Node.js · Angular · Next.js · AWS · PostgreSQL · Redis",
+    title: "infithra — Enterprise SaaS Case Study",
+    kicker: "Enterprise · SaaS",
     description:
-      "Founding engineer's account of building a multi-tenant HRMS platform from zero — 800+ production APIs, hybrid RBAC/ABAC, UAE Labour Law-compliant payroll, serving thousands of daily users.",
+      "A deep dive into my experience as a lead engineer — focusing on architectural ownership, scaling technical operations, and the interpersonal dynamics of leading a growing engineering team.",
     image: "/projects/infithra.jpg",
   },
   {

@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import TechPill from "@/components/TechPill";
 
 export default function infithraCaseStudy() {
   return (
@@ -21,14 +20,6 @@ export default function infithraCaseStudy() {
           infithra <br className="hidden md:block" />
           <span className="font-sans font-normal not-italic text-muted">HRMS Platform</span>
         </h1>
-        <div className="flex flex-wrap gap-2">
-          <TechPill name="Node.js" />
-          <TechPill name="Angular" />
-          <TechPill name="Next.js" />
-          <TechPill name="AWS" />
-          <TechPill name="PostgreSQL" />
-          <TechPill name="Redis" />
-        </div>
 
         <div className="mt-10">
           <a
@@ -65,7 +56,7 @@ export default function infithraCaseStudy() {
         transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <div className="mt-16 flex flex-col gap-24">
-          {/* Section 1: The Brief (Overview & Problem) */}
+          {/* Section 1: Overview */}
           <motion.section
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -75,27 +66,27 @@ export default function infithraCaseStudy() {
           >
             <div>
               <h2 className="mb-6 font-display text-3xl italic text-text-primary md:text-4xl">
-                Overview
+                Engineering Leadership
               </h2>
               <p className="leading-relaxed text-muted md:text-lg">
-                infithra is a multi-tenant HRMS platform I helped build from an empty repository into a system running the full employee lifecycle — onboarding, payroll, leave, attendance — for thousands of daily users across dozens of UAE-based companies, each with its own policies and Labour Law obligations.
+                Joining as the founding engineer before the first line of code was written, my journey at infithra was defined by scaling a comprehensive cloud-based HR and Payroll platform tailored for businesses across the UAE.
               </p>
               <p className="mt-6 leading-relaxed text-muted md:text-lg">
-                I joined before the first schema existed. What follows is the technical story: the decisions that held up, the ones that had to be revisited, and what building enterprise software from zero actually looks like from the inside.
+                This case study highlights the evolution of my role from an individual contributor to a technical leader. It focuses on the strategic planning and engineering rigor required to take a major enterprise SaaS product from zero to massive adoption, entirely built around publicly verifiable capabilities.
               </p>
             </div>
             <div className="rounded-3xl border border-stroke bg-surface p-8 md:p-10">
               <h3 className="mb-6 font-display text-2xl italic text-text-primary">
-                The Business Problem
+                My Focus Areas
               </h3>
               <p className="mb-6 leading-relaxed text-muted">
-                The HR landscape in the UAE requires specific regulatory adherence. Businesses needed a unified platform that could:
+                Building an enterprise platform at this scale demanded much more than writing code. My core responsibilities included:
               </p>
               <ul className="flex flex-col gap-3">
                 {[
-                  "Handle multiple distinct organizations securely within a single deployment.",
-                  "Calculate highly complex payroll structures, including gratuity, overtime, and multi-currency allowances.",
-                  "Provide a seamless, fast, and unified experience for both HR administrators and employees.",
+                  "Architecting a scalable SaaS deployment model to support high availability and multi-tenant isolation.",
+                  "Mentoring a growing engineering team, fostering a culture of ownership, and establishing rigorous code quality standards.",
+                  "Translating complex regional business requirements (like GCC compliance) into actionable technical deliverables.",
                 ].map((item, i) => (
                   <li key={i} className="relative pl-5 text-sm text-muted before:absolute before:left-0 before:top-[0.6em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-text-primary/30">
                     {item}
@@ -121,29 +112,29 @@ export default function infithraCaseStudy() {
               <div>
                 <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-muted">The Role</span>
                 <p className="leading-relaxed text-text-primary md:text-lg">
-                  <span className="font-display italic">Founding / Lead Engineer.</span> There was no legacy code to inherit and no prior architecture to defend — every early call on data isolation, permissions, and deployment became the standard the rest of the platform would be built on. I later grew and led the 6–8 engineer team that took the platform from first tenant to production scale.
+                  <span className="font-display italic">Founding / Lead Engineer.</span> As the product expanded to cover Core HR, Time & Leave management, and People Analytics, my role naturally evolved into leadership. I was responsible for onboarding talent and ensuring our sprint goals consistently met the high standards required for enterprise software.
                 </p>
               </div>
               <div>
                 <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-muted">The Impact</span>
                 <p className="leading-relaxed text-text-primary md:text-lg">
-                  The platform now runs 800+ production APIs, sustains 99.9% uptime, and handles region-specific payroll and compliance for dozens of tenants without a single reported cross-tenant data leak — the one failure mode that would have been unrecoverable for a product built on this model.
+                  Through active mentorship and clear communication channels, I helped cultivate a cohesive engineering team. This directly contributed to the seamless delivery of critical modules and enabled us to sustain exceptional product stability under pressure.
                 </p>
               </div>
             </div>
           </motion.section>
 
-          {/* Section 3: Technical Challenges (Bento Grid) */}
+          {/* Section 3: Driving Team Success (Bento Grid) */}
           <section>
-            <h2 className="mb-10 text-center font-display text-3xl italic text-text-primary md:text-5xl">
-              Technical Challenges
+            <h2 className="mb-10 text-center font-display text-3xl italic text-text-primary md:text-4xl">
+              Driving Team Success
             </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {[
-                { title: "Multi-tenant Isolation", text: "Serving hundreds of companies from one database required bulletproof isolation to prevent cross-tenant data leaks." },
-                { title: "Complex Authorization", text: "Simple role-based access wasn't enough. We needed a hybrid RBAC and ABAC system to allow custom permissions per module per tenant." },
-                { title: "API Scale", text: "Delivering over 800+ production APIs while maintaining response times under 200ms." },
-                { title: "Dynamic Payroll Engine", text: "Handling intricate UAE Labour Law requirements required a highly scalable calculation engine capable of processing multi-currency allowances and gratuity concurrently." },
+                { title: "Cross-Functional Communication", text: "Regularly interfaced with product managers and business stakeholders to align engineering efforts with high-level company objectives, ensuring transparency and realistic timelines." },
+                { title: "Mentorship & Growth", text: "Conducted 1-on-1 sessions, pair programming, and comprehensive code reviews to elevate the overall skill level of the team and encourage independent problem-solving." },
+                { title: "Process Optimization", text: "Identified workflow inefficiencies and introduced streamlined agile methodologies that significantly improved our team's delivery cadence and morale across the development lifecycle." },
+                { title: "Conflict Resolution", text: "Navigated technical disagreements gracefully by fostering an evidence-based discussion culture where the best ideas won, regardless of seniority." },
               ].map((card, i) => (
                 <motion.div
                   key={card.title}
@@ -160,19 +151,19 @@ export default function infithraCaseStudy() {
             </div>
           </section>
 
-          {/* Section 4: Architectural Decisions (Vertical Timeline) */}
+          {/* Section 4: Operational Excellence (Vertical Timeline) */}
           <section>
             <h2 className="mb-12 font-display text-3xl italic text-text-primary md:text-4xl">
-              Architectural Decisions
+              Execution & Strategy
             </h2>
             <div className="relative pl-6 md:pl-10">
               <div className="absolute bottom-0 left-[7px] top-2 w-px bg-stroke md:left-[11px]" />
               <div className="flex flex-col gap-12">
                 {[
-                  { title: "Cloud Infrastructure", tool: "AWS", text: "Leveraged the AWS ecosystem to build a scalable and secure foundation—utilizing EC2 for compute, RDS for managed databases, S3 for object storage, Cognito for authentication, and SSM for secure parameter management." },
-                  { title: "Backend Architecture", tool: "Node.js & PostgreSQL", text: "Selected Node.js for its robust ecosystem and scalability. We utilized PostgreSQL for relational integrity, which is critical for financial and HR data." },
-                  { title: "Caching and Queueing", tool: "Redis", text: "Implemented Redis to handle session management and background task queueing (e.g., end-of-month payroll processing for thousands of employees simultaneously)." },
-                  { title: "Frontend Strategy", tool: "Angular & Next.js", text: "Used Angular for the core multi-tenant platform due to its robust architecture and state management, and Next.js for the heavy-lifting admin dashboards where performance and rapid load times were paramount." },
+                  { title: "Establishing Culture", label: "Foundation", text: "From day one, I championed a culture of extreme ownership. I ensured that every engineer understood not just the 'how', but the 'why' behind the enterprise features they were building." },
+                  { title: "Scaling the Organization", label: "Growth", text: "As user demand skyrocketed, so did the engineering team. I played a key role in interviewing, hiring, and successfully onboarding new members to keep momentum high without sacrificing quality." },
+                  { title: "Navigating High-Stakes Deliveries", label: "Resilience", text: "During critical release cycles for major compliance updates, I coordinated cross-team efforts to manage risk, perform thorough testing, and handle incident responses calmly and effectively." },
+                  { title: "Continuous Improvement", label: "Iterative Learning", text: "Implemented regular retrospectives that provided a safe space for the team to voice concerns, celebrate wins, and continuously refine our internal processes." },
                 ].map((item, i) => (
                   <motion.div
                     key={item.title}
@@ -184,7 +175,7 @@ export default function infithraCaseStudy() {
                   >
                     <div className="absolute left-[-24px] top-[6px] h-3 w-3 rounded-full border-2 border-bg bg-text-primary transition-transform duration-300 hover:scale-150 md:left-[-38px]" />
                     <h3 className="mb-1 text-lg text-text-primary">{item.title}</h3>
-                    <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[#89AACC]">{item.tool}</p>
+                    <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[#89AACC]">{item.label}</p>
                     <p className="text-sm leading-relaxed text-muted md:text-base">{item.text}</p>
                   </motion.div>
                 ))}
@@ -192,7 +183,7 @@ export default function infithraCaseStudy() {
             </div>
           </section>
 
-          {/* Section 5: Lessons Learned */}
+          {/* Section 5: Engineering Excellence ("How good developer im") */}
           <motion.section
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -200,14 +191,20 @@ export default function infithraCaseStudy() {
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <div className="mb-12 border-t border-stroke" />
-            <h3 className="mb-6 font-display text-2xl italic text-text-primary">Key Takeaways</h3>
+            <h2 className="mb-6 font-display text-3xl italic text-text-primary md:text-4xl">Technical Excellence</h2>
             <p className="leading-relaxed text-muted md:text-lg">
-              In enterprise software, data architecture is destiny — a mistake made in the tenant model on day one is a mistake every future feature has to work around. What surprised me most wasn't the payroll math or the permission matrix; it was how much of &ldquo;architecture&rdquo; is really about writing down defaults so a growing team doesn't have to relitigate the same decision five different ways. I over-built a few abstractions early that never got used, and under-built others that had to be rewritten under load — both are part of learning what actually needs to be generic versus what just needs to work.
+              Beyond leadership, my foundation remains rooted in writing exceptional, production-grade code. I architected the core of infithra to be highly resilient and scalable, seamlessly handling thousands of concurrent users and complex payroll computations. 
+            </p>
+            <p className="mt-4 leading-relaxed text-muted md:text-lg">
+              A key milestone in demonstrating this technical depth was single-handedly designing and building the entire NetSuite ERP integration for infithra. Bridging the gap between a modern HRMS and a massive enterprise ERP required deep technical knowledge, robust bidirectional data synchronization pipelines, and flawless error handling to ensure mission-critical financial and employee data remained perfectly aligned.
+            </p>
+            <p className="mt-4 leading-relaxed text-muted md:text-lg">
+              By enforcing rigorous code quality standards, crafting pixel-perfect interfaces, and designing optimized backend services, I ensured that the platform was not only robust enough to achieve ISO 27001 and SOC-2 compliance, but also maintainable for years to come. I take immense pride in being a developer who doesn't just write code, but builds durable, elegant, and secure systems.
             </p>
           </motion.section>
 
           <div className="rounded-xl border border-stroke bg-surface p-6 text-sm text-muted">
-            <strong>Disclaimer:</strong> This project was developed as part of my employment. This case study focuses exclusively on the engineering challenges and technical decisions made during its development, and does not disclose confidential business metrics or proprietary source code.
+            <strong>Disclaimer:</strong> This project was developed as part of my employment. To respect company confidentiality, this case study intentionally omits the internal tech stack and proprietary architectures, focusing instead on publicly documented features, engineering leadership, and strategic execution.
           </div>
         </div>
       </motion.article>
