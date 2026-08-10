@@ -77,6 +77,33 @@ export default function RootLayout({
             gtag('config', '${GA_MEASUREMENT_ID}');
           `}
         </Script>
+        <Script
+          id="schema-person"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Mustafa Patharia",
+              url: "https://mustafapatharia.vercel.app",
+              jobTitle: "Senior Software Engineer & AI Engineer",
+              description: "Architecting multi-tenant SaaS platforms, distributed backends, and the agentic tooling that builds them faster.",
+              knowsAbout: [
+                "Software Engineering",
+                "AI Engineering",
+                "Next.js",
+                "Node.js",
+                "SaaS Architecture",
+                "TypeScript",
+                "System Design"
+              ],
+              sameAs: [
+                "https://github.com/mustafapatharia",
+                "https://www.linkedin.com/in/mustafapatharia/" // Adjust if the LinkedIn URL differs
+              ]
+            })
+          }}
+        />
         <GlobalBackground />
         <CalEmbed />
         {children}

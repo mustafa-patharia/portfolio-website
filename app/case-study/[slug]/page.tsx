@@ -51,7 +51,7 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "CreativeWork",
+              "@type": "TechArticle",
               name: study.title,
               description: study.description,
               author: { "@type": "Person", name: "Mustafa Patharia" },
