@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface Message {
-  suggestions?: string[];
   role: "user" | "model";
   text: string;
 }
@@ -15,23 +14,30 @@ const SUGGESTIONS = [
   "Are you open to freelance work?",
 ];
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+// ponytail: reading pause before typing starts + per-char typing time, capped — swap for a real "seen" model if it matters later
+const thinkDelay = () => 500 + Math.random() * 900;
+const typeDelay = (text: string) => Math.min(2200, 400 + text.length * 22 + Math.random() * 400);
+
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [typing, setTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, loading]);
+  }, [messages, loading, typing]);
 
   async function send(text: string) {
-    if (!text.trim() || loading) return;
+    if (!text.trim() || loading || typing) return;
     const next: Message[] = [...messages, { role: "user", text }];
     setMessages(next);
     setInput("");
     setLoading(true);
+    let chunks: string[];
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
@@ -39,19 +45,18 @@ export default function ChatWidget() {
         body: JSON.stringify({ messages: next }),
       });
       const data = await res.json();
-      setMessages([
-        ...next,
-        {
-          role: "model",
-          text: data.reply ?? data.error ?? "Something went wrong.",
-          suggestions: data.suggestions,
-        },
-      ]);
+      chunks = Array.isArray(data.reply) ? data.reply : [data.reply ?? data.error ?? "Something went wrong."];
     } catch {
-      setMessages([...next, { role: "model", text: "Something went wrong reaching the server." }]);
-    } finally {
-      setLoading(false);
+      chunks = ["Something went wrong reaching the server."];
     }
+    setLoading(false);
+    setTyping(true);
+    for (const chunk of chunks) {
+      await sleep(thinkDelay());
+      await sleep(typeDelay(chunk));
+      setMessages((prev) => [...prev, { role: "model", text: chunk }]);
+    }
+    setTyping(false);
   }
 
   return (
@@ -107,26 +112,9 @@ export default function ChatWidget() {
                   >
                     {m.text}
                   </div>
-                  {m.role === "model" &&
-                    i === messages.length - 1 &&
-                    !loading &&
-                    m.suggestions &&
-                    m.suggestions.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {m.suggestions.map((s) => (
-                          <button
-                            key={s}
-                            onClick={() => send(s)}
-                            className="rounded-full border border-stroke bg-bg px-3 py-1.5 text-left text-xs text-muted transition-colors hover:border-text-primary/30 hover:text-text-primary"
-                          >
-                            {s}
-                          </button>
-                        ))}
-                      </div>
-                    )}
                 </div>
               ))}
-              {loading && (
+              {(loading || typing) && (
                 <div className="w-fit rounded-xl bg-bg px-3 py-2 text-sm text-muted">
                   <span className="inline-flex gap-1">
                     <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.3s]" />
@@ -152,7 +140,7 @@ export default function ChatWidget() {
               />
               <button
                 type="submit"
-                disabled={loading || !input.trim()}
+                disabled={loading || typing || !input.trim()}
                 aria-label="Send"
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-text-primary text-bg transition-opacity disabled:opacity-40"
               >
