@@ -14,7 +14,7 @@ export const CASE_STUDIES: CaseStudyMeta[] = [
     kicker: "Enterprise · SaaS",
     description:
       "A deep dive into my experience as a lead engineer — focusing on architectural ownership, scaling technical operations, and the interpersonal dynamics of leading a growing engineering team.",
-    image: "/projects/infithra.jpg",
+    image: "/projects/poster/infithra.jpg",
   },
   {
     slug: "rift",
@@ -23,7 +23,7 @@ export const CASE_STUDIES: CaseStudyMeta[] = [
     stack: "SwiftUI · macOS · AVFoundation · yt-dlp",
     description:
       "A truly native, ad-free YouTube Music client for macOS — hybrid WebView/local playback engine, offline downloads, and a source-agnostic playback architecture.",
-    image: "/projects/rift.png",
+    image: "/projects/poster/rift-music-app.png",
   },
   {
     slug: "proofhub-task-timer",
@@ -32,7 +32,43 @@ export const CASE_STUDIES: CaseStudyMeta[] = [
     stack: "Swift · SwiftData · ProofHub API",
     description:
       "A native macOS menu-bar time tracker for ProofHub — concurrent task timers, offline-first SwiftData caching, and one-click sync to ProofHub's Bolt API.",
-    image: "/projects/proofhub-task-timer.png",
+    image: "/projects/poster/proofhub-task-timer.png",
+  },
+  {
+    slug: "smartscan",
+    title: "SmartScan — RFID Warehouse Middleware",
+    kicker: "Enterprise · Warehouse Inventory",
+    stack: "NestJS · PostgreSQL · Next.js · React Native · AWS",
+    description:
+      "RFID warehouse inventory platform I owned end to end as a freelancer: architecture, NetSuite integration, product scope, handheld UX and delivery. Tag-level tracking, Android handheld workflows and durable NetSuite sync.",
+    image: "/projects/poster/smarscan-rfid-warehouse-app.png",
+  },
+  {
+    slug: "netsuite-odoo-pos",
+    title: "NetSuite Odoo POS Integration",
+    kicker: "Enterprise · ERP Integration",
+    stack: "Odoo · Python · NetSuite RESTlets",
+    description:
+      "A bidirectional integration module between Odoo POS and NetSuite. Automatically syncs products, invoices, and payments with support for manual and scheduled background jobs.",
+    image: "/projects/poster/netsuite-odoo-pos-integration.png",
+  },
+  {
+    slug: "get-rounded",
+    title: "GetRounded",
+    kicker: "Open Source · Desktop App",
+    stack: "Python · pywebview · Tailwind CSS",
+    description:
+      "A fully offline desktop app for macOS, Windows, and Linux that instantly rounds image corners. Built with a Python backend and a lightweight HTML/Tailwind frontend via pywebview.",
+    image: "/projects/poster/get-rounded.png",
+  },
+  {
+    slug: "promax-global",
+    title: "Promax Global",
+    kicker: "Website Development",
+    stack: "React · CMS",
+    description:
+      "Corporate website on a custom content platform — multilingual content, role-based publishing, and built-in search-engine optimization.",
+    image: "/projects/poster/promax-gloabal.png",
   },
 ];
 

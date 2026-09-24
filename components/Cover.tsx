@@ -12,6 +12,7 @@ const EXTENSIONS = ["jpg", "png", "webp"];
  * finished, and adding a file needs no code change.
  */
 export default function Cover({
+  src,
   dir,
   slug,
   seed,
@@ -20,6 +21,7 @@ export default function Cover({
   className,
   compact = false,
 }: {
+  src?: string;
   dir: string;
   slug: string;
   seed: number;
@@ -29,7 +31,8 @@ export default function Cover({
   compact?: boolean;
 }) {
   const [attempt, setAttempt] = useState(0);
-  const exhausted = attempt >= EXTENSIONS.length;
+  const exhausted = !src && attempt >= EXTENSIONS.length;
+  const currentSrc = src || `${dir}/${slug}.${EXTENSIONS[attempt]}`;
 
   return (
     <div className="absolute inset-0 overflow-hidden">
@@ -42,10 +45,12 @@ export default function Cover({
       {!exhausted && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          key={attempt}
-          src={`${dir}/${slug}.${EXTENSIONS[attempt]}`}
+          key={src ? "static" : attempt}
+          src={currentSrc}
           alt={alt}
-          onError={() => setAttempt((a) => a + 1)}
+          onError={() => {
+            if (!src) setAttempt((a) => a + 1);
+          }}
           className={`absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105 ${
             className ?? ""
           }`}

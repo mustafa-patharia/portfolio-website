@@ -18,7 +18,7 @@ export default function CaseStudiesGrid() {
           className="group relative aspect-[4/3] overflow-hidden rounded-3xl border border-stroke bg-surface"
         >
           <Link href={`/case-study/${study.slug}`} className="block h-full w-full">
-            <Cover dir="/projects" slug={study.slug} seed={i} alt={study.title} />
+            <Cover dir="/projects" slug={study.slug} src={study.image} seed={i} alt={study.title} />
             <div className="halftone pointer-events-none absolute inset-0 opacity-20 mix-blend-multiply" />
 
             <div className="absolute inset-0 flex flex-col justify-end p-6 transition-opacity duration-500 group-hover:opacity-0 md:p-8">

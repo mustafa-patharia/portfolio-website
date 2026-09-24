@@ -12,6 +12,15 @@ const config: Config = {
         muted: "hsl(var(--muted))",
         stroke: "hsl(var(--stroke))",
         accent: "hsl(var(--accent))",
+        /* SmartScan brand blue (#026bc0) — scale lifted for dark surfaces */
+        ss: {
+          100: "#dbeeff",
+          200: "#b8e2ff",
+          300: "#6dc2ff",
+          400: "#4ca2fb",
+          500: "#3189e0",
+          600: "#026bc0",
+        },
       },
       fontFamily: {
         body: ["var(--font-body)", "sans-serif"],

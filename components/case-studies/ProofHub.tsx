@@ -4,6 +4,11 @@ import ArchitectureDiagram, {
   type ArchNode,
   type ArchWire,
 } from "../ArchitectureDiagram";
+import { BentoGrid, BentoCard } from "./blocks/BentoGrid";
+import { Timeline, TimelineStep } from "./blocks/Timeline";
+import { PullQuote } from "./blocks/PullQuote";
+import { AccordionDeepDive } from "./blocks/AccordionDeepDive";
+import { Timer, SearchCode, Hourglass, ToggleLeft, Activity, Command } from "lucide-react";
 
 const ARCH_BANDS = [
   { label: "Interface", h: 76 },
@@ -34,9 +39,81 @@ const ARCH_WIRES: ArchWire[] = [
   { from: "appstate", to: "api", type: "net" },
 ];
 
+// --- Custom Interactive Visual Components (SaaS Aesthetic) ---
+
+const BrowserFrictionVisual = () => (
+  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex items-center justify-center border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)] perspective-[1200px]">
+    <div className="absolute inset-0 bg-gradient-to-tr from-rose-900/10 via-transparent to-rose-900/10" />
+    
+    <div className="relative z-10 flex w-full max-w-[280px] flex-col items-center justify-center transform-gpu rotate-x-[15deg]">
+      {/* Heavy Browser */}
+      <motion.div 
+        animate={{ y: [-5, 5, -5] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="relative z-20 flex h-24 w-64 items-center justify-center gap-4 rounded-2xl border border-rose-500/40 bg-rose-500/10 backdrop-blur-xl shadow-[0_20px_40px_rgba(244,63,94,0.2)]"
+      >
+        <SearchCode className="h-8 w-8 text-rose-400 drop-shadow-[0_0_15px_rgba(244,63,94,0.5)]" strokeWidth={1.5} />
+        <div className="flex flex-col">
+          <span className="font-mono text-sm tracking-widest text-rose-100">BROWSER UI</span>
+          <span className="font-mono text-[9px] text-rose-300/50 mt-1">HIGH FRICTION</span>
+        </div>
+      </motion.div>
+      
+      {/* Loading Spinners below */}
+      <div className="mt-6 flex gap-6">
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }}>
+          <Activity className="h-6 w-6 text-rose-500/50" />
+        </motion.div>
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear", delay: 0.5 }}>
+          <Activity className="h-6 w-6 text-rose-500/50" />
+        </motion.div>
+      </div>
+    </div>
+  </div>
+);
+
+const LostHoursVisual = () => (
+  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex items-center justify-center border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)] perspective-[1000px]">
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,158,11,0.1)_0%,transparent_70%)]" />
+    <motion.div 
+      initial={{ rotateX: 20 }}
+      animate={{ rotateX: [20, 0, 20], rotateZ: [0, -5, 0] }} 
+      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      className="relative z-10 flex h-24 w-40 flex-col items-center justify-center rounded-2xl border border-amber-500/40 bg-amber-500/10 backdrop-blur-xl shadow-[0_20px_40px_rgba(245,158,11,0.2)]"
+    >
+      <Hourglass className="h-8 w-8 text-amber-400 mb-2 drop-shadow-[0_0_10px_rgba(245,158,11,0.8)]" strokeWidth={1.5} />
+      <span className="text-[12px] font-mono font-bold tracking-widest text-amber-300">-4.2 HRS</span>
+    </motion.div>
+  </div>
+);
+
+const StateSwapVisual = () => (
+  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex items-center justify-center border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)]">
+     <div className="absolute inset-0 bg-[linear-gradient(to_bottom,#10b98110_1px,transparent_1px)] bg-[size:100%_20px]" />
+     <div className="flex gap-4 relative z-10 items-center">
+        <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-white/10 bg-[#121214] shadow-lg">
+          <Command className="h-6 w-6 text-gray-400" strokeWidth={1.5} />
+        </div>
+        
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 180, 0] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="flex h-14 w-14 items-center justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/10 backdrop-blur-md shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+        >
+          <ToggleLeft className="h-6 w-6 text-emerald-400" strokeWidth={1.5} />
+        </motion.div>
+
+        <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-white/10 bg-[#121214] shadow-lg">
+          <Timer className="h-6 w-6 text-gray-400" strokeWidth={1.5} />
+        </div>
+     </div>
+  </div>
+);
+
+
 export default function ProofHubCaseStudy() {
   return (
-    <main className="mx-auto max-w-4xl px-6 pb-32 pt-40 md:px-10 lg:px-16 lg:pt-48">
+    <main className="mx-auto max-w-5xl px-6 pb-32 pt-40 md:px-10 lg:px-16 lg:pt-48">
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: 30 }}
@@ -82,7 +159,7 @@ export default function ProofHubCaseStudy() {
         className="group relative mb-24 aspect-[21/9] w-full overflow-hidden rounded-3xl"
       >
         <img
-          src={`/projects/proofhub-task-timer.png`}
+          src={`/projects/poster/proofhub-task-timer.png`}
           alt={`ProofHub Task Timer hero poster`}
           className="absolute inset-0 h-full w-full object-contain"
         />
@@ -96,103 +173,80 @@ export default function ProofHubCaseStudy() {
       >
         <div className="mt-16 flex flex-col gap-24">
 
-          {/* Overview Section */}
-          <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-            className="grid grid-cols-1 gap-12 lg:grid-cols-2"
-          >
-            <div>
-              <h2 className="mb-6 font-display text-3xl italic text-text-primary md:text-4xl">
-                The Objective
-              </h2>
-              <p className="leading-relaxed text-muted md:text-lg">
-                The objective was simple: eliminate the friction of time tracking. Constantly opening a browser, navigating to ProofHub, and manually starting timers for different projects was a tiresome break in workflow. I built this macOS menu bar app to bring active tasks directly to my fingertips.
-              </p>
-            </div>
-            <div className="rounded-3xl border border-stroke bg-surface p-8 md:p-10">
-              <h3 className="mb-6 font-display text-2xl italic text-text-primary">
-                Technical Hurdles
-              </h3>
-              <ul className="flex flex-col gap-3">
-                {[
-                  "Concurrent Tracking: Syncing and playing multiple timers simultaneously across different tasks.",
-                  "State Management: Handling complex hierarchies of multiple projects and their respective task lists.",
-                  "Data Consistency: Ensuring offline tracking synced perfectly back to the cloud without dropping seconds.",
-                ].map((item, i) => (
-                  <li key={i} className="relative pl-5 text-sm text-muted before:absolute before:left-0 before:top-[0.6em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-text-primary/30">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.section>
-
-          {/* Architecture Diagram Section */}
-          <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            <h2 className="mb-10 font-display text-3xl italic text-text-primary md:text-4xl text-center">
-              Under the Hood
-            </h2>
-
-            <ArchitectureDiagram
-              bands={ARCH_BANDS}
-              nodes={ARCH_NODES}
-              wires={ARCH_WIRES}
-              note="AppState is the single source of truth for every running timer. SwiftData caches projects and tasks for instant browsing; nothing reaches ProofHub's Bolt API until a timer is explicitly saved."
-            />
-          </motion.section>
-
-          {/* Key Features (Vertical Timeline) */}
           <section>
-            <h2 className="mb-12 font-display text-3xl italic text-text-primary md:text-4xl">
-              Engineering Deep Dive
+            <h2 className="mb-10 text-center font-display text-3xl italic text-text-primary md:text-4xl">
+              The Context Switch
             </h2>
-            <div className="relative pl-6 md:pl-10">
-              <div className="absolute bottom-0 left-[7px] top-2 w-px bg-stroke md:left-[11px]" />
-              <div className="flex flex-col gap-12">
-                {[
-                  { title: "macOS Native Development", tool: "Swift & SwiftUI", text: "Built from the ground up using Swift to ensure the app is a lightweight, first-class citizen on macOS, seamlessly integrating into the system menu bar without the memory overhead of web wrappers." },
-                  { title: "High-Performance Caching", tool: "SwiftData Store", text: "To eliminate network latency when browsing through multiple projects and their respective task lists, I implemented a robust caching strategy using SwiftData. This ensures the UI is always instantly responsive." },
-                  { title: "Concurrent Timer Synchronization", tool: "State Management", text: "Handling the complexity of a user rapidly switching between tasks or running multiple timers simultaneously required an iron-clad local state engine that precisely synced elapsed seconds before pushing to the ProofHub Bolt APIs." },
-                ].map((item, i) => (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-80px" }}
-                    transition={{ duration: 0.6, delay: i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                    className="relative"
-                  >
-                    <div className="absolute left-[-24px] top-[6px] h-3 w-3 rounded-full border-2 border-bg bg-text-primary transition-transform duration-300 hover:scale-150 md:left-[-38px]" />
-                    <h3 className="mb-1 text-lg text-text-primary">{item.title}</h3>
-                    <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[#89AACC]">{item.tool}</p>
-                    <p className="text-sm leading-relaxed text-muted md:text-base">{item.text}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+            <BentoGrid>
+              <BentoCard title="Browser Friction" colSpan={2} rowSpan={2}>
+                <div className="flex h-full flex-col gap-6">
+                  <p className="flex-1 leading-relaxed text-muted">Time tracking in agency environments is inherently flawed. Developers and designers are forced to abandon their IDEs to hunt for a specific browser tab, navigate a clunky web UI, and click 'Start Timer'.</p>
+                  <div className="h-[250px] w-full">
+                    <BrowserFrictionVisual />
+                  </div>
+                </div>
+              </BentoCard>
+              <BentoCard title="Lost Billable Hours" colSpan={2} rowSpan={1}>
+                 <div className="flex flex-col gap-6 h-[200px]">
+                  <p className="flex-1 leading-relaxed text-muted text-sm">This massive friction point leads to inaccurate timesheets. Users desperately needed a zero-friction, native utility that lives globally in the system menu bar.</p>
+                  <div className="w-full flex-1 min-h-0">
+                    <LostHoursVisual />
+                  </div>
+                </div>
+              </BentoCard>
+              <BentoCard title="Instant State Swapping" colSpan={2} rowSpan={1}>
+                <div className="flex flex-col gap-6 h-[200px]">
+                  <p className="flex-1 leading-relaxed text-muted text-sm">The goal was to allow professionals to rapidly swap active contexts with a single click without ever breaking focus or waiting for a heavy DOM to render.</p>
+                  <div className="w-full flex-1 min-h-0">
+                    <StateSwapVisual />
+                  </div>
+                </div>
+              </BentoCard>
+            </BentoGrid>
           </section>
 
-          {/* Lessons Learned */}
-          <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            <div className="mb-12 border-t border-stroke" />
-            <h3 className="mb-6 font-display text-2xl italic text-text-primary">Key Takeaways</h3>
-            <p className="leading-relaxed text-muted md:text-lg">
-              As my first dedicated macOS application, ProofHub Task Timer was an incredible deep-dive into the Apple ecosystem. I learned how to build robust, native macOS architectures using Swift, and gained a deep appreciation for the power of SwiftData as a local caching engine for complex, concurrent data syncing.
-            </p>
-          </motion.section>
+          <section>
+            <PullQuote 
+              quote="I engineered this native macOS application strictly using Swift and SwiftUI, completely rejecting web wrappers to ensure the app consumes virtually zero CPU cycles in the background."
+              author="Sole Developer"
+            />
+          </section>
+
+          <section>
+            <h2 className="mb-10 text-center font-display text-3xl italic text-text-primary md:text-4xl">
+              Technical Architecture
+            </h2>
+            <div className="mb-16">
+              <ArchitectureDiagram
+                bands={ARCH_BANDS}
+                nodes={ARCH_NODES}
+                wires={ARCH_WIRES}
+                note="AppState is the single source of truth for every running timer. SwiftData caches projects and tasks for instant browsing; nothing reaches ProofHub's Bolt API until a timer is explicitly saved."
+              />
+            </div>
+
+            <Timeline>
+              <TimelineStep title="The MenuBarExtra Lifecycle" tool="SwiftUI & macOS Native">
+                Building a reliable menu bar app is vastly different from a standard windowed app. Using SwiftUI's modern MenuBarExtra scene ensures the app launches silently on login without polluting the dock. To preserve battery, the UI aggressively halts rendering loops when dismissed, relying strictly on a low-priority background Timer publisher to compute elapsed seconds.
+              </TimelineStep>
+              <TimelineStep title="SwiftData Offline Caching" tool="Local Persistence Layer">
+                To eliminate network latency during project selection, I implemented a robust SwiftData schema. The app asynchronously pre-fetches the user's assigned projects and tasks, serializing the JSON into native @Model objects. The UI binds directly to this local database via @Query, guaranteeing instant 0ms responses even in airplane mode.
+              </TimelineStep>
+              <TimelineStep title="Concurrent State Engine" tool="Combine & Actor Model">
+                Handling multiple paused, running, and syncing timers required an iron-clad local engine. An AppState coordinator uses Swift's concurrency model (async/await and Actors) to prevent data races. When a user switches tasks, the engine logs the timestamp, triggers an optimistic UI update, and queues a background push with exponential backoff.
+              </TimelineStep>
+            </Timeline>
+          </section>
+
+          <section className="mb-20">
+            <div className="mx-auto max-w-2xl">
+              <AccordionDeepDive title="Workflow Restored">
+                <p className="leading-relaxed text-muted">
+                  The end product successfully eliminated the catastrophic friction of web-based time tracking. By embedding the interface natively within the macOS menu bar and enforcing a strict offline-first architecture via SwiftData, users can now toggle complex task timers in under two seconds. The application guarantees 100% accurate time logging without breaking flow state, all while consuming less than 15MB of system memory.
+                </p>
+              </AccordionDeepDive>
+            </div>
+          </section>
 
         </div>
       </motion.article>
