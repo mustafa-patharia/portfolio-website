@@ -45,11 +45,11 @@ export const CASE_STUDIES: CaseStudyMeta[] = [
   },
   {
     slug: "netsuite-odoo-pos",
-    title: "NetSuite Odoo POS Integration",
-    kicker: "Enterprise · ERP Integration",
-    stack: "Odoo · Python · NetSuite RESTlets",
+    title: "Odoo POS × NetSuite — Odoo Addon",
+    kicker: "Enterprise · Odoo Addon · ERP Integration",
+    stack: "Odoo 18 · Python · queue_job · NetSuite RESTlets",
     description:
-      "A bidirectional integration module between Odoo POS and NetSuite. Automatically syncs products, invoices, and payments with support for manual and scheduled background jobs.",
+      "Odoo 18 addon I owned end to end as a freelancer: every POS order becomes the right NetSuite invoices, credit memos, payments, refunds and gift certificates, posted in order and never twice. NetSuite pushes the configuration and products in.",
     image: "/projects/poster/netsuite-odoo-pos-integration.png",
   },
   {

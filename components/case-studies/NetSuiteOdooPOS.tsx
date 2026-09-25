@@ -1,256 +1,349 @@
-import { motion } from "framer-motion";
-import TechPill from "@/components/TechPill";
-import ArchitectureDiagram, {
-  type ArchNode,
-  type ArchWire,
-} from "../ArchitectureDiagram";
-import { BentoGrid, BentoCard } from "./blocks/BentoGrid";
-import { Timeline, TimelineStep } from "./blocks/Timeline";
-import { PullQuote } from "./blocks/PullQuote";
-import { Store, Server, AlertTriangle, Workflow, ShieldAlert, ArrowRightLeft, DatabaseZap } from "lucide-react";
+"use client";
 
-const ARCH_BANDS = [
-  { label: "Cashier Layer", h: 76 },
-  { label: "Odoo Core", h: 64 },
-  { label: "Sync Engine", h: 64 },
-  { label: "Enterprise", h: 76 },
+import Link from "next/link";
+import { MotionConfig, motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import CountUp from "../reactbits/CountUp";
+import AppCard from "./netsuite/AppCard";
+import OdooMenuBar from "./netsuite/OdooMenuBar";
+import PosWalkthrough from "./netsuite/PosWalkthrough";
+import ExchangeSplit from "./netsuite/ExchangeSplit";
+import ConfigPush from "./netsuite/ConfigPush";
+import MappingResolver from "./netsuite/MappingResolver";
+import GiftCards from "./netsuite/GiftCards";
+import SyncLogs from "./netsuite/SyncLogs";
+import Architecture from "./netsuite/Architecture";
+import Roles from "./netsuite/Roles";
+import Chatter from "./netsuite/Chatter";
+import { Chapter, EASE, Tile, reveal } from "./netsuite/shared";
+import {
+  ChangeNettingVisual,
+  ConsolidationVisual,
+  FourStepsVisual,
+  PaymentWaitVisual,
+  RowLockVisual,
+  StickyFailureVisual,
+} from "./netsuite/syncVisuals";
+
+/* ------------------------------------------------------------------ content */
+
+const META = [
+  { k: "Role", v: "Freelancer · end-to-end ownership" },
+  { k: "Client", v: "InnovateNex, for Foresee Solutions" },
+  { k: "Timeline", v: "Jul – Sep 2026 · delivered" },
+  { k: "Built on", v: "Odoo 18 · NetSuite" },
 ];
 
-const ARCH_NODES: ArchNode[] = [
-  { id: "pos", band: 0, colFrac: 0.5, icon: "window", title: "Odoo POS (Offline)", sub: ["Cashier UI", "IndexedDB"] },
-  { id: "odoo_api", band: 1, colFrac: 0.5, w: 260, icon: "cpu", title: "Odoo Backend", sub: ["PostgreSQL", "Session Commit"], variant: "seam" },
-  { id: "sync", band: 2, colFrac: 0.5, w: 260, icon: "layers", title: "Asynchronous Sync Worker", sub: ["CRON triggered", "Batched XML-RPC"] },
-  { id: "netsuite", band: 3, colFrac: 0.5, icon: "cloud", title: "Oracle NetSuite", sub: ["SuiteScript RESTlets", "GL Impact"], variant: "ext" },
+const STATS = [
+  { n: 4, label: "NetSuite transaction types" },
+  { n: 6, label: "Sync states, each with a rule" },
+  { n: 72, label: "Automated tests" },
+  { n: 39, label: "QA cases signed off" },
 ];
 
-const ARCH_WIRES: ArchWire[] = [
-  { from: "pos", to: "odoo_api", type: "ctrl" },
-  { from: "odoo_api", to: "sync", type: "data" },
-  { from: "sync", to: "netsuite", type: "net" },
-];
+const STACK = ["Odoo 18", "Python", "PostgreSQL", "OCA queue_job", "OAuth 1.0a", "SuiteQL", "NetSuite RESTlets", "Docker"];
 
-// --- Custom Interactive Visual Components (SaaS Aesthetic) ---
-
-const DualSystemVisual = () => (
-  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex items-center justify-center border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)] perspective-[1200px]">
-    <div className="absolute inset-0 bg-gradient-to-tr from-purple-900/10 via-transparent to-blue-900/10" />
-    
-    <div className="relative z-10 flex w-[280px] items-center justify-between transform-gpu rotate-y-[15deg]">
-      {/* Odoo Node */}
-      <motion.div 
-        whileHover={{ scale: 1.05 }}
-        className="flex h-20 w-24 flex-col items-center justify-center rounded-xl border border-purple-500/40 bg-purple-500/10 backdrop-blur-xl shadow-[0_20px_40px_rgba(168,85,247,0.2)]"
-      >
-        <Store className="h-7 w-7 text-purple-400 mb-2" strokeWidth={1.5} />
-        <span className="text-[10px] font-mono font-bold text-purple-200/80">ODOO POS</span>
-      </motion.div>
-
-      {/* Friction / Disconnect */}
-      <div className="relative flex-1 mx-4 flex items-center justify-center">
-        <motion.div 
-          animate={{ x: [-5, 5, -5] }}
-          transition={{ duration: 0.5, repeat: Infinity, ease: "linear" }}
-          className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-red-500/20 border border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.6)]"
-        >
-          <AlertTriangle className="h-4 w-4 text-red-400" strokeWidth={3} />
-        </motion.div>
-        <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-500/50 via-red-500 to-blue-500/50 -translate-y-1/2" />
-      </div>
-
-      {/* NetSuite Node */}
-      <motion.div 
-        whileHover={{ scale: 1.05 }}
-        className="flex h-20 w-24 flex-col items-center justify-center rounded-xl border border-blue-500/40 bg-blue-500/10 backdrop-blur-xl shadow-[0_20px_40px_rgba(59,130,246,0.2)]"
-      >
-        <Server className="h-7 w-7 text-blue-400 mb-2" strokeWidth={1.5} />
-        <span className="text-[10px] font-mono font-bold text-blue-200/80">NETSUITE</span>
-      </motion.div>
-    </div>
-  </div>
-);
-
-const DataCorruptionVisual = () => (
-  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex items-center justify-center border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)] perspective-[1000px]">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(239,68,68,0.1)_0%,transparent_70%)]" />
-    
-    <div className="relative z-10 flex flex-col items-center">
-      {/* Broken Database */}
-      <motion.div 
-        animate={{ rotate: [-2, 2, -2], y: [-2, 2, -2] }}
-        transition={{ duration: 0.2, repeat: Infinity }}
-        className="relative mb-4 flex h-20 w-20 items-center justify-center rounded-xl border border-red-500/50 bg-red-500/20 backdrop-blur-md shadow-[0_0_30px_rgba(239,68,68,0.4)]"
-      >
-        <DatabaseZap className="h-10 w-10 text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]" strokeWidth={1.5} />
-        <motion.div 
-          animate={{ opacity: [1, 0, 1] }} 
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="absolute -right-2 -top-2 rounded-full bg-[#09090b] p-1 border border-red-500"
-        >
-          <ShieldAlert className="h-4 w-4 text-red-500" />
-        </motion.div>
-      </motion.div>
-      
-      {/* Orphaned Records visual */}
-      <div className="flex gap-2">
-        {[1, 2, 3].map((i) => (
-          <motion.div 
-            key={i}
-            animate={{ opacity: i === 3 ? [1, 0.2, 1] : 1, y: i === 3 ? [0, 5, 0] : 0 }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className={`h-2 w-10 rounded-full ${i === 3 ? 'bg-red-500/80 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-white/20'}`}
-          />
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
-const AsyncQueueVisual = () => (
-  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex items-center justify-center border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)]">
-    <div className="absolute inset-0 bg-[linear-gradient(to_bottom,#10b98110_1px,transparent_1px)] bg-[size:100%_20px]" />
-    
-    <div className="relative z-10 flex gap-4">
-      {/* Sequence of jobs */}
-      {[0, 1, 2].map((i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: [0, 1, 0], scale: [0.8, 1, 0.8], x: [40, 0, -40] }}
-          transition={{ duration: 2, repeat: Infinity, delay: i * 0.6, ease: "easeInOut" }}
-          className="flex h-16 w-16 items-center justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/10 backdrop-blur-md shadow-[0_0_20px_rgba(16,185,129,0.3)]"
-        >
-          <Workflow className="h-6 w-6 text-emerald-400" strokeWidth={1.5} />
-        </motion.div>
-      ))}
-    </div>
-  </div>
-);
-
+/* --------------------------------------------------------------------- page */
 
 export default function NetSuiteOdooCaseStudy() {
   return (
-    <main className="mx-auto max-w-5xl px-6 pb-32 pt-40 md:px-10 lg:px-16 lg:pt-48">
-      <motion.header
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-        className="mb-20"
-      >
-        <div className="mb-6 flex items-center gap-3">
-          <span className="h-px w-12 bg-stroke" />
-          <span className="text-xs uppercase tracking-[0.3em] text-muted">
-            Enterprise Architecture Integration
-          </span>
-        </div>
-        <h1 className="mb-6 font-display text-4xl italic tracking-tight md:text-6xl lg:text-7xl">
-          NetSuite + Odoo <br className="hidden md:block" />
-          <span className="font-sans font-normal not-italic text-muted">Point of Sale Sync</span>
-        </h1>
-        <div className="flex flex-wrap gap-2">
-          <TechPill name="Oracle NetSuite" />
-          <TechPill name="Odoo ERP" />
-          <TechPill name="PostgreSQL" />
-          <TechPill name="SuiteScript" />
-        </div>
-      </motion.header>
+    <MotionConfig reducedMotion="user">
+      <main className="selection:bg-odoo-600 selection:text-white">
+        {/* ============================================================ HERO */}
+        <section className="relative overflow-hidden px-6 pb-16 pt-36 md:px-10 lg:pt-44">
+          <div aria-hidden className="pointer-events-none absolute -left-40 top-10 h-[520px] w-[520px] rounded-full bg-odoo-600/25 blur-[120px]" />
+          <div aria-hidden className="pointer-events-none absolute -right-40 bottom-0 h-[420px] w-[420px] rounded-full bg-oteal-500/15 blur-[120px]" />
+          {/* ledger ruling */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-40 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]"
+            style={{ backgroundImage: "repeating-linear-gradient(to bottom, transparent 0 39px, rgba(255,255,255,0.05) 39px 40px)" }}
+          />
 
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-        className="group relative mb-24 aspect-[21/9] w-full overflow-hidden rounded-3xl"
-      >
-        <img
-          src={`/projects/poster/netsuite-odoo-sync.png`}
-          alt={`NetSuite Odoo Integration poster`}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="pointer-events-none absolute inset-0 rounded-3xl border-2 border-text-primary/10 transition-colors duration-500 group-hover:border-text-primary/30" />
-      </motion.div>
+          <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.35fr_1fr]">
+            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }}>
+              <p className="mb-5 inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-odoo-300">
+                <span className="h-px w-8 bg-odoo-400/70" />
+                Case study · Odoo addon · Foresee Solutions
+              </p>
+              <h1 className="font-display text-5xl italic leading-[0.95] tracking-tight md:text-7xl lg:text-8xl">
+                Odoo POS <span className="text-odoo-300">×</span> NetSuite
+              </h1>
+              <p className="mt-5 text-2xl font-light text-white/80 md:text-3xl">
+                Every POS order, <span className="text-oteal-300">on NetSuite&apos;s books.</span>
+              </p>
+              <p className="mt-6 max-w-xl leading-relaxed text-muted md:text-lg">
+                An Odoo addon that connects Odoo Point of Sale to NetSuite. Each POS order becomes the right NetSuite documents (invoices, credit memos,
+                customer payments, refunds and gift certificates), posted in the order NetSuite accepts them and never twice. NetSuite stays in charge:
+                it pushes the configuration and the product catalog into Odoo.
+              </p>
+            </motion.div>
 
-      <motion.article
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-      >
-        <div className="mt-16 flex flex-col gap-24">
-          
-          <section>
-            <h2 className="mb-10 text-center font-display text-3xl italic text-text-primary md:text-4xl">
-              The Sync Challenge
-            </h2>
-            <BentoGrid>
-              <BentoCard title="Dual System Friction" colSpan={2} rowSpan={2}>
-                <div className="flex flex-col gap-4 h-[250px]">
-                  <p className="flex-1">Retail businesses utilize Odoo for its rapid Point of Sale UI, but rely on NetSuite for rigid enterprise financials. Running two massive, disconnected ERP systems creates severe operational bottlenecks.</p>
-                  <div className="h-1/2 w-full">
-                    <DualSystemVisual />
-                  </div>
-                </div>
-              </BentoCard>
-              <BentoCard title="Data Corruption Risks" colSpan={2} rowSpan={1}>
-                <div className="flex flex-col gap-4 h-[200px]">
-                  <p className="flex-1 text-sm">Attempting to manually migrate thousands of daily retail transactions introduces data corruption and orphaned records.</p>
-                  <div className="h-1/2 w-full">
-                    <DataCorruptionVisual />
-                  </div>
-                </div>
-              </BentoCard>
-              <BentoCard title="Synchronous Failures" colSpan={2} rowSpan={1}>
-                <div className="flex flex-col gap-4 h-[200px]">
-                  <p className="flex-1 text-sm">A brittle point-to-point integration leads to API timeouts that block the physical cashier UI during checkout.</p>
-                  <div className="h-1/2 w-full">
-                    <AsyncQueueVisual />
-                  </div>
-                </div>
-              </BentoCard>
-            </BentoGrid>
-          </section>
-
-          <section>
-            <PullQuote 
-              quote="To ensure cashiers were never blocked by an API timeout, we completely decoupled the systems. The POS commits locally instantly, and an asynchronous worker reconciles with NetSuite silently in the background."
-              author="Lead Integration Architect"
-            />
-          </section>
-
-          <section>
-            <h2 className="mb-10 text-center font-display text-3xl italic text-text-primary md:text-4xl">
-              The Asynchronous Bridge
-            </h2>
-            <div className="mb-16">
-              <ArchitectureDiagram
-                bands={ARCH_BANDS}
-                nodes={ARCH_NODES}
-                wires={ARCH_WIRES}
-                note="The cashier operates entirely offline in Odoo's local DB. A scheduled worker aggregates completed sessions and pushes them to NetSuite without blocking the UI thread."
-              />
+            <div className="flex justify-center lg:justify-end">
+              <AppCard />
             </div>
-            
-            <Timeline>
-              <TimelineStep title="Decoupled Cashier Sessions" tool="Odoo IndexedDB">
-                The Odoo POS was configured to run autonomously. Cashiers ring up items, apply discounts, and tender payments entirely within the local browser DB. When the session closes, the data is committed to the local Odoo PostgreSQL backend, guaranteeing zero latency during checkout regardless of NetSuite's uptime.
-              </TimelineStep>
-              <TimelineStep title="Asynchronous Data Aggregation" tool="Python & XML-RPC">
-                A custom Python worker runs on a cron schedule. It polls Odoo via XML-RPC for newly closed POS sessions, aggregates the complex multi-line invoices, customer payments, and tax data, and sanitizes the payload into a strictly defined JSON contract designed specifically for NetSuite ingestion.
-              </TimelineStep>
-              <TimelineStep title="Atomic SuiteScript Commits" tool="NetSuite RESTlets">
-                The payload is transmitted to a custom SuiteScript RESTlet. The RESTlet handles the transaction atomically—creating the Cash Sale, applying the Customer Deposit, and hitting the GL in a single transaction. If the payload is malformed or hits an inventory deficit, the entire transaction rolls back, preventing orphaned financial records.
-              </TimelineStep>
-            </Timeline>
+          </div>
+
+          <div className="relative mx-auto mt-16 max-w-6xl">
+            <motion.dl
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+              className="grid grid-cols-2 gap-x-6 gap-y-5 border-y border-white/10 py-6 lg:grid-cols-4"
+            >
+              {META.map((m) => (
+                <div key={m.k} className="group">
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.25em] text-odoo-grey">{m.k}</dt>
+                  <dd className="mt-1.5 text-sm text-white/85 transition-colors group-hover:text-odoo-200">{m.v}</dd>
+                </div>
+              ))}
+            </motion.dl>
+
+            <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-4">
+              {STATS.map((s, k) => (
+                <motion.div key={s.label} {...reveal} transition={{ ...reveal.transition, delay: k * 0.08 }} className="group">
+                  <CountUp to={s.n} duration={1.4} className="font-display text-5xl italic text-odoo-300 transition-colors group-hover:text-oteal-300 md:text-6xl" />
+                  <p className="mt-1 text-sm text-muted">{s.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================================ CHAPTERS, grouped under the add-on's own menus */}
+        <div className="relative">
+          <OdooMenuBar />
+
+          {/* ---------------------------------------------------- Overview: challenge + architecture */}
+          <section id="overview" className="scroll-mt-40 px-6 pb-28 pt-20 md:px-10">
+            <div className="mx-auto max-w-6xl">
+              <Chapter menu="Overview" title="Connecting Odoo POS to NetSuite (GCC Region)">
+                <p>
+                  NetSuite is one of the most widely used cloud ERPs, but its own point of sale is only offered in the US, Canada, Australia, England
+                  and New Zealand. It isn&apos;t available in the GCC. Retailers in the region who run their business on NetSuite have two options:
+                  build a POS themselves, or pair NetSuite with a third-party one. Odoo POS is a popular choice because it&apos;s fast to set up and easy
+                  for cashiers to learn.
+                </p>
+                <p>
+                  That leaves two systems that don&apos;t talk to each other. Sales are rung up in Odoo, while the books, stock and reporting live in
+                  NetSuite. Someone has to move every sale, return and payment across by hand, and reconcile the gaps when they don&apos;t match.
+                </p>
+                <p>
+                  My job was to connect them. I built an Odoo add-on that sends every POS transaction to NetSuite automatically and correctly. It runs
+                  inside Odoo and talks to NetSuite directly, so there&apos;s no middleware platform to license or maintain.
+                </p>
+              </Chapter>
+              <PosWalkthrough />
+
+              <div className="mt-28">
+                <Chapter menu="Architecture" title="Connecting Odoo-POS to NetSuite" />
+                <Architecture />
+              </div>
+            </div>
           </section>
 
-          <section className="mb-20 rounded-3xl border border-stroke bg-[#09090b] p-8 md:p-12 shadow-xl">
-            <h2 className="mb-6 font-display text-3xl italic text-text-primary md:text-4xl">
-              Operational Stability
-            </h2>
-            <p className="leading-relaxed text-muted md:text-lg">
-              The asynchronous architecture successfully eliminated checkout downtime. By decoupling the systems and utilizing atomic RESTlets, data integrity was maintained across both ERPs. The business scaled from 5 to 50 retail locations without a single integration-induced POS outage.
-            </p>
+          {/* ---------------------------------------------------- Configuration */}
+          <section id="configuration" className="scroll-mt-40 px-6 pb-28 md:px-10">
+            <div className="mx-auto max-w-6xl">
+              <Chapter menu="Configuration" title="Managed via NetSuite">
+                <p>
+                  NetSuite is where the finance, management and ops teams work and use it for their daily operations and analysis, so that&apos;s where the integration is configured. NetSuite sends the credentials, sync
+                  mode, merge rules, retry policy and concurrency limit to Odoo, where they&apos;re stored read-only. There&apos;s one source of
+                  settings, so the two systems can&apos;t drift apart.
+                </p>
+              </Chapter>
+              <ConfigPush />
+            </div>
           </section>
 
+          {/* ---------------------------------------------------- Master Data Mappings */}
+          <section id="mappings" className="scroll-mt-40 px-6 pb-28 md:px-10">
+            <div className="mx-auto max-w-6xl">
+              <Chapter menu="Master Data Mappings" title="Mapping warehouses, payment methods and taxes">
+                <p>
+                  Most POS customers are anonymous, so a customer record can&apos;t tell NetSuite which branch a sale belongs to. The counter can. The
+                  add-on traces each order back to its shop&apos;s warehouse and maps that to a NetSuite subsidiary, department and location. Payment
+                  methods and taxes are mapped the same way.
+                </p>
+              </Chapter>
+              <MappingResolver />
+            </div>
+          </section>
+
+          {/* ---------------------------------------------------- Sync to NetSuite: invoices & payments */}
+          <section id="sync" className="scroll-mt-40 px-6 pb-28 md:px-10">
+            <div className="mx-auto max-w-6xl">
+              <Chapter menu="Invoices & Payments" title="Invoice and payment sync">
+                <p>
+                  Every invoice raised at the counter and every payment taken against it is sent to NetSuite. Invoices can go one at a time as they
+                  happen, or merged per shop at the end of the day. Payments are applied to the right invoice, net of any change handed back.
+                </p>
+              </Chapter>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+                <Tile
+                  title="Daily merge per shop"
+                  caption="In scheduled mode, each shop's invoices for the day become one NetSuite invoice, with lines merged by item and tax. Its payments become one customer payment per payment method, settling all of that day's invoices at once. Different shops and days are never combined."
+                  className="md:col-span-2"
+                >
+                  <ConsolidationVisual />
+                </Tile>
+                <Tile
+                  title="Change handled correctly"
+                  caption="Odoo records change given back as a separate negative line. The add-on combines them per order and payment method, so NetSuite receives what the customer actually paid."
+                >
+                  <ChangeNettingVisual />
+                </Tile>
+                <Tile
+                  title="Payments wait for their invoice"
+                  caption="If an invoice hasn't reached NetSuite yet, its payment checks again every 30 seconds for up to 30 minutes, without using up its retries."
+                >
+                  <PaymentWaitVisual />
+                </Tile>
+              </div>
+            </div>
+          </section>
+
+          {/* ---------------------------------------------------- Returns & exchanges */}
+          <section className="px-6 pb-4 md:px-10">
+            <div className="mx-auto max-w-6xl">
+              <Chapter menu="Returns & Exchanges" title="Handling returns and exchanges">
+                <p>
+                  A return becomes a NetSuite credit memo. An exchange is harder: one order that returns one item and sells another. Scroll through a
+                  real exchange from testing to see how the add-on turns it into three linked NetSuite documents.
+                </p>
+              </Chapter>
+            </div>
+          </section>
+
+          <ExchangeSplit />
+
+          {/* ---------------------------------------------------- Gift cards */}
+          <section className="px-6 py-28 md:px-10">
+            <div className="mx-auto max-w-6xl">
+              <Chapter menu="Gift Cards" title="Gift card and eWallet support">
+                <p>
+                  Customers can buy a gift card or top up an eWallet at the counter, then spend either one as payment later. The add-on carries all of
+                  it to NetSuite. Purchases and top-ups become NetSuite gift certificates, with the sender and recipient details attached, and every
+                  redemption is drawn from the right certificate when its invoice is posted. eWallets follow the same path, because NetSuite has no
+                  wallet record of its own.
+                </p>
+                <p>
+                  Two NetSuite limits made this harder. Odoo gift card codes are 14 characters, but NetSuite allows 9, and a NetSuite certificate
+                  can&apos;t be topped up. So each purchase or top-up becomes its own certificate, with a code generated from the card number.
+                </p>
+              </Chapter>
+              <GiftCards />
+            </div>
+          </section>
+
+          {/* ---------------------------------------------------- Sync order, retries, duplicates */}
+          <section className="px-6 pb-28 md:px-10">
+            <div className="mx-auto max-w-6xl">
+              <Chapter menu="Sync Order" title="Sync order, retries and duplicate protection">
+                <p>
+                  NetSuite rejects a payment whose invoice doesn&apos;t exist yet, and a refund whose credit memo is missing. It also won&apos;t stop
+                  the same document from being sent twice. I built the sync so that ordering and duplicates are handled by the add-on, not left to
+                  timing.
+                </p>
+              </Chapter>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+                <Tile
+                  title="A fixed sync order"
+                  caption="Invoices, then payments, then credit notes, then refunds. Credit notes come after payments so a credit can't absorb the balance a payment was meant to settle. If the invoice step fails, nothing after it runs."
+                  className="md:col-span-2"
+                >
+                  <FourStepsVisual />
+                </Tile>
+                <Tile
+                  title="No duplicate processing"
+                  caption="Each record is locked while it's being sent. A second job that tries to send it at the same moment steps back, checks again, and finds it's already done."
+                >
+                  <RowLockVisual />
+                </Tile>
+                <Tile
+                  title="Failures are never lost"
+                  caption="If a sync fails, the job's changes roll back but the failed status and its reason are still saved, so support always knows what went wrong."
+                >
+                  <StickyFailureVisual />
+                </Tile>
+              </div>
+            </div>
+          </section>
+
+          {/* ---------------------------------------------------- Sync Logs */}
+          <section id="logs" className="scroll-mt-40 px-6 pb-28 md:px-10">
+            <div className="mx-auto max-w-6xl">
+              <Chapter menu="Sync Logs" title="Monitoring, sync status and audit logs">
+                <p>
+                  Replacing manual reconciliation only works if people can trust what the integration did. Every record carries a sync status with a
+                  clear rule behind it, and every order shows exactly what it created in NetSuite. Hover over a status to see when it applies, then
+                  look at the screens the client&apos;s team uses day to day.
+                </p>
+              </Chapter>
+              <SyncLogs />
+            </div>
+          </section>
         </div>
-      </motion.article>
-    </main>
+
+        {/* ============================================================ ROLES */}
+        <section className="px-6 pb-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <motion.div {...reveal} className="mb-10 max-w-5xl">
+              <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.28em] text-odoo-300">What I owned</p>
+              <h2 className="font-display text-4xl italic md:text-5xl">My role: end-to-end ownership</h2>
+              <p className="mt-5 leading-relaxed text-muted md:text-lg">
+                InnovateNex brought me in as a freelancer to connect Odoo POS to NetSuite for their client, Foresee Solutions. I owned the whole of it:
+                the architecture, the NetSuite integration, the business rules, the back-office experience, and delivery.
+              </p>
+            </motion.div>
+            <motion.div {...reveal}>
+              <Roles />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================================ CHATTER */}
+        <section className="px-6 pb-32 md:px-10">
+          <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[1.5fr_1fr]">
+            <div>
+              <motion.div {...reveal} className="mb-8">
+                <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.28em] text-odoo-300">Log notes</p>
+                <h2 className="font-display text-4xl italic md:text-5xl">Key decisions and known limitations</h2>
+              </motion.div>
+              <Chatter />
+            </div>
+
+            <motion.div {...reveal} className="lg:sticky lg:top-44 lg:self-start">
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-odoo-300">Stack</p>
+              <div className="flex flex-wrap gap-2">
+                {STACK.map((s) => (
+                  <span
+                    key={s}
+                    className="cursor-default rounded-md border border-white/10 px-3 py-1 font-mono text-[11px] text-white/60 transition-all duration-300 hover:-translate-y-0.5 hover:border-odoo-400/50 hover:text-odoo-100"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div {...reveal} className="mx-auto mt-24 max-w-6xl">
+            <Link
+              href="/case-studies"
+              className="group flex items-center justify-between rounded-2xl border border-white/10 p-8 transition-all duration-300 hover:border-odoo-400/50 hover:bg-odoo-600/[0.08] md:p-10"
+            >
+              <span>
+                <span className="block font-mono text-[11px] uppercase tracking-[0.3em] text-white/40">Keep reading</span>
+                <span className="mt-2 block font-display text-3xl italic md:text-4xl">All case studies</span>
+              </span>
+              <ArrowUpRight className="h-8 w-8 text-white/50 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-oteal-300" />
+            </Link>
+          </motion.div>
+        </section>
+      </main>
+    </MotionConfig>
   );
 }

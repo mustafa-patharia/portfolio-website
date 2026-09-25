@@ -11,7 +11,7 @@ export function ScrollDrivenTimeline({ steps }: { steps: { title: string, text: 
   });
 
   return (
-    <div ref={containerRef} className="relative py-10 max-w-3xl mx-auto">
+    <div ref={containerRef} className="relative py-10 max-w-5xl mx-auto">
       {/* SVG Line Background */}
       <div className="absolute left-6 md:left-[39px] top-10 bottom-10 w-[2px] bg-stroke/30" />
 
