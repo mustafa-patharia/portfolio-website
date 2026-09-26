@@ -14,7 +14,7 @@ export const CASE_STUDIES: CaseStudyMeta[] = [
     kicker: "Enterprise · Multi-tenant SaaS · HR & Payroll",
     stack: "Node.js · Angular · Next.js · PostgreSQL · AWS",
     description:
-      "Enterprise HR and payroll platform for the UAE and KSA, built from an empty repository as founding engineer: configurable payroll engine, multi-tenant cloud architecture, two-layer access control, 10+ schedulers and NetSuite ledger sync.",
+      "Enterprise HR and payroll platform for the UAE and KSA, built from the ground up as founding engineer: configurable payroll engine, multi-tenant cloud architecture, two-layer access control, 10+ schedulers and NetSuite ledger sync.",
     image: "/projects/poster/infithra.jpg",
   },
   {

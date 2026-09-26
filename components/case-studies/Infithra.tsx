@@ -6,13 +6,15 @@ import { ArrowUpRight } from "lucide-react";
 import CountUp from "../reactbits/CountUp";
 import PayslipCard from "./infithra/PayslipCard";
 import ModuleRail from "./infithra/ModuleRail";
-import ModuleMap from "./infithra/ModuleMap";
+import PlatformScope from "./infithra/PlatformScope";
+import Foundations from "./infithra/Foundations";
 import Roles from "./infithra/Roles";
 import AccessControl from "./infithra/AccessControl";
 import SchedulerDial from "./infithra/SchedulerDial";
 import SchedulerCatalog from "./infithra/SchedulerCatalog";
 import NetSuiteSync from "./infithra/NetSuiteSync";
 import RecordTimeline from "./infithra/RecordTimeline";
+import Lessons from "./infithra/Lessons";
 import { Chapter, EASE, LOGO_GRADIENT, Ribbon, Tile, reveal } from "./infithra/shared";
 import {
   AdminPlatformVisual,
@@ -32,12 +34,13 @@ import {
 
 const META = [
   { k: "Role", v: "Founding engineer · end-to-end ownership" },
-  { k: "Client", v: "KPI" },
-  { k: "Duration", v: "Dec 2022 – Jul 2026" },
-  { k: "Platforms", v: "Client portal · Admin portal · Mobile app · Cloud" },
+  { k: "Company", v: "KPI" },
+  { k: "Duration", v: "Jan 2023 – Jul 2026" },
+  { k: "Scope", v: "Client platform · admin platform · mobile backend" },
 ];
 
 const STATS = [
+  { n: 3, suffix: "+", label: "Years, from concept to production" },
   { n: 800, suffix: "+", label: "Production APIs" },
   { n: 2000, suffix: "+", label: "Daily users" },
   { n: 10, suffix: "+", label: "Enterprise clients" },
@@ -48,20 +51,15 @@ const PRINCIPLES = [
   { n: "01", t: "Configurable by design", d: "Fields, validations, pay components and permissions are configuration, so the platform adapts to a client without a release." },
   { n: "02", t: "Isolated per client", d: "Tenant data separation was part of the architecture from the first release." },
   { n: "03", t: "Built for scale", d: "Processing, scheduling and deployment were designed for many clients running at the same time." },
+  { n: "04", t: "One standard for every module", d: "Shared structure, APIs and components, so the codebase stays predictable as the team and the product grow." },
 ];
 
-const DECISIONS = [
-  { d: "Job scheduling and queueing", w: "Evaluated database-level and queue-based scheduling for multi-tenant workloads, and chose the approach the background platform is built on." },
-  { d: "Data access layer", w: "Chose an ORM that fits the multi-tenant migration strategy across every client database." },
-  { d: "Cloud platform", w: "Selected the cloud provider and the managed services the platform runs on." },
-  { d: "Real-time updates", w: "Evaluated self-hosted and managed approaches for live notifications across web and mobile." },
-];
 
 const STACK = [
   { layer: "Backend", items: ["Node.js", "Express", "PostgreSQL", "Sequelize", "Redis", "BullMQ"] },
   { layer: "Frontend", items: ["Angular", "Next.js"] },
   { layer: "Cloud", items: ["AWS Cognito", "S3", "EC2", "ECR", "EKS", "CloudFront", "SSM", "IAM"] },
-  { layer: "Delivery & monitoring", items: ["Kubernetes", "Jenkins", "CloudWatch", "New Relic", "QuickSight"] },
+  { layer: "Delivery & monitoring", items: ["Kubernetes", "Jenkins", "CloudWatch", "New Relic", "Grafana", "QuickSight"] },
 ];
 
 /* --------------------------------------------------------------------- page */
@@ -99,8 +97,8 @@ export default function InfithraCaseStudy() {
               <p className="mt-6 max-w-xl leading-relaxed text-muted md:text-lg">
                 A cloud HR and payroll platform for businesses in the UAE and Saudi Arabia, covering the full employee lifecycle from onboarding to
                 end-of-service: labour-law and WPS-compliant payroll, time and attendance, leave, expenses, people analytics and employee
-                self-service on web and mobile. I joined as the founding engineer when the repository was empty, and over almost four years took it
-                to a production platform used by enterprise clients every day.
+                self-service on web and mobile. I joined as the founding engineer at the very start of the project, and over more than three years
+                built it into a production platform used by enterprise clients every day.
               </p>
               <a
                 href="https://infithra.com"
@@ -133,7 +131,7 @@ export default function InfithraCaseStudy() {
               ))}
             </motion.dl>
 
-            <div className="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">
+            <div className="mt-12 grid grid-cols-2 gap-8 md:grid-cols-5">
               {STATS.map((s, k) => (
                 <motion.div key={s.label} {...reveal} transition={{ ...reveal.transition, delay: k * 0.08 }} className="group">
                   <span className="font-display text-5xl italic text-inf-200 transition-colors group-hover:text-ipink-300 md:text-6xl">
@@ -194,7 +192,7 @@ export default function InfithraCaseStudy() {
               <p className="mt-5 leading-relaxed text-muted md:text-lg">
                 As the founding engineer at KPI, I owned the platform end to end: the architecture, the product modules, the UI and UX, the
                 integrations and delivery. I was part of every design and vendor discussion, and defined how the system would operate, from the
-                first commit through launch and scale.
+                initial architecture through launch and scale.
               </p>
             </motion.div>
             <motion.div {...reveal}>
@@ -203,13 +201,29 @@ export default function InfithraCaseStudy() {
           </div>
         </section>
 
-        {/* ---------------------------------------------------- Modules */}
-        <section id="modules" className="scroll-mt-28 px-6 pb-28 md:px-10">
+        {/* ---------------------------------------------------- Scope */}
+        <section id="scope" className="scroll-mt-28 px-6 pb-28 md:px-10">
           <div className="mx-auto max-w-6xl">
-            <Chapter module="Platform" title="Platform modules">
-              <p>One platform for the whole of HR. Hover over a module to see what it covers.</p>
+            <Chapter module="Platform" title="Platform scope">
+              <p>
+                One client platform, the product HR teams, managers and employees use every day, with two pieces built around it. Hover over an
+                area to see what it covers.
+              </p>
             </Chapter>
-            <ModuleMap />
+            <PlatformScope />
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- Foundations */}
+        <section id="foundations" className="scroll-mt-28 px-6 pb-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Chapter module="Engineering" title="Foundations and engineering standards">
+              <p>
+                As the founding engineer, I set up the base that every other part of the platform, and every other developer, built on: the
+                architecture, the data model, the codebase conventions and the shared building blocks.
+              </p>
+            </Chapter>
+            <Foundations />
           </div>
         </section>
 
@@ -219,7 +233,8 @@ export default function InfithraCaseStudy() {
             <Chapter module="Payroll" title="Payroll engine and compliance">
               <p>
                 Payroll is where the platform does its heaviest work. Every pay component is configurable, labour-law rules are applied from each
-                employee&apos;s contract and classification, and a full payroll run finishes in seconds.
+                employee&apos;s contract and classification, and a full payroll run finishes in seconds. The engine went through several rebuilds as
+                client rules grew more complex, until every rule could be configured.
               </p>
             </Chapter>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
@@ -250,10 +265,11 @@ export default function InfithraCaseStudy() {
         {/* ---------------------------------------------------- Access */}
         <section id="access" className="scroll-mt-28 px-6 pb-28 md:px-10">
           <div className="mx-auto max-w-6xl">
-            <Chapter module="Settings · Security" title="Access control and data isolation">
+            <Chapter module="Security" title="Identity, access and tenancy">
               <p>
-                HR data is sensitive, and large organisations need precise control over who sees whom. I designed a hybrid role- and
-                attribute-based permission model after researching how leading HR and cloud platforms handle access.
+                HR data is sensitive, and large organisations need precise control over who signs in where and who sees whom. I built
+                multi-tenant authentication and designed a hybrid role- and attribute-based permission model, after researching how leading HR
+                and cloud platforms handle access.
               </p>
             </Chapter>
             <AccessControl />
@@ -263,10 +279,10 @@ export default function InfithraCaseStudy() {
         {/* ---------------------------------------------------- Configuration */}
         <section id="configuration" className="scroll-mt-28 px-6 pb-28 md:px-10">
           <div className="mx-auto max-w-6xl">
-            <Chapter module="Admin platform" title="Configuration and administration">
+            <Chapter module="Configuration" title="Configuration and administration">
               <p>
                 Every client runs HR differently. I made the product configurable, so most client requirements are met in settings rather than in
-                a new release, and built the admin platform KPI uses to run client companies, subscriptions and billing.
+                a new release. Alongside it I built the admin platform, the supporting platform used to run every client platform.
               </p>
             </Chapter>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
@@ -277,7 +293,7 @@ export default function InfithraCaseStudy() {
               >
                 <MetaFormVisual />
               </Tile>
-              <Tile title="Admin platform" caption="Client companies, subscriptions and billing, managed in one place.">
+              <Tile title="Admin platform" caption="Onboards new companies, applies system upgrades, and keeps scheduler logs and monitoring for every client.">
                 <AdminPlatformVisual />
               </Tile>
               <Tile
@@ -323,17 +339,20 @@ export default function InfithraCaseStudy() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
               <Tile
                 title="Faster deployments"
-                caption="Build caching and a leaner image structure made frontend deploys about 80% faster and each backend service about 40% faster."
+                caption="I restructured the build pipeline with layer caching, cached dependencies and a separate web-server image. Frontend deploys dropped from about 30 minutes to 5, and each backend service from about 20 minutes to 10–12."
               >
                 <DeployVisual />
               </Tile>
-              <Tile title="Multi-tenant migrations" caption="On server start, the platform checks each client database's version and applies any pending migrations, so it upgrades itself.">
+              <Tile title="Multi-tenant migrations" caption="On every new deployment, the platform checks the version of the admin database and every client database, then applies any pending migrations in order. Every tenant stays on the same schema, with no manual database steps in a release.">
                 <MigrationVisual />
               </Tile>
-              <Tile title="Observability" caption="Monitoring and alerting across all five services.">
+              <Tile title="Observability" caption="Monitoring and alerting across all five services: New Relic for application performance and traces, Grafana for dashboards, and CloudWatch for logs and alarms, so a slow endpoint or failing job is traced to its source quickly.">
                 <ObservabilityVisual />
               </Tile>
-              <Tile title="AI-assisted development" caption="In-house AI agents cut manual development and review effort by about 40%.">
+              <Tile
+                title="AI-assisted development and debugging"
+                caption="In-house AI agents, Claude skills, MCP servers and workflows, connected to the codebase and the team's tools. They review changes against the project's standards and trace bugs to a likely root cause, cutting development and review effort by about 40%."
+              >
                 <AiAgentsVisual />
               </Tile>
             </div>
@@ -342,76 +361,62 @@ export default function InfithraCaseStudy() {
 
         <div id="chapters-end" />
 
-        {/* ============================================================ TIMELINE */}
+        {/* ============================================================ BUILD LAYERS */}
         <section className="px-6 pb-28 md:px-10">
           <div className="mx-auto max-w-6xl">
             <motion.div {...reveal} className="mb-10">
-              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Timeline</p>
-              <h2 className="font-display text-4xl italic md:text-5xl">Project timeline</h2>
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Build</p>
+              <h2 className="font-display text-4xl italic md:text-5xl">How the platform was built</h2>
             </motion.div>
             <RecordTimeline />
           </div>
         </section>
 
-        {/* ============================================================ DECISIONS */}
+        {/* ============================================================ LESSONS */}
         <section className="px-6 pb-28 md:px-10">
           <div className="mx-auto max-w-6xl">
-            <motion.div {...reveal} className="mb-10">
-              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Architecture</p>
-              <h2 className="font-display text-4xl italic md:text-5xl">Key engineering decisions</h2>
+            <motion.div {...reveal} className="mb-10 max-w-3xl">
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Reflection</p>
+              <h2 className="font-display text-4xl italic md:text-5xl">Lessons learned</h2>
+              <p className="mt-5 leading-relaxed text-muted md:text-lg">
+                Building a platform from the ground up taught me as much from what I would change as from what worked. These are the decisions I
+                would make differently today.
+              </p>
             </motion.div>
-            <div className="border-t border-white/10">
-              {DECISIONS.map((x, k) => (
-                <motion.div
-                  key={x.d}
-                  {...reveal}
-                  transition={{ ...reveal.transition, delay: k * 0.05 }}
-                  className="group grid gap-2 border-b border-white/10 py-6 transition-colors duration-300 hover:bg-inf-600/[0.06] md:grid-cols-[3rem_1fr_1.4fr] md:gap-8"
-                >
-                  <span className="font-mono text-sm text-white/30 transition-colors group-hover:text-ipink-300">{String(k + 1).padStart(2, "0")}</span>
-                  <h3 className="text-lg font-medium text-white transition-transform duration-300 group-hover:translate-x-1">{x.d}</h3>
-                  <p className="leading-relaxed text-muted">{x.w}</p>
-                </motion.div>
-              ))}
-            </div>
+            <Lessons />
+            <motion.p {...reveal} className="mt-8 max-w-3xl leading-relaxed text-white/60">
+              These lessons shape how I design systems today: start simple, split only when there is a real reason, and choose tools that fit how
+              the product works.
+            </motion.p>
           </div>
         </section>
 
-        {/* ============================================================ STACK + NOTE */}
+        {/* ============================================================ STACK */}
         <section className="px-6 pb-32 md:px-10">
-          <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-[1.4fr_1fr]">
-            <div>
-              <motion.div {...reveal}>
-                <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Technology stack</p>
-              </motion.div>
-              <div className="grid gap-8 sm:grid-cols-2">
-                {STACK.map((g) => (
-                  <motion.div key={g.layer} {...reveal}>
-                    <h3 className="mb-3 text-sm font-medium text-white">{g.layer}</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {g.items.map((i) => (
-                        <span
-                          key={i}
-                          className="cursor-default rounded-full border border-white/10 px-3 py-1 font-mono text-[11px] text-white/60 transition-all duration-300 hover:-translate-y-0.5 hover:border-ipink-500/50 hover:text-ipink-200"
-                        >
-                          {i}
-                        </span>
-                      ))}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            <motion.div {...reveal} className="relative overflow-hidden rounded-3xl border border-white/[0.07] bg-[#110d18] p-7 transition-colors duration-300 hover:border-inf-400/30">
-              <div className="absolute inset-x-0 top-0 h-[3px]" style={{ backgroundImage: LOGO_GRADIENT }} />
-              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Confidentiality note</p>
-              <p className="text-sm leading-relaxed text-muted">
-                Infithra is a closed-source product I built while employed at KPI, and it is covered by a non-disclosure agreement. This case
-                study describes my contribution and the platform&apos;s capabilities at a high level, and intentionally leaves out internal
-                implementation details, client data and screenshots. Visuals on this page are illustrative.
-              </p>
+          <div className="mx-auto max-w-6xl">
+            <motion.div {...reveal}>
+              <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Technology stack</p>
             </motion.div>
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {STACK.map((g) => (
+                <motion.div key={g.layer} {...reveal}>
+                  <h3 className="mb-3 text-sm font-medium text-white">{g.layer}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {g.items.map((i) => (
+                      <span
+                        key={i}
+                        className="cursor-default rounded-full border border-white/10 px-3 py-1 font-mono text-[11px] text-white/60 transition-all duration-300 hover:-translate-y-0.5 hover:border-ipink-500/50 hover:text-ipink-200"
+                      >
+                        {i}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <motion.p {...reveal} className="mt-10 font-mono text-[11px] text-white/35">
+              Infithra is closed source and covered by a non-disclosure agreement. Visuals on this page are illustrative.
+            </motion.p>
           </div>
 
           <motion.div {...reveal} className="mx-auto mt-24 max-w-6xl">

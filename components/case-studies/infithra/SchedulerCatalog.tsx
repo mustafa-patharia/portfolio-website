@@ -146,7 +146,7 @@ const ITEMS = [
   { icon: CalendarCheck, t: "Planned leave applications", d: "Employees plan leave ahead and get the plan approved. When the planned date arrives, a scheduler creates the leave application for it automatically.", v: PlannedLeaveVisual, span: "lg:col-span-2" },
   { icon: Clock, t: "Auto attendance and clock-out", d: "Attendance is marked from the schedule, and open shifts are closed automatically at the end of the day.", v: ClockVisual },
   { icon: BellOff, t: "Notification cleanup", d: "Old notifications are cleared on a schedule, so feeds and tables stay fast.", v: CleanupVisual },
-  { icon: DatabaseZap, t: "Self-upgrading databases", d: "On server start, the platform checks the admin database and every client database, and applies any pending migrations.", v: MigrateVisual, span: "sm:col-span-2" },
+  { icon: DatabaseZap, t: "Self-upgrading databases", d: "On every new deployment, the platform checks the admin database and every client database, and applies any pending migrations.", v: MigrateVisual, span: "sm:col-span-2" },
 ];
 
 export default function SchedulerCatalog() {

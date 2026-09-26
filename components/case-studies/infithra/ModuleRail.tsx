@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Blocks, CalendarClock, Cable, KeyRound, Rocket, Settings2, Users, Wallet } from "lucide-react";
+import { Blocks, CalendarClock, Cable, KeyRound, Layers, Rocket, Settings2, Users, Wallet } from "lucide-react";
 
 /* The page's chapters, laid out like the HR console's own sidebar. */
 export const CHAPTERS = [
   { id: "overview", label: "Overview", icon: Users },
-  { id: "modules", label: "Platform Modules", icon: Blocks },
+  { id: "scope", label: "Platform Scope", icon: Blocks },
+  { id: "foundations", label: "Foundations", icon: Layers },
   { id: "payroll", label: "Payroll", icon: Wallet },
   { id: "access", label: "Access Control", icon: KeyRound },
   { id: "configuration", label: "Configuration", icon: Settings2 },
@@ -20,8 +21,13 @@ export default function ModuleRail() {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
+    // Past the chapters (the marker is above 60% of the viewport), the rail hides.
+    const end = document.getElementById("chapters-end");
+    const pastEnd = () => !!end && end.getBoundingClientRect().top < window.innerHeight * 0.6;
+
     const observer = new IntersectionObserver(
       (entries) => {
+        if (pastEnd()) return setActive(null);
         entries.forEach((e) => {
           if (e.isIntersecting) setActive((e.target as HTMLElement).dataset.chapter ?? e.target.id);
         });
@@ -34,15 +40,15 @@ export default function ModuleRail() {
     });
     // Follow-on sections that belong to a chapter (e.g. the scheduler catalogue).
     document.querySelectorAll("[data-chapter]").forEach((el) => observer.observe(el));
-    // Hide the rail once the reader is past the chapters.
-    const end = document.getElementById("chapters-end");
-    const endObs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) setActive(null);
-    }, { rootMargin: "0px 0px -40% 0px" });
-    if (end) endObs.observe(end);
+
+    // A scroll check catches fast scrolls that jump straight past the marker.
+    const onScroll = () => {
+      if (pastEnd()) setActive(null);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       observer.disconnect();
-      endObs.disconnect();
+      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 

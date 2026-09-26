@@ -4,15 +4,16 @@ import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { LOGO_GRADIENT, reveal } from "./shared";
 
-/* The project's history, laid out like an employee record: from joining to final settlement. */
+/* How the platform was built, layer by layer, from the ground up. */
 const ENTRIES = [
-  { when: "Dec 2022", status: "Joined", title: "Founding engineer", body: "Started from an empty repository." },
-  { when: "2023", status: "Foundation", title: "Architecture and the payroll engine", body: "Cloud infrastructure, service design, tenant isolation, the metadata-driven form system, then the payroll engine and HR modules." },
-  { when: "2024", status: "Build-out", title: "The full platform", body: "Analytics and dashboards, leave planning, automated provisioning, the admin and billing platform, schedulers, payslips, the mobile API and the permission system." },
-  { when: "31 Dec 2024", status: "Go-live", title: "Launch", body: "The platform went live in production, with KPI as the first client." },
-  { when: "2025", status: "Growth", title: "Stabilisation and new clients", body: "Performance, reliability and improvements driven by real users, while more enterprise clients came on board." },
-  { when: "2025 – 2026", status: "Scale", title: "Integrations and scale", body: "The NetSuite integration, scheduler reliability across every client, analytics, and faster deployments." },
-  { when: "Jul 2026", status: "Settled", title: "Handover", body: "More than ten enterprise clients and over 2,000 daily users on the platform." },
+  { when: "Layer 01", status: "Foundation", title: "Architecture, infrastructure and standards", body: "The cloud services, the split into domain services, the database schema, and the repository structure and coding standards every developer followed." },
+  { when: "Layer 02", status: "Platform services", title: "The shared core", body: "Authentication with multi-factor sign-in, multi-tenancy, access control, multi-language data, a standard API structure, reusable components and a global theme." },
+  { when: "Layer 03", status: "HR modules", title: "Core HR and the employee lifecycle", body: "Core HR, employee management, onboarding and offboarding, leave, attendance, custom dashboards, analytics and reports." },
+  { when: "Layer 04", status: "Payroll engine", title: "Rebuilt until it was configurable", body: "The engine went through several rebuilds as client rules grew more complex, until every pay component and labour-law rule could be configured." },
+  { when: "Layer 05", status: "Automation", title: "Schedulers and background workers", body: "More than ten, running for every client and subsidiary in its own time zone." },
+  { when: "Layer 06", status: "Admin platform", title: "Running every client platform", body: "Company onboarding, system upgrades and scheduler logs across all clients." },
+  { when: "Layer 07", status: "Integrations", title: "Connected systems and mobile", body: "NetSuite ledger sync, open APIs, and the backend services and APIs the mobile app is built on." },
+  { when: "Live", status: "Production", title: "In daily use", body: "Launched in production and grown to more than ten enterprise clients and over 2,000 daily users." },
 ];
 
 export default function RecordTimeline() {
@@ -24,15 +25,26 @@ export default function RecordTimeline() {
     <motion.div {...reveal} className="overflow-hidden rounded-3xl border border-white/10 bg-[#110d18]">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-5 py-4 md:px-8">
         <div className="flex items-center gap-3">
-          <span className="grid h-9 w-9 place-items-center rounded-full font-display text-lg italic text-white" style={{ backgroundImage: LOGO_GRADIENT }}>
-            i
+          <span className="grid h-9 w-9 place-items-center rounded-full text-white" style={{ backgroundImage: LOGO_GRADIENT }}>
+            {/* Ionicons "build" outline (MIT) */}
+            <svg viewBox="0 0 512 512" aria-hidden className="h-[18px] w-[18px]">
+              <path
+                d="M393.87,190a32.1,32.1,0,0,1-45.25,0l-26.57-26.57a32.09,32.09,0,0,1,0-45.26L382.19,58a1,1,0,0,0-.3-1.64c-38.82-16.64-89.15-8.16-121.11,23.57-30.58,30.35-32.32,76-21.12,115.84a31.93,31.93,0,0,1-9.06,32.08L64,380a48.17,48.17,0,1,0,68,68L285.86,281a31.93,31.93,0,0,1,31.6-9.13C357,282.46,402,280.47,432.18,250.68c32.49-32,39.5-88.56,23.75-120.93a1,1,0,0,0-1.6-.26Z"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeMiterlimit={10}
+                strokeWidth={36}
+              />
+              <circle cx="96" cy="416" r="16" fill="currentColor" />
+            </svg>
           </span>
           <div>
-            <p className="text-sm font-medium text-white">Employment record</p>
-            <p className="font-mono text-[10px] text-white/40">Infithra · Dec 2022 – Jul 2026</p>
+            <p className="text-sm font-medium text-white">Build record</p>
+            <p className="font-mono text-[10px] text-white/40">Infithra · built from the ground up</p>
           </div>
         </div>
-        <span className="rounded-full border border-ipink-500/50 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-ipink-300">~4 years</span>
+        <span className="rounded-full border border-ipink-500/50 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-ipink-300">Ground up</span>
       </div>
 
       <div ref={ref} className="relative px-5 py-6 md:px-8 md:py-8">

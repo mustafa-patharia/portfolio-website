@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, Check, Database, FileDown, GitPullRequest, Mail, Server, Sprout, LogIn, Layers } from "lucide-react";
+import { Bot, Bug, Check, Database, FileDown, GitPullRequest, Mail, Plug, ScanSearch, Server, Sparkles, Sprout, LogIn, Layers, Workflow, Wrench } from "lucide-react";
 import { BLUE, LOGO_GRADIENT, ORANGE, PINK, PURPLE, Panel, mono, useTicker } from "./shared";
 
 /* All figures below are illustrative. They show how a mechanism behaves, not client data. */
@@ -235,12 +235,12 @@ export function MetaFormVisual() {
 }
 
 const PLANS = [
-  { k: "Tenants", v: "10+" },
-  { k: "Subscriptions", v: "active" },
-  { k: "Billing", v: "synced" },
+  { k: "Company onboarding", v: "ready" },
+  { k: "System upgrades", v: "applied" },
+  { k: "Scheduler logs", v: "all clients" },
 ];
 
-/** The admin platform: companies, subscriptions and billing in one place. */
+/** The admin platform: the supporting tools behind every client platform. */
 export function AdminPlatformVisual() {
   const i = useTicker(PLANS.length, 1300);
   return (
@@ -319,7 +319,14 @@ export function MigrationVisual() {
 }
 
 /** Metrics from every service stream into one monitoring view. */
+const OBS_TOOLS = [
+  { k: "New Relic", v: "APM · traces" },
+  { k: "Grafana", v: "dashboards" },
+  { k: "CloudWatch", v: "logs · alarms" },
+];
+
 export function ObservabilityVisual() {
+  const tool = useTicker(OBS_TOOLS.length, 1400);
   const [pts, setPts] = useState(() => Array.from({ length: 24 }, (_, k) => Math.round(40 + Math.sin(k / 2) * 14)));
   useEffect(() => {
     const id = setInterval(() => setPts((p) => [...p.slice(1), 36 + Math.random() * 30]), 450);
@@ -338,33 +345,93 @@ export function ObservabilityVisual() {
         </defs>
         <path d={d} fill="none" stroke="url(#inf-obs)" strokeWidth="2" vectorEffect="non-scaling-stroke" />
       </svg>
+      <div className="mt-3 grid grid-cols-3 gap-1.5">
+        {OBS_TOOLS.map((t, k) => (
+          <div
+            key={t.k}
+            className={`rounded-lg border px-2 py-1.5 transition-colors duration-300 ${k === tool ? "border-ipink-500/50 bg-ipink-500/10" : "border-white/[0.07]"}`}
+          >
+            <p className={`text-[12px] ${k === tool ? "text-white" : "text-white/60"}`}>{t.k}</p>
+            <p className={`${mono} truncate text-white/35`}>{t.v}</p>
+          </div>
+        ))}
+      </div>
     </Panel>
   );
 }
 
 /** In-house AI agents take routine development and review work off the team. */
+const AI_KIT = [
+  { icon: Bot, k: "AI agents" },
+  { icon: Sparkles, k: "Claude skills" },
+  { icon: Plug, k: "MCP servers" },
+  { icon: Workflow, k: "Workflows" },
+];
+const AI_FLOWS = [
+  {
+    k: "Development",
+    steps: [
+      { icon: GitPullRequest, t: "Pull request opened" },
+      { icon: Bot, t: "Agent reviews it against the codebase standards" },
+      { icon: Check, t: "Findings ready for the engineer" },
+    ],
+  },
+  {
+    k: "Debugging",
+    steps: [
+      { icon: Bug, t: "Issue reported" },
+      { icon: ScanSearch, t: "Agent traces it through the code and logs" },
+      { icon: Wrench, t: "Root cause and a suggested fix" },
+    ],
+  },
+];
+
+/** The toolkit, then the two loops it runs: reviewing changes and tracing bugs. */
 export function AiAgentsVisual() {
-  const i = useTicker(3, 1500);
-  const steps = [
-    { icon: GitPullRequest, t: "Pull request opened" },
-    { icon: Bot, t: "Agent reviews the change" },
-    { icon: Check, t: "Findings ready for the engineer" },
-  ];
+  const i = useTicker(8, 1100);
+  const f = i < 4 ? 0 : 1;
+  const step = i % 4;
+  const flow = AI_FLOWS[f];
   return (
-    <Panel>
-      <div className="space-y-2">
-        {steps.map((s, k) => {
-          const Icon = s.icon;
+    <div className="space-y-3">
+      <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
+        {AI_KIT.map((t) => {
+          const Icon = t.icon;
           return (
-            <motion.div key={s.t} animate={{ opacity: k <= i ? 1 : 0.25 }} className="flex items-center gap-2.5 text-[13px] text-white/75">
-              <span className={`grid h-6 w-6 place-items-center rounded-md border ${k === i ? "border-ipink-500/60 text-ipink-200" : "border-white/10 text-white/40"}`}>
-                <Icon className="h-3.5 w-3.5" />
-              </span>
-              {s.t}
-            </motion.div>
+            <span
+              key={t.k}
+              className="flex items-center gap-1.5 rounded-lg border border-white/[0.07] px-2 py-1.5 text-[12px] text-white/70 transition-colors duration-300 hover:border-ipink-500/50 hover:text-white"
+            >
+              <Icon className="h-3.5 w-3.5 shrink-0 text-inf-300" />
+              {t.k}
+            </span>
           );
         })}
       </div>
-    </Panel>
+      <Panel>
+        <div className="mb-3 flex gap-1 rounded-full border border-white/10 p-1">
+          {AI_FLOWS.map((x, k) => (
+            <span key={x.k} className={`flex-1 rounded-full px-3 py-1 text-center font-mono text-[10px] uppercase transition-colors duration-300 ${k === f ? "bg-inf-600 text-white" : "text-white/40"}`}>
+              {x.k}
+            </span>
+          ))}
+        </div>
+        <AnimatePresence mode="wait">
+          <motion.div key={flow.k} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="space-y-2">
+            {flow.steps.map((s, k) => {
+              const Icon = s.icon;
+              return (
+                <motion.div key={s.t} animate={{ opacity: k <= step ? 1 : 0.25 }} className="flex items-center gap-2.5 text-[13px] text-white/75">
+                  <span className={`grid h-6 w-6 shrink-0 place-items-center rounded-md border ${k === step ? "border-ipink-500/60 text-ipink-200" : "border-white/10 text-white/40"}`}>
+                    <Icon className="h-3.5 w-3.5" />
+                  </span>
+                  {s.t}
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </AnimatePresence>
+      </Panel>
+    </div>
   );
 }

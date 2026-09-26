@@ -10,6 +10,7 @@ const ROLES = [
     line: "Set the technical foundation of the whole platform.",
     points: [
       "Designed the cloud infrastructure and the service-based backend: one frontend service and four backend services, split by domain.",
+      "Designed the database schema, and set the repository structure and coding standards every other developer followed.",
       "Defined the tenant isolation strategy and how new clients are onboarded.",
       "Took part in every design and vendor discussion, and decided how the system would operate as it grew.",
     ],
@@ -20,11 +21,11 @@ const ROLES = [
     hat: "Designed",
     line: "Shaped how HR teams, managers and employees use it.",
     points: [
-      "Designed screens and user flows across the client portal, the admin portal and the mobile app.",
+      "Designed screens and user flows across the client platform and the admin platform.",
       "Built a metadata-driven form system with the frontend developer, so new fields and validations need no code change.",
-      "Made separate web and mobile experiences for HR admins and for employees.",
+      "A standard set of reusable components and a global theme, so every screen looks and behaves the same.",
     ],
-    tags: ["UI / UX", "Metadata-driven forms", "Web + mobile"],
+    tags: ["UI / UX", "Metadata-driven forms", "Design system"],
   },
   {
     id: "engineer",
@@ -44,9 +45,10 @@ const ROLES = [
     points: [
       "A hybrid role- and attribute-based permission system, designed after researching how leading HR and cloud platforms handle access.",
       "Module-level create, read, update and delete rights, scoped by organisational structure in any combination.",
+      "Multi-tenant sign-in with multi-factor authentication: one login across clients, with access granted in stages.",
       "Tenant isolation built into every service from day one.",
     ],
-    tags: ["RBAC + ABAC", "Data isolation"],
+    tags: ["RBAC + ABAC", "Multi-factor sign-in", "Data isolation"],
   },
   {
     id: "automate",
@@ -57,7 +59,7 @@ const ROLES = [
       "Leave accruals, auto attendance, auto clock-out, and leave applications created automatically from approved leave plans.",
       "Scheduled emails for birthdays, work anniversaries and expiring documents.",
       "Follow-up reminders until employees acknowledge announcements, policy handbooks, polls and surveys, and routine notification cleanup.",
-      "Self-upgrading databases: on server start, the platform checks every client database's version and applies pending migrations, the admin database included.",
+      "Self-upgrading databases: on every new deployment, the platform checks every client database's version and applies pending migrations, the admin database included.",
     ],
     tags: ["10+ schedulers", "Per client & subsidiary", "Time-zone aware", "Auto migrations"],
   },
@@ -67,17 +69,17 @@ const ROLES = [
     line: "Connected the platform to the systems clients already run.",
     points: [
       "Owned the NetSuite integration end to end: API and system design, the mapping UI and the background sync workers.",
-      "Designed the mobile API layer that serves the employee self-service app.",
+      "Built the backend services and APIs the mobile app runs on.",
       "Open APIs for connecting other business systems.",
     ],
-    tags: ["NetSuite", "Mobile API", "Open API"],
+    tags: ["NetSuite", "Mobile backend", "Open API"],
   },
   {
     id: "ship",
     hat: "Shipped",
     line: "Took it live and kept it improving.",
     points: [
-      "Launched the platform with KPI as the first client.",
+      "Launched the platform into production.",
       "Stabilised it through real user feedback, then scaled it to more than ten enterprise clients.",
       "Ongoing work on performance, reliability, analytics and deployment speed, with in-house AI agents in the workflow.",
     ],

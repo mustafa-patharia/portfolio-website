@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Lock } from "lucide-react";
+import { Check, Lock, Monitor, ShieldCheck, Smartphone, UserRound } from "lucide-react";
 import { Panel, Tile, mono, useTicker } from "./shared";
 
 /* Illustrative organisation — generic names, no client data. */
@@ -127,6 +127,111 @@ function PermissionDemo() {
   );
 }
 
+/* One login across clients: roles differ per client, and mobile access opens only after onboarding. */
+const TENANTS = {
+  "Client A": { role: "HR manager", spaces: ["hr", "ess", "mobile"] },
+  "Client B": { role: "Employee", spaces: ["ess", "mobile"] },
+} as const;
+type TenantName = keyof typeof TENANTS;
+const SPACES = [
+  { id: "hr", label: "HR platform", icon: Monitor },
+  { id: "ess", label: "Self-service · web", icon: UserRound },
+  { id: "mobile", label: "Self-service · mobile", icon: Smartphone },
+] as const;
+type Space = (typeof SPACES)[number]["id"];
+
+function SignInDemo() {
+  const [tenant, setTenant] = useState<TenantName>("Client A");
+  const [space, setSpace] = useState<Space>("hr");
+  const [onboarded, setOnboarded] = useState(false);
+
+  const allowed = (s: Space) => (TENANTS[tenant].spaces as readonly Space[]).includes(s) && (s !== "mobile" || onboarded);
+  const pickTenant = (t: TenantName) => {
+    setTenant(t);
+    if (!(TENANTS[t].spaces as readonly Space[]).includes(space)) setSpace("ess");
+  };
+  const toggleOnboarded = () => {
+    if (onboarded && space === "mobile") setSpace("ess");
+    setOnboarded(!onboarded);
+  };
+  const current = SPACES.find((s) => s.id === space)!;
+
+  return (
+    <div className="grid gap-4 lg:grid-cols-[1.25fr_1fr]">
+      <Panel label="One login">
+        <div className="space-y-4">
+          <div>
+            <p className={`${mono} mb-1.5 text-white/40`}>Switch client</p>
+            <div className="flex flex-wrap gap-1.5">
+              {(Object.keys(TENANTS) as TenantName[]).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => pickTenant(t)}
+                  aria-pressed={tenant === t}
+                  className={`rounded-full border px-3 py-1 text-xs transition-all duration-200 hover:-translate-y-0.5 ${tenant === t ? "border-ipink-500/70 bg-ipink-500/15 text-ipink-200" : "border-white/10 text-white/50 hover:border-white/30 hover:text-white"}`}
+                >
+                  {t} <span className="text-white/35">· {TENANTS[t].role}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className={`${mono} mb-1.5 text-white/40`}>Switch platform</p>
+            <div className="grid gap-1.5 sm:grid-cols-3">
+              {SPACES.map((s) => {
+                const ok = allowed(s.id);
+                const on = s.id === space;
+                const Icon = s.icon;
+                return (
+                  <button
+                    key={s.id}
+                    disabled={!ok}
+                    onClick={() => setSpace(s.id)}
+                    aria-pressed={on}
+                    className={`flex items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-[12px] transition-all duration-200 ${on ? "border-inf-400/60 bg-inf-600 text-white" : ok ? "border-white/10 text-white/60 hover:border-inf-400/40 hover:text-white" : "cursor-not-allowed border-white/[0.05] text-white/20"}`}
+                  >
+                    {ok ? <Icon className="h-3.5 w-3.5 shrink-0" /> : <Lock className="h-3.5 w-3.5 shrink-0" />}
+                    {s.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <button onClick={toggleOnboarded} aria-pressed={onboarded} className="group flex items-center gap-2.5 text-left text-[12px] text-white/60 transition-colors hover:text-white">
+            <span className={`relative h-5 w-9 rounded-full border transition-colors duration-200 ${onboarded ? "border-ipink-500/60 bg-ipink-500/30" : "border-white/15 bg-white/5"}`}>
+              <motion.span layout className={`absolute top-0.5 h-3.5 w-3.5 rounded-full ${onboarded ? "right-0.5 bg-ipink-400" : "left-0.5 bg-white/40"}`} />
+            </span>
+            Onboarding complete <span className="hidden text-white/35 sm:inline">· unlocks mobile access</span>
+          </button>
+        </div>
+      </Panel>
+
+      <Panel label="Session">
+        <AnimatePresence mode="wait">
+          <motion.div key={`${tenant}-${space}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22 }} className="space-y-2.5">
+            <div className="flex items-center gap-2 rounded-lg border border-inf-400/30 bg-inf-600/20 px-3 py-2 text-[12px] text-inf-100">
+              <ShieldCheck className="h-4 w-4 text-ipink-300" /> Signed in · multi-factor verified
+            </div>
+            {[
+              ["Client", tenant],
+              ["Platform", current.label],
+              ["Role", TENANTS[tenant].role],
+            ].map(([k, v]) => (
+              <div key={k} className="flex items-center justify-between border-b border-white/[0.06] pb-2 text-[13px]">
+                <span className="text-white/40">{k}</span>
+                <span className="text-white/85">{v}</span>
+              </div>
+            ))}
+            <div className="flex items-center gap-2 pt-1 font-mono text-[10px] text-ipink-200">
+              <Check className="h-3 w-3" strokeWidth={3} /> Data scope: {tenant} only
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </Panel>
+    </div>
+  );
+}
+
 /** Each tenant's requests stay inside its own boundary. */
 function IsolationVisual() {
   const i = useTicker(3, 1400);
@@ -158,6 +263,12 @@ function IsolationVisual() {
 export default function AccessControl() {
   return (
     <div className="grid gap-4 md:gap-5">
+      <Tile
+        title="Multi-tenant sign-in"
+        caption="One person can belong to more than one client and switch between them without signing out, and each switch moves the session into that client's own data. Users move between the HR platform and self-service on the web, and self-service also runs on mobile. Access is granted in stages: web access when the employee record is created, mobile access once onboarding is complete. Sign-in is protected with multi-factor authentication. Try it."
+      >
+        <SignInDemo />
+      </Tile>
       <Tile
         title="Two-layer permissions"
         caption="Layer one grants create, read, update and delete rights per module. Layer two narrows those rights to a slice of the organisation, by subsidiary, location, department or a set of employees, in any combination. Both layers are configuration. Try it."

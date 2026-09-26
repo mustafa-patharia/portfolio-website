@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { LOGO_GRADIENT, Panel, mono, reveal, useTicker } from "./shared";
+import { ArrowLeft, ArrowRight, RefreshCw } from "lucide-react";
+import { Panel, mono, reveal, useTicker } from "./shared";
 
 /* Illustrative mapping and journal entry — generic accounts, no client data. */
 const INBOUND = ["Subsidiaries", "Locations", "Departments", "Employees"];
@@ -40,9 +40,9 @@ export default function NetSuiteSync() {
           ))}
         </div>
         <div className="flex flex-col items-center gap-2">
-          <div className="grid h-20 w-20 place-items-center rounded-2xl" style={{ backgroundImage: LOGO_GRADIENT }}>
-            <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-white">Sync</span>
-          </div>
+          <motion.span aria-label="Sync" animate={{ rotate: 360 }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} className="grid h-20 w-20 place-items-center">
+            <RefreshCw className="h-10 w-10 text-white" strokeWidth={1.75} />
+          </motion.span>
           <span className={`${mono} text-white/40`}>background workers</span>
         </div>
         <div className="space-y-2">
