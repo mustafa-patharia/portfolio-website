@@ -38,6 +38,27 @@ const config: Config = {
           400: "#1ea4ab",
           500: "#017e84",
         },
+        /* Infithra brand purple (#482084 buttons, #361863 headings, #170c34 nav ink) — 100–400 lifted for dark surfaces */
+        inf: {
+          100: "#eee8f8",
+          200: "#d6c9ef",
+          300: "#b39ce2",
+          400: "#8d6dcf",
+          500: "#6a45ab",
+          600: "#482084",
+          700: "#361863",
+          800: "#241042",
+          900: "#170c34",
+        },
+        /* Infithra brand pink (#fc1777 CTAs/tags) and the other logo-gradient stops */
+        ipink: {
+          200: "#fec2dc",
+          300: "#fe7fb5",
+          400: "#fd4a94",
+          500: "#fc1777",
+        },
+        iblue: "#3a86ff",
+        iorange: "#ff8001",
       },
       fontFamily: {
         body: ["var(--font-body)", "sans-serif"],

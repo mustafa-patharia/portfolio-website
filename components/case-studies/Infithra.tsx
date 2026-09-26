@@ -1,298 +1,433 @@
-import { motion } from "framer-motion";
-import { BentoGrid, BentoCard } from "./blocks/BentoGrid";
-import { PullQuote } from "./blocks/PullQuote";
-import { Database, Server, RefreshCw, CheckCircle2, Users, Cloud, Building2, ShieldCheck, Lock, FileKey } from "lucide-react";
+"use client";
 
-// --- Custom Interactive Visual Components (SaaS Aesthetic) ---
+import Link from "next/link";
+import { MotionConfig, motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import CountUp from "../reactbits/CountUp";
+import PayslipCard from "./infithra/PayslipCard";
+import ModuleRail from "./infithra/ModuleRail";
+import ModuleMap from "./infithra/ModuleMap";
+import Roles from "./infithra/Roles";
+import AccessControl from "./infithra/AccessControl";
+import SchedulerDial from "./infithra/SchedulerDial";
+import SchedulerCatalog from "./infithra/SchedulerCatalog";
+import NetSuiteSync from "./infithra/NetSuiteSync";
+import RecordTimeline from "./infithra/RecordTimeline";
+import { Chapter, EASE, LOGO_GRADIENT, Ribbon, Tile, reveal } from "./infithra/shared";
+import {
+  AdminPlatformVisual,
+  AiAgentsVisual,
+  DeployVisual,
+  LifecycleVisual,
+  MetaFormVisual,
+  MigrationVisual,
+  ObservabilityVisual,
+  PayComponentsVisual,
+  PayslipExportVisual,
+  ProvisionVisual,
+  RuleSnapVisual,
+} from "./infithra/visuals";
 
-const NetSuiteSyncVisual = () => (
-  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex flex-col items-center justify-center border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)] perspective-[1200px]">
-    {/* Grid Background */}
-    <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_14px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
-    
-    <div className="relative z-10 flex w-full max-w-[320px] items-center justify-between transform-gpu rotate-x-[15deg] rotate-y-[-10deg]">
-      
-      {/* Infithra Node */}
-      <motion.div 
-        animate={{ y: [0, -5, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="relative flex h-24 w-24 flex-col items-center justify-center rounded-2xl border border-blue-500/40 bg-blue-500/10 backdrop-blur-xl shadow-[0_20px_40px_rgba(59,130,246,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)]"
-      >
-        <Database className="h-8 w-8 text-blue-400 mb-2" strokeWidth={1.5} />
-        <span className="text-[10px] font-mono font-medium text-blue-200/80">INFITHRA</span>
-      </motion.div>
+/* ------------------------------------------------------------------ content */
 
-      {/* Sync Bridge */}
-      <div className="relative flex-1 mx-4 flex flex-col items-center justify-center h-full">
-        {/* Connection Line */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-[2px] bg-white/10 rounded-full" />
-        
-        {/* Animated Data Packet */}
-        <motion.div 
-          animate={{ x: [-60, 60], opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/2 -translate-y-1/2 h-2 w-8 rounded-full bg-blue-400 shadow-[0_0_15px_rgba(96,165,250,0.8)] z-10"
-        />
+const META = [
+  { k: "Role", v: "Founding engineer · end-to-end ownership" },
+  { k: "Client", v: "KPI" },
+  { k: "Duration", v: "Dec 2022 – Jul 2026" },
+  { k: "Platforms", v: "Client portal · Admin portal · Mobile app · Cloud" },
+];
 
-        {/* Sync Icon */}
-        <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-          className="relative z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-[#121214] shadow-lg backdrop-blur-md"
-        >
-          <RefreshCw className="h-5 w-5 text-gray-300" strokeWidth={2} />
-        </motion.div>
-      </div>
+const STATS = [
+  { n: 800, suffix: "+", label: "Production APIs" },
+  { n: 2000, suffix: "+", label: "Daily users" },
+  { n: 10, suffix: "+", label: "Enterprise clients" },
+  { n: 10, suffix: "+", label: "Automated schedulers" },
+];
 
-      {/* NetSuite Node */}
-      <motion.div 
-        animate={{ y: [0, 5, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="relative flex h-24 w-24 flex-col items-center justify-center rounded-2xl border border-emerald-500/40 bg-emerald-500/10 backdrop-blur-xl shadow-[0_20px_40px_rgba(16,185,129,0.15),inset_0_1px_1px_rgba(255,255,255,0.2)]"
-      >
-        <Server className="h-8 w-8 text-emerald-400 mb-2" strokeWidth={1.5} />
-        <span className="text-[10px] font-mono font-medium text-emerald-200/80">NETSUITE</span>
-        
-        {/* Success Checkmark popup */}
-        <motion.div
-          animate={{ scale: [0, 1.2, 1, 0], opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", times: [0, 0.2, 0.8, 1] }}
-          className="absolute -right-3 -top-3 rounded-full bg-emerald-500 p-1 shadow-[0_0_15px_rgba(16,185,129,0.6)]"
-        >
-          <CheckCircle2 className="h-4 w-4 text-white" strokeWidth={3} />
-        </motion.div>
-      </motion.div>
-      
-    </div>
-  </div>
-);
+const PRINCIPLES = [
+  { n: "01", t: "Configurable by design", d: "Fields, validations, pay components and permissions are configuration, so the platform adapts to a client without a release." },
+  { n: "02", t: "Isolated per client", d: "Tenant data separation was part of the architecture from the first release." },
+  { n: "03", t: "Built for scale", d: "Processing, scheduling and deployment were designed for many clients running at the same time." },
+];
 
-const MultiTenantVisual = () => (
-  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex items-center justify-center perspective-[1200px] border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)]">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1)_0%,transparent_70%)]" />
-    
-    <div className="relative z-10 flex flex-col items-center justify-center transform-gpu rotate-x-[50deg] rotate-z-[-20deg] scale-110">
-      
-      {/* Core Platform Node (Top Layer) */}
-      <motion.div 
-        animate={{ y: [-20, -30, -20] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        className="relative z-30 mb-8 flex h-20 w-48 items-center justify-center gap-3 rounded-2xl border border-indigo-500/40 bg-indigo-500/20 backdrop-blur-xl shadow-[0_30px_60px_rgba(79,70,229,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)]"
-      >
-        <Cloud className="h-8 w-8 text-indigo-300" strokeWidth={1.5} />
-        <span className="font-display font-bold tracking-widest text-indigo-100 text-sm">CORE INFRA</span>
-      </motion.div>
+const DECISIONS = [
+  { d: "Job scheduling and queueing", w: "Evaluated database-level and queue-based scheduling for multi-tenant workloads, and chose the approach the background platform is built on." },
+  { d: "Data access layer", w: "Chose an ORM that fits the multi-tenant migration strategy across every client database." },
+  { d: "Cloud platform", w: "Selected the cloud provider and the managed services the platform runs on." },
+  { d: "Real-time updates", w: "Evaluated self-hosted and managed approaches for live notifications across web and mobile." },
+];
 
-      {/* Floating Tenant Nodes (Bottom Layer) */}
-      <div className="relative z-20 flex gap-6">
-        {[1, 2, 3].map((i) => (
-          <motion.div
-            key={i}
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 4, repeat: Infinity, delay: i * 0.4, ease: "easeInOut" }}
-            className={`relative flex h-20 w-28 flex-col items-center justify-center rounded-xl border backdrop-blur-lg shadow-[0_20px_40px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.1)] ${i === 2 ? 'border-sky-500/40 bg-sky-500/20' : 'border-white/10 bg-white/5'}`}
-          >
-            {i === 2 ? <Building2 className="h-6 w-6 text-sky-400 mb-2" strokeWidth={1.5} /> : <Users className="h-6 w-6 text-gray-400 mb-2" strokeWidth={1.5} />}
-            <span className={`text-[9px] font-mono font-bold tracking-widest ${i === 2 ? 'text-sky-200' : 'text-gray-400'}`}>TENANT {i}</span>
-            
-            {/* Active connection pulse for tenant 2 */}
-            {i === 2 && (
-              <motion.div 
-                animate={{ opacity: [0, 1, 0] }} 
-                transition={{ duration: 2, repeat: Infinity }}
-                className="absolute -top-12 left-1/2 w-px h-12 bg-gradient-to-b from-indigo-400 to-sky-400 -translate-x-1/2 shadow-[0_0_10px_rgba(56,189,248,1)]"
-              />
-            )}
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  </div>
-);
+const STACK = [
+  { layer: "Backend", items: ["Node.js", "Express", "PostgreSQL", "Sequelize", "Redis", "BullMQ"] },
+  { layer: "Frontend", items: ["Angular", "Next.js"] },
+  { layer: "Cloud", items: ["AWS Cognito", "S3", "EC2", "ECR", "EKS", "CloudFront", "SSM", "IAM"] },
+  { layer: "Delivery & monitoring", items: ["Kubernetes", "Jenkins", "CloudWatch", "New Relic", "QuickSight"] },
+];
 
-const ComplianceVisual = () => (
-  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex items-center justify-center border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)] perspective-[1000px]">
-    <div className="absolute inset-0 bg-gradient-to-tr from-purple-900/10 via-transparent to-emerald-900/10" />
-    
-    <div className="relative z-10 flex items-center justify-center">
-      {/* Expanding Radar/Sonar Rings */}
-      <motion.div 
-        animate={{ scale: [1, 2.5], opacity: [0.8, 0] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeOut" }}
-        className="absolute h-24 w-24 rounded-full border border-emerald-500/40 shadow-[0_0_20px_rgba(16,185,129,0.2)]"
-      />
-      <motion.div 
-        animate={{ scale: [1, 2.5], opacity: [0.8, 0] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeOut", delay: 1.5 }}
-        className="absolute h-24 w-24 rounded-full border border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.2)]"
-      />
-      
-      {/* Orbital Data Keys */}
-      <motion.div 
-        animate={{ rotate: 360 }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        className="absolute h-40 w-40 rounded-full border border-white/5 border-dashed"
-      >
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex h-6 w-6 items-center justify-center rounded-full bg-[#121214] border border-white/10 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.5)]">
-          <Lock className="h-3 w-3" strokeWidth={2.5} />
-        </div>
-        <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex h-6 w-6 items-center justify-center rounded-full bg-[#121214] border border-white/10 text-purple-400 shadow-[0_0_10px_rgba(168,85,247,0.5)]">
-          <FileKey className="h-3 w-3" strokeWidth={2.5} />
-        </div>
-      </motion.div>
+/* --------------------------------------------------------------------- page */
 
-      {/* Shield Core */}
-      <motion.div 
-        whileHover={{ scale: 1.05 }}
-        className="relative z-20 flex h-24 w-24 flex-col items-center justify-center rounded-2xl bg-gradient-to-tr from-emerald-600/80 to-teal-500/80 shadow-[0_0_40px_rgba(16,185,129,0.4),inset_0_1px_1px_rgba(255,255,255,0.4)] border border-white/30 backdrop-blur-xl"
-      >
-        <ShieldCheck className="h-10 w-10 text-white mb-1 drop-shadow-md" strokeWidth={1.5} />
-        <span className="text-[9px] font-bold tracking-widest text-emerald-50">SOC-2</span>
-      </motion.div>
-    </div>
-  </div>
-);
-
-
-export default function infithraCaseStudy() {
+export default function InfithraCaseStudy() {
   return (
-    <main className="mx-auto max-w-5xl px-6 pb-32 pt-40 md:px-10 lg:px-16 lg:pt-48">
-      {/* Header */}
-      <motion.header
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-        className="mb-20"
-      >
-        <div className="mb-6 flex items-center gap-3">
-          <span className="h-px w-12 bg-stroke" />
-          <span className="text-xs uppercase tracking-[0.3em] text-muted">
-            Enterprise Case Study
-          </span>
-        </div>
-        <h1 className="mb-6 font-display text-4xl italic tracking-tight md:text-6xl lg:text-7xl">
-          infithra <br className="hidden md:block" />
-          <span className="font-sans font-normal not-italic text-muted">HRMS Platform</span>
-        </h1>
+    <MotionConfig reducedMotion="user">
+      <main className="selection:bg-inf-600 selection:text-white">
+        {/* ============================================================ HERO */}
+        <section className="relative overflow-hidden px-6 pb-16 pt-36 md:px-10 lg:pt-44">
+          <div aria-hidden className="pointer-events-none absolute -left-40 top-0 h-[560px] w-[560px] rounded-full bg-inf-600/30 blur-[130px]" />
+          <div aria-hidden className="pointer-events-none absolute -right-32 bottom-0 h-[420px] w-[420px] rounded-full bg-ipink-500/15 blur-[130px]" />
+          {/* the logo's chevron, as a faint motif */}
+          <svg aria-hidden viewBox="0 0 200 200" className="pointer-events-none absolute -right-20 top-24 hidden h-[520px] w-[520px] opacity-[0.07] lg:block">
+            <defs>
+              <linearGradient id="inf-hero-chev" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#FC1776" />
+                <stop offset="50%" stopColor="#492D82" />
+                <stop offset="100%" stopColor="#3A86FF" />
+              </linearGradient>
+            </defs>
+            <path d="M20 20 L110 100 L20 180 L70 180 L160 100 L70 20 Z" fill="url(#inf-hero-chev)" />
+          </svg>
 
-        <div className="mt-10">
-          <a
-            href="https://infithra.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 rounded-full border border-stroke bg-surface px-6 py-3 text-sm transition-colors hover:border-text-primary/30"
-          >
-            Visit infithra.com
-            <svg className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-          </a>
-        </div>
-      </motion.header>
+          <div className="relative mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.35fr_1fr]">
+            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }}>
+              <p className="mb-5 inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-inf-300">
+                <span className="h-px w-8 bg-ipink-500/80" />
+                Case study · Enterprise HR &amp; payroll SaaS · KPI
+              </p>
+              <h1 className="font-display text-6xl italic leading-[0.95] tracking-tight md:text-8xl lg:text-9xl">Infithra</h1>
+              <p className="mt-5 text-2xl font-light text-white/80 md:text-3xl">
+                Enterprise HR and Payroll Platform <span className="bg-clip-text text-transparent" style={{ backgroundImage: LOGO_GRADIENT }}>for the UAE and KSA</span>
+              </p>
+              <p className="mt-6 max-w-xl leading-relaxed text-muted md:text-lg">
+                A cloud HR and payroll platform for businesses in the UAE and Saudi Arabia, covering the full employee lifecycle from onboarding to
+                end-of-service: labour-law and WPS-compliant payroll, time and attendance, leave, expenses, people analytics and employee
+                self-service on web and mobile. I joined as the founding engineer when the repository was empty, and over almost four years took it
+                to a production platform used by enterprise clients every day.
+              </p>
+              <a
+                href="https://infithra.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group mt-8 inline-flex items-center gap-2 rounded-full border border-ipink-500/60 px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-ipink-200 transition-all duration-300 hover:-translate-y-0.5 hover:bg-ipink-500 hover:text-white"
+              >
+                Visit infithra.com
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            </motion.div>
 
-      {/* Hero Image - Keeping the main product shot */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-        className="group relative mb-24 aspect-[21/9] w-full overflow-hidden rounded-3xl"
-      >
-        <img
-          src={`/projects/poster/infithra.jpg`}
-          alt={`infithra hero poster`}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="pointer-events-none absolute inset-0 rounded-3xl border-2 border-text-primary/10 transition-colors duration-500 group-hover:border-text-primary/30" />
-      </motion.div>
-
-      {/* Article Content */}
-      <motion.article
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-      >
-        <div className="mt-16 flex flex-col gap-24">
-
-          <section>
-            <h2 className="mb-10 text-center font-display text-3xl italic text-text-primary md:text-4xl">
-              Scaling Regional HR
-            </h2>
-            <BentoGrid>
-              <BentoCard title="Regional Complexities" colSpan={2} rowSpan={1}>
-                <p>Businesses across the UAE and GCC face complex, regionally-specific HR challenges—from localized payroll compliance to intricate leave management policies and end-of-service accruals.</p>
-              </BentoCard>
-              <BentoCard title="A Tailored Cloud Solution" colSpan={2} rowSpan={1}>
-                <p>There was a strong need for a highly scalable, multi-tenant cloud HRMS platform built specifically to handle these regulatory nuances while remaining highly available and performant.</p>
-              </BentoCard>
-            </BentoGrid>
-          </section>
-
-          <section>
-            <PullQuote 
-              quote="As the Founding and Lead Engineer, my role rapidly evolved from writing the first line of code to architecting a scalable SaaS deployment model and leading a growing team."
-              author="Lead Engineer"
-            />
-          </section>
-
-          {/* Section 2: Interactive UI Bento Grids */}
-          <section>
-            <h2 className="mb-10 text-center font-display text-3xl italic text-text-primary md:text-4xl">
-              Technical Foundation
-            </h2>
-            
-            <BentoGrid>
-              <BentoCard title="NetSuite ERP Integration" colSpan={2} rowSpan={2}>
-                <div className="mt-4 flex flex-col gap-6 h-[250px]">
-                  <div className="flex-1">
-                    <p className="leading-relaxed">Single-handedly designed and built robust bidirectional data synchronization pipelines to bridge infithra with Oracle NetSuite, ensuring mission-critical financial data remained perfectly aligned.</p>
-                  </div>
-                  <div className="w-full flex-1 min-h-0">
-                    <NetSuiteSyncVisual />
-                  </div>
-                </div>
-              </BentoCard>
-
-              <BentoCard title="Multi-Tenant Cloud" colSpan={2} rowSpan={1}>
-                <div className="mt-4 flex flex-col gap-6 h-[220px]">
-                  <p className="leading-relaxed text-sm">Architected the core system to seamlessly handle thousands of concurrent users while maintaining strict tenant isolation.</p>
-                  <div className="w-full flex-1 min-h-0">
-                    <MultiTenantVisual />
-                  </div>
-                </div>
-              </BentoCard>
-
-              <BentoCard title="Compliance Security" colSpan={2} rowSpan={2}>
-                <div className="mt-4 flex flex-col gap-6 h-[250px]">
-                  <div className="flex-1">
-                    <p className="leading-relaxed">Enforced rigorous code quality standards and designed optimized backend services robust enough to help the platform achieve ISO 27001 and SOC-2 compliance.</p>
-                  </div>
-                  <div className="w-full flex-1 min-h-0">
-                    <ComplianceVisual />
-                  </div>
-                </div>
-              </BentoCard>
-              
-              <BentoCard title="Engineering Culture" colSpan={2} rowSpan={1}>
-                <div className="flex h-[220px] flex-col justify-center">
-                  <p className="leading-relaxed">Introduced streamlined agile methodologies that significantly improved delivery cadence. Cultivated an evidence-based discussion culture where the best technical ideas won.</p>
-                </div>
-              </BentoCard>
-            </BentoGrid>
-          </section>
-
-          {/* Section 3: Outcome */}
-          <section className="rounded-3xl border border-stroke bg-[#09090b] p-8 md:p-12 shadow-xl">
-            <h2 className="mb-6 font-display text-3xl italic text-text-primary md:text-4xl">
-              Market Adoption
-            </h2>
-            <p className="leading-relaxed text-muted md:text-lg">
-              The result was a highly successful, enterprise-grade HRMS platform that achieved mass adoption across businesses in the UAE. By setting a strong architectural foundation and fostering an environment of technical excellence and extreme ownership, the platform seamlessly handled scale and became a critical operational tool for its users.
-            </p>
-          </section>
-
-          <div className="rounded-xl border border-white/5 bg-white/[0.02] p-6 text-sm text-muted">
-            <strong>Disclaimer:</strong> This project was developed as part of my employment. To respect company confidentiality, this case study intentionally omits the internal tech stack and proprietary architectures, focusing instead on publicly documented features, engineering leadership, and strategic execution.
+            <div className="flex justify-center lg:justify-end">
+              <PayslipCard />
+            </div>
           </div>
-        </div>
-      </motion.article>
-    </main>
+
+          <div className="relative mx-auto mt-16 max-w-6xl">
+            <motion.dl
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+              className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] sm:grid-cols-2 lg:grid-cols-4"
+            >
+              {META.map((m) => (
+                <div key={m.k} className="group bg-[#0d0a13] p-5 transition-colors duration-300 hover:bg-inf-900">
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/35">{m.k}</dt>
+                  <dd className="mt-2 text-sm text-white/85 transition-colors group-hover:text-inf-100">{m.v}</dd>
+                </div>
+              ))}
+            </motion.dl>
+
+            <div className="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">
+              {STATS.map((s, k) => (
+                <motion.div key={s.label} {...reveal} transition={{ ...reveal.transition, delay: k * 0.08 }} className="group">
+                  <span className="font-display text-5xl italic text-inf-200 transition-colors group-hover:text-ipink-300 md:text-6xl">
+                    <CountUp to={s.n} duration={1.6} separator="," />
+                    {s.suffix}
+                  </span>
+                  <p className="mt-1 text-sm text-muted">{s.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <Ribbon />
+
+        {/* ============================================================ CHAPTERS */}
+        <ModuleRail />
+
+        {/* ---------------------------------------------------- Overview */}
+        <section id="overview" className="scroll-mt-28 px-6 py-28 md:px-10">
+          <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[1.15fr_1fr]">
+            <Chapter module="Overview" title="Project overview">
+              <p>
+                HR and payroll in the Gulf are governed by labour law: contracts, contributions, overtime, leave entitlements and end-of-service
+                gratuity, with rules that change by employee classification and location. Companies usually manage this across spreadsheets,
+                stand-alone tools and ERP payroll modules that are slow to run and hard to adapt.
+              </p>
+              <p>
+                Infithra brings it into a single multi-tenant platform. Each client&apos;s data is isolated, business rules live in configuration
+                rather than code, and heavy processing such as payroll runs in seconds rather than hours.
+              </p>
+            </Chapter>
+            <div className="flex flex-col gap-3 lg:pt-16">
+              {PRINCIPLES.map((c, k) => (
+                <motion.div
+                  key={c.n}
+                  {...reveal}
+                  transition={{ ...reveal.transition, delay: k * 0.1 }}
+                  className="group flex gap-5 rounded-2xl border border-white/[0.07] bg-[#110d18] p-5 transition-all duration-300 hover:translate-x-1 hover:border-ipink-500/40"
+                >
+                  <span className="font-mono text-sm text-inf-300 transition-colors group-hover:text-ipink-300">{c.n}</span>
+                  <div>
+                    <h3 className="font-medium text-white">{c.t}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-muted">{c.d}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- Roles */}
+        <section className="px-6 pb-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <motion.div {...reveal} className="mb-10 max-w-4xl">
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">What I owned</p>
+              <h2 className="font-display text-4xl italic md:text-5xl">My role and contribution</h2>
+              <p className="mt-5 leading-relaxed text-muted md:text-lg">
+                As the founding engineer at KPI, I owned the platform end to end: the architecture, the product modules, the UI and UX, the
+                integrations and delivery. I was part of every design and vendor discussion, and defined how the system would operate, from the
+                first commit through launch and scale.
+              </p>
+            </motion.div>
+            <motion.div {...reveal}>
+              <Roles />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- Modules */}
+        <section id="modules" className="scroll-mt-28 px-6 pb-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Chapter module="Platform" title="Platform modules">
+              <p>One platform for the whole of HR. Hover over a module to see what it covers.</p>
+            </Chapter>
+            <ModuleMap />
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- Payroll */}
+        <section id="payroll" className="scroll-mt-28 px-6 pb-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Chapter module="Payroll" title="Payroll engine and compliance">
+              <p>
+                Payroll is where the platform does its heaviest work. Every pay component is configurable, labour-law rules are applied from each
+                employee&apos;s contract and classification, and a full payroll run finishes in seconds.
+              </p>
+            </Chapter>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+              <Tile
+                title="Configurable pay components"
+                caption="Earnings, allowances, contributions and deductions are defined per client and per employee classification. A run for 100 employees completes in seconds, not hours."
+                className="md:col-span-2"
+              >
+                <PayComponentsVisual />
+              </Tile>
+              <Tile title="Labour-law rules" caption="Contract, contribution and classification rules are applied automatically to every employee record.">
+                <RuleSnapVisual />
+              </Tile>
+              <Tile title="Payslips and reports" caption="Every run produces PDF payslips and payroll reports, delivered to employees through self-service.">
+                <PayslipExportVisual />
+              </Tile>
+              <Tile
+                title="The full employee lifecycle"
+                caption="Attendance, leave, overtime, expenses, reimbursements, advances and end-of-service all feed payroll from the same employee record."
+                className="md:col-span-2"
+              >
+                <LifecycleVisual />
+              </Tile>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- Access */}
+        <section id="access" className="scroll-mt-28 px-6 pb-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Chapter module="Settings · Security" title="Access control and data isolation">
+              <p>
+                HR data is sensitive, and large organisations need precise control over who sees whom. I designed a hybrid role- and
+                attribute-based permission model after researching how leading HR and cloud platforms handle access.
+              </p>
+            </Chapter>
+            <AccessControl />
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- Configuration */}
+        <section id="configuration" className="scroll-mt-28 px-6 pb-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Chapter module="Admin platform" title="Configuration and administration">
+              <p>
+                Every client runs HR differently. I made the product configurable, so most client requirements are met in settings rather than in
+                a new release, and built the admin platform KPI uses to run client companies, subscriptions and billing.
+              </p>
+            </Chapter>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+              <Tile
+                title="Metadata-driven forms"
+                caption="Forms are rendered from configuration. New fields and validations go live without a code change or a deployment."
+                className="md:col-span-2"
+              >
+                <MetaFormVisual />
+              </Tile>
+              <Tile title="Admin platform" caption="Client companies, subscriptions and billing, managed in one place.">
+                <AdminPlatformVisual />
+              </Tile>
+              <Tile
+                title="Faster client setup"
+                caption="I improved the admin panel's client setup, so a new tenant is configured from one form in under a minute instead of about 20."
+                className="md:col-span-3"
+              >
+                <ProvisionVisual />
+              </Tile>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- Scheduling (pinned) */}
+        <Ribbon />
+        <SchedulerDial />
+        <SchedulerCatalog />
+        <Ribbon />
+
+        {/* ---------------------------------------------------- Integrations */}
+        <section id="integrations" className="scroll-mt-28 px-6 py-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Chapter module="Integrations" title="ERP and system integrations">
+              <p>
+                I owned the NetSuite integration end to end: the API and system design, the mapping UI and the background sync workers.
+                Organisational data flows into Infithra, and payroll, contributions and expenses post back to the ledger as journal entries. It
+                supports both single-entity and multi-subsidiary NetSuite accounts, and open APIs connect other business systems.
+              </p>
+            </Chapter>
+            <NetSuiteSync />
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- Delivery */}
+        <section id="delivery" className="scroll-mt-28 px-6 pb-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Chapter module="Engineering" title="Delivery and engineering operations">
+              <p>
+                A platform serving many clients needs to ship often and safely. I rebuilt the delivery pipeline, automated database changes across
+                every tenant, and brought AI agents into the development workflow.
+              </p>
+            </Chapter>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+              <Tile
+                title="Faster deployments"
+                caption="Build caching and a leaner image structure made frontend deploys about 80% faster and each backend service about 40% faster."
+              >
+                <DeployVisual />
+              </Tile>
+              <Tile title="Multi-tenant migrations" caption="On server start, the platform checks each client database's version and applies any pending migrations, so it upgrades itself.">
+                <MigrationVisual />
+              </Tile>
+              <Tile title="Observability" caption="Monitoring and alerting across all five services.">
+                <ObservabilityVisual />
+              </Tile>
+              <Tile title="AI-assisted development" caption="In-house AI agents cut manual development and review effort by about 40%.">
+                <AiAgentsVisual />
+              </Tile>
+            </div>
+          </div>
+        </section>
+
+        <div id="chapters-end" />
+
+        {/* ============================================================ TIMELINE */}
+        <section className="px-6 pb-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <motion.div {...reveal} className="mb-10">
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Timeline</p>
+              <h2 className="font-display text-4xl italic md:text-5xl">Project timeline</h2>
+            </motion.div>
+            <RecordTimeline />
+          </div>
+        </section>
+
+        {/* ============================================================ DECISIONS */}
+        <section className="px-6 pb-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <motion.div {...reveal} className="mb-10">
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Architecture</p>
+              <h2 className="font-display text-4xl italic md:text-5xl">Key engineering decisions</h2>
+            </motion.div>
+            <div className="border-t border-white/10">
+              {DECISIONS.map((x, k) => (
+                <motion.div
+                  key={x.d}
+                  {...reveal}
+                  transition={{ ...reveal.transition, delay: k * 0.05 }}
+                  className="group grid gap-2 border-b border-white/10 py-6 transition-colors duration-300 hover:bg-inf-600/[0.06] md:grid-cols-[3rem_1fr_1.4fr] md:gap-8"
+                >
+                  <span className="font-mono text-sm text-white/30 transition-colors group-hover:text-ipink-300">{String(k + 1).padStart(2, "0")}</span>
+                  <h3 className="text-lg font-medium text-white transition-transform duration-300 group-hover:translate-x-1">{x.d}</h3>
+                  <p className="leading-relaxed text-muted">{x.w}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================================ STACK + NOTE */}
+        <section className="px-6 pb-32 md:px-10">
+          <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-[1.4fr_1fr]">
+            <div>
+              <motion.div {...reveal}>
+                <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Technology stack</p>
+              </motion.div>
+              <div className="grid gap-8 sm:grid-cols-2">
+                {STACK.map((g) => (
+                  <motion.div key={g.layer} {...reveal}>
+                    <h3 className="mb-3 text-sm font-medium text-white">{g.layer}</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {g.items.map((i) => (
+                        <span
+                          key={i}
+                          className="cursor-default rounded-full border border-white/10 px-3 py-1 font-mono text-[11px] text-white/60 transition-all duration-300 hover:-translate-y-0.5 hover:border-ipink-500/50 hover:text-ipink-200"
+                        >
+                          {i}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <motion.div {...reveal} className="relative overflow-hidden rounded-3xl border border-white/[0.07] bg-[#110d18] p-7 transition-colors duration-300 hover:border-inf-400/30">
+              <div className="absolute inset-x-0 top-0 h-[3px]" style={{ backgroundImage: LOGO_GRADIENT }} />
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Confidentiality note</p>
+              <p className="text-sm leading-relaxed text-muted">
+                Infithra is a closed-source product I built while employed at KPI, and it is covered by a non-disclosure agreement. This case
+                study describes my contribution and the platform&apos;s capabilities at a high level, and intentionally leaves out internal
+                implementation details, client data and screenshots. Visuals on this page are illustrative.
+              </p>
+            </motion.div>
+          </div>
+
+          <motion.div {...reveal} className="mx-auto mt-24 max-w-6xl">
+            <Link
+              href="/case-studies"
+              className="group flex items-center justify-between rounded-3xl border border-white/10 p-8 transition-all duration-300 hover:border-ipink-500/50 hover:bg-inf-600/[0.08] md:p-10"
+            >
+              <span>
+                <span className="block font-mono text-[11px] uppercase tracking-[0.3em] text-white/40">Keep reading</span>
+                <span className="mt-2 block font-display text-3xl italic md:text-4xl">All case studies</span>
+              </span>
+              <ArrowUpRight className="h-8 w-8 text-white/50 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-ipink-300" />
+            </Link>
+          </motion.div>
+        </section>
+      </main>
+    </MotionConfig>
   );
 }

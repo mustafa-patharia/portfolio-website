@@ -10,29 +10,12 @@ export interface CaseStudyMeta {
 export const CASE_STUDIES: CaseStudyMeta[] = [
   {
     slug: "infithra",
-    title: "infithra — Enterprise SaaS Case Study",
-    kicker: "Enterprise · SaaS",
+    title: "Infithra — Enterprise HR & Payroll SaaS",
+    kicker: "Enterprise · Multi-tenant SaaS · HR & Payroll",
+    stack: "Node.js · Angular · Next.js · PostgreSQL · AWS",
     description:
-      "A deep dive into my experience as a lead engineer — focusing on architectural ownership, scaling technical operations, and the interpersonal dynamics of leading a growing engineering team.",
+      "Enterprise HR and payroll platform for the UAE and KSA, built from an empty repository as founding engineer: configurable payroll engine, multi-tenant cloud architecture, two-layer access control, 10+ schedulers and NetSuite ledger sync.",
     image: "/projects/poster/infithra.jpg",
-  },
-  {
-    slug: "rift",
-    title: "Rift — Native macOS Music Player",
-    kicker: "Open Source · macOS · SwiftUI",
-    stack: "SwiftUI · macOS · AVFoundation · yt-dlp",
-    description:
-      "A truly native, ad-free YouTube Music client for macOS — hybrid WebView/local playback engine, offline downloads, and a source-agnostic playback architecture.",
-    image: "/projects/poster/rift-music-app.png",
-  },
-  {
-    slug: "proofhub-task-timer",
-    title: "ProofHub Task Timer",
-    kicker: "Open Source · macOS Menu Bar",
-    stack: "Swift · SwiftData · ProofHub API",
-    description:
-      "A native macOS menu-bar time tracker for ProofHub — concurrent task timers, offline-first SwiftData caching, and one-click sync to ProofHub's Bolt API.",
-    image: "/projects/poster/proofhub-task-timer.png",
   },
   {
     slug: "smartscan",
@@ -53,6 +36,24 @@ export const CASE_STUDIES: CaseStudyMeta[] = [
     image: "/projects/poster/netsuite-odoo-pos-integration.png",
   },
   {
+    slug: "promax-global",
+    title: "Promax Global",
+    kicker: "Website Development",
+    stack: "React · CMS",
+    description:
+      "Corporate website on a custom content platform — multilingual content, role-based publishing, and built-in search-engine optimization.",
+    image: "/projects/poster/promax-gloabal.png",
+  },
+  {
+    slug: "rift",
+    title: "Rift — Native macOS Music Player",
+    kicker: "Open Source · macOS · SwiftUI",
+    stack: "SwiftUI · macOS · AVFoundation · yt-dlp",
+    description:
+      "A truly native, ad-free YouTube Music client for macOS — hybrid WebView/local playback engine, offline downloads, and a source-agnostic playback architecture.",
+    image: "/projects/poster/rift-music-app.png",
+  },
+  {
     slug: "get-rounded",
     title: "GetRounded",
     kicker: "Open Source · Desktop App",
@@ -62,13 +63,13 @@ export const CASE_STUDIES: CaseStudyMeta[] = [
     image: "/projects/poster/get-rounded.png",
   },
   {
-    slug: "promax-global",
-    title: "Promax Global",
-    kicker: "Website Development",
-    stack: "React · CMS",
+    slug: "proofhub-task-timer",
+    title: "ProofHub Task Timer",
+    kicker: "Open Source · macOS Menu Bar",
+    stack: "Swift · SwiftData · ProofHub API",
     description:
-      "Corporate website on a custom content platform — multilingual content, role-based publishing, and built-in search-engine optimization.",
-    image: "/projects/poster/promax-gloabal.png",
+      "A native macOS menu-bar time tracker for ProofHub — concurrent task timers, offline-first SwiftData caching, and one-click sync to ProofHub's Bolt API.",
+    image: "/projects/poster/proofhub-task-timer.png",
   },
 ];
 

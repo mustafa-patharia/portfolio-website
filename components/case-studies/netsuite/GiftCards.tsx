@@ -53,7 +53,7 @@ function Forge() {
       <div className="grid gap-6 md:grid-cols-[1fr_1.1fr] md:items-center">
         <div>
           <label className={`${mono} text-white/40`} htmlFor="gift-card-code">
-            Odoo's gift card or eWallet code · 14 characters
+            Odoo&apos;s gift card or eWallet code · 14 characters
           </label>
           <input
             id="gift-card-code"
