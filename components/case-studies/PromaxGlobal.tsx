@@ -116,9 +116,9 @@ export default function PromaxGlobalCaseStudy() {
                     A corporate website built to be <span className="text-pg-200">modern, trusted and fast.</span>
                   </p>
                   <p className="mt-6 max-w-2xl leading-relaxed text-muted md:text-lg">
-                    A multi-page corporate website for a group working across ports, infrastructure and national development. It ranks on
-                    Google, it can be read and cited by ChatGPT, Perplexity, Gemini, Claude and many other AI agents and LLMs, its main content
-                    loads in under a second, and it runs on a secured hosting platform with round-the-clock security and monitoring.
+                    I built a multi-page corporate website for a group operating across ports, infrastructure and national development. It
+                    ranks on Google, can be read and cited by ChatGPT, Perplexity, Gemini, Claude and many other AI agents and LLMs, loads
+                    its main content in under a second, and runs on a secured hosting platform with round-the-clock security and monitoring.
                   </p>
                   <a
                     href="https://promaxglobal.ae"
@@ -185,6 +185,10 @@ export default function PromaxGlobalCaseStudy() {
                   InnovateNex brought me in as a freelancer to deliver it. I took the existing content, restructured it around the
                   company&apos;s portfolio, and rebuilt the whole site on a modern stack. I stayed with the client until it was live.
                 </p>
+                <p>
+                  The project was also my introduction to Generative Engine Optimisation (GEO). Implementing it showed me how search is
+                  changing: visibility now depends not only on ranking in Google, but on being understood and cited by AI assistants.
+                </p>
               </motion.div>
 
               <div className="grid gap-px self-start border border-white/[0.07] bg-white/[0.07]">
@@ -227,38 +231,38 @@ export default function PromaxGlobalCaseStudy() {
         <section className="px-6 pb-32 md:px-10">
           <div className="mx-auto max-w-6xl">
             <Heading ghost="Built" label="Under the hood" className="mb-10">
-              What&apos;s under the hood
+              Technical implementation
             </Heading>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-5">
               <Tile
                 title="Search-ready on every page"
-                caption="Each page has its own title, description, canonical address and link-preview card."
+                caption="Each page has a unique title, description, canonical URL and link-preview card."
                 className="md:col-span-2"
               >
                 <MetaTagsVisual />
               </Tile>
-              <Tile title="Readable by AI assistants" caption="AI crawlers are welcomed by name, and an llms.txt guide explains the site to them." className="md:col-span-2">
+              <Tile title="Readable by AI assistants" caption="AI crawlers are permitted by name, and an llms.txt guide describes the site to them." className="md:col-span-2">
                 <AiCrawlersVisual />
               </Tile>
-              <Tile title="Understood as a company" caption="Structured data describes the business, its services and where each page sits." className="md:col-span-2">
+              <Tile title="Understood as a company" caption="Structured data describes the business, its services and each page's position in the site." className="md:col-span-2">
                 <EntityGraphVisual />
               </Tile>
-              <Tile title="Secure connection" caption="HTTPS-only over TLS 1.3, with round-the-clock protection and monitoring at the edge.">
+              <Tile title="Secure connection" caption="Served exclusively over HTTPS with TLS 1.3, with round-the-clock protection and monitoring.">
                 <HandshakeVisual />
               </Tile>
-              <Tile title="Nothing to hack" caption="A pre-built site with no back end to break into.">
+              <Tile title="Nothing to hack" caption="A fully pre-built site, with no back end exposed to attack.">
                 <NoAttackSurfaceVisual />
               </Tile>
-              <Tile title="Fast by default" caption="Media cut 84%, then compressed and cached at the edge." className="md:col-span-2">
+              <Tile title="Fast by default" caption="I reduced media weight by 84% and configured compression and edge caching." className="md:col-span-2">
                 <FastVisual />
               </Tile>
-              <Tile title="New page in minutes" caption="A content entry becomes a finished page — the same system built every page on the site." className="md:col-span-2">
+              <Tile title="New page in minutes" caption="I built a content system that generates finished pages from structured entries; every page on the site is produced by it." className="md:col-span-2">
                 <PagesFromDataVisual />
               </Tile>
               <Tile
                 title="Ships on every push"
-                caption="Every change to the main branch is built and deployed automatically."
+                caption="I configured continuous deployment: every change to the main branch is built and deployed automatically."
                 className={RELEASES.cms || RELEASES.arabic ? "md:col-span-2" : "md:col-span-4"}
               >
                 <ShipVisual />

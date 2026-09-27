@@ -16,7 +16,7 @@ const STEPS = [
   {
     file: "robots.txt",
     title: "Invited in",
-    body: "Search engines are allowed everywhere, and 14 AI crawlers are named one by one, because several of them won't crawl a site unless they're welcomed by name.",
+    body: "Search engines have full access, and 14 AI crawlers are explicitly permitted by name, as several will not crawl a site unless they are named.",
     readers: ["Google", "Bing", "ChatGPT", "Perplexity", "Gemini", "Claude"],
     lines: [
       ["User-Agent: *", "Allow: /"],
@@ -30,7 +30,7 @@ const STEPS = [
   {
     file: "sitemap.xml",
     title: "Every page listed",
-    body: "Every page, generated from the same route map that builds the menu — so the sitemap can't miss a page or point at one that's gone.",
+    body: "The sitemap is generated from the same route map that builds the navigation, so it cannot omit a page or reference one that no longer exists.",
     readers: ["Google", "Bing"],
     lines: [
       ["<loc>https://promaxglobal.ae/</loc>", "priority 1"],
@@ -44,7 +44,7 @@ const STEPS = [
   {
     file: "<head>",
     title: "Each page describes itself",
-    body: "Every page carries its own title, description, canonical address and a link-preview card, so it reads correctly in search results and looks right when shared on LinkedIn or WhatsApp.",
+    body: "Every page carries its own title, description, canonical URL and link-preview card, so it displays correctly in search results and when shared on LinkedIn or WhatsApp.",
     readers: ["Google", "Bing", "LinkedIn", "WhatsApp"],
     lines: [
       ["<title>", "Ports & Maritime Development | Promax Global"],
@@ -57,7 +57,7 @@ const STEPS = [
   {
     file: "JSON-LD",
     title: "Understood as a company",
-    body: "Structured data tells search engines what the business is, not just what the page says: an Organization with its services, and a breadcrumb trail on every inner page.",
+    body: "Structured data describes the business itself, not only the page content: an Organization with its services, and a breadcrumb trail on every inner page.",
     readers: ["Google", "Gemini", "ChatGPT"],
     lines: [
       ['"@type": "Organization"', "name · logo · contact"],
@@ -69,7 +69,7 @@ const STEPS = [
   {
     file: "llms.txt",
     title: "Written for AI models",
-    body: "A plain-language guide to the whole site that AI assistants can read in one request, generated from the same content as the pages so it never falls out of date.",
+    body: "An llms.txt file provides AI assistants with a plain-language guide to the entire site in a single request. It is generated from the same content as the pages, so it stays current.",
     readers: ["ChatGPT", "Perplexity", "Claude", "Gemini"],
     lines: [
       ["# Promax Global", ""],
@@ -124,6 +124,10 @@ export default function FoundScroll() {
               SEO + GEO
             </p>
             <h2 className="font-display text-3xl italic leading-tight md:text-5xl">How the site gets found</h2>
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
+              I implemented each layer of search and AI discoverability: crawler access, the sitemap, per-page metadata, structured data and an
+              AI-readable site guide.
+            </p>
           </div>
           {/* who reads this step */}
           <div className="flex max-w-md flex-wrap justify-end gap-1.5">

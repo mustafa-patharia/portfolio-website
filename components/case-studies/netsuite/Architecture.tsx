@@ -80,9 +80,9 @@ export default function Architecture() {
         />
       </div>
       <p className="mt-6 max-w-5xl text-sm leading-relaxed text-muted">
-        The add-on runs inside Odoo and calls NetSuite directly. NetSuite owns the configuration and product catalogue and sends both to Odoo.
-        Odoo owns the POS transactions and sends those to NetSuite. Outgoing requests are signed with OAuth 1.0a; incoming requests are
-        authenticated with an Odoo API key.
+        The add-on runs inside Odoo and communicates with NetSuite directly, with no middleware in between. NetSuite owns the configuration
+        and product catalogue and sends both to Odoo; Odoo owns the POS transactions and sends those to NetSuite. Outgoing requests are
+        signed with OAuth 1.0a; incoming requests are authenticated with an Odoo API key.
       </p>
     </motion.div>
   );

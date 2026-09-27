@@ -9,7 +9,7 @@ const ROLES = [
     hat: "Architected",
     line: "Set the technical foundation of the whole platform.",
     points: [
-      "Designed the cloud infrastructure and the service-based backend: one frontend service and four backend services, split by domain.",
+      "Designed the cloud infrastructure and the service-based backend: a frontend service and multiple backend services, split by domain.",
       "Designed the database schema, and set the repository structure and coding standards every other developer followed.",
       "Defined the tenant isolation strategy and how new clients are onboarded.",
       "Took part in every design and vendor discussion, and decided how the system would operate as it grew.",

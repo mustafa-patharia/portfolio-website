@@ -99,13 +99,13 @@ function CodebaseVisual() {
 }
 
 const BLOCKS = ["API response", "Validation", "Data table", "Theme"];
-const USERS = ["Leave", "Payroll", "Expenses"];
+const USERS = ["Core HR", "Leave & attendance", "Self-service"];
 
-/** The same shared pieces light up inside every module that uses them. */
+/** The same toolkit pieces light up inside every service that installs it. */
 function SharedBlocksVisual() {
   const i = useTicker(BLOCKS.length, 1200);
   return (
-    <Panel>
+    <Panel label="toolkit package">
       <div className="mb-3 flex flex-wrap gap-1.5">
         {BLOCKS.map((b, k) => (
           <span key={b} className={`rounded-full border px-2.5 py-1 font-mono text-[10px] transition-colors duration-300 ${k === i ? "border-ipink-500/60 bg-ipink-500/15 text-ipink-200" : "border-white/10 text-white/40"}`}>
@@ -225,15 +225,15 @@ export default function Foundations() {
       >
         <ArchitectureVisual />
       </Tile>
-      <Tile title="Codebase standards" caption="One repository layout, module structure and set of naming rules, so any developer can find where a feature lives and add the next one the same way.">
+      <Tile title="Codebase standards" caption="I defined a consistent layout, module structure and naming convention across every service repository, so any developer can locate a feature and extend the platform the same way.">
         <CodebaseVisual />
       </Tile>
-      <Tile title="Shared building blocks" caption="A standard API structure, reusable functions and components on the backend and frontend, and a global theme and styling system.">
+      <Tile title="Shared building blocks" caption="I packaged the common backend logic into a shared toolkit that every backend service installs as a dependency, rather than duplicating code across repositories. Every controller draws on the same reusable functions, alongside a standard API structure, shared frontend components, and a global theme and styling system.">
         <SharedBlocksVisual />
       </Tile>
       <Tile
         title="Multi-language data"
-        caption="Multi-language covers stored data, not only the interface. Fields such as employee, location and subsidiary names take values in more than one language, and a layer in the data access code swaps in the stored translation before the API responds. Emails follow the same preference. Arabic runs in production, and adding another language needs no custom code. Try it."
+        caption="I extended multi-language support to stored data, not only the interface. Fields such as employee, location and subsidiary names take values in more than one language, and a layer in the data access code swaps in the stored translation before the API responds. Emails follow the same preference. Arabic runs in production, and adding another language needs no custom code. Try it."
         className="md:col-span-2"
       >
         <MultiLanguageVisual />

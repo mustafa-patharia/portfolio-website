@@ -23,7 +23,7 @@ const LESSONS = [
     t: "Own the authentication layer",
     then: "Third-party identity provider",
     now: "In-house authentication",
-    d: "A third-party identity provider got sign-in working quickly, but multi-tenant rules, such as one person across several clients and access granted in stages, meant working around the provider rather than with it. When identity is this central to the product, I would build authentication in-house.",
+    d: "A third-party identity provider got sign-in working quickly, but multi-tenant rules, such as one person across multiple clients and access granted in stages, meant working around the provider rather than with it. When identity is this central to the product, I would build authentication in-house.",
   },
   {
     t: "Components with one job",

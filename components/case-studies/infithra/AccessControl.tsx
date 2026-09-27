@@ -265,19 +265,19 @@ export default function AccessControl() {
     <div className="grid gap-4 md:gap-5">
       <Tile
         title="Multi-tenant sign-in"
-        caption="One person can belong to more than one client and switch between them without signing out, and each switch moves the session into that client's own data. Users move between the HR platform and self-service on the web, and self-service also runs on mobile. Access is granted in stages: web access when the employee record is created, mobile access once onboarding is complete. Sign-in is protected with multi-factor authentication. Try it."
+        caption="A single user can belong to multiple clients and switch between them without signing out, and each switch moves the session into that client's own data. Users move between the HR platform and self-service on the web, and self-service also runs on mobile. Access is granted in stages: web access when the employee record is created, mobile access once onboarding is complete. Sign-in is protected with multi-factor authentication. Try it."
       >
         <SignInDemo />
       </Tile>
       <Tile
         title="Two-layer permissions"
-        caption="Layer one grants create, read, update and delete rights per module. Layer two narrows those rights to a slice of the organisation, by subsidiary, location, department or a set of employees, in any combination. Both layers are configuration. Try it."
+        caption="I designed a two-layer permission model. The first layer grants create, read, update and delete rights per module. The second narrows those rights to a slice of the organisation, by subsidiary, location, department or a set of employees, in any combination. Both layers are configuration. Try it."
       >
         <PermissionDemo />
       </Tile>
       <Tile
         title="Tenant isolation"
-        caption="Every client's data is kept separate, and a request can only ever reach its own tenant. This was part of the architecture from the first release, not added later."
+        caption="Every client's data is isolated, and a request can only reach its own tenant. This was built into the architecture from the first release."
       >
         <IsolationVisual />
       </Tile>

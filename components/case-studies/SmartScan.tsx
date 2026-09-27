@@ -48,7 +48,7 @@ const STATS = [
 const CONSTRAINTS = [
   { n: "01", t: "No typed quantities", d: "A quantity is the count of tags physically scanned. Operators never key in a number." },
   { n: "02", t: "Nothing gets lost", d: "Not on a dead battery, a dropped Wi-Fi link, or a Redis restart mid-sync." },
-  { n: "03", t: "Not married to one ERP", d: "The core has no ERP-specific code in it. An ERP is a connector class you register." },
+  { n: "03", t: "Not married to one ERP", d: "The core contains no ERP-specific code; each ERP is integrated through a registered connector class." },
 ];
 
 const ADMIN = [
@@ -61,7 +61,7 @@ const DECISIONS = [
   { d: "One conditional UPDATE claims the tags", w: "Wrong item, duplicate, already-shipped and two operators racing are all resolved by the database in one statement." },
   { d: "Locks live in the database", w: "A partial unique index allows one active session per bin or order. The second operator gets a 409, not a race." },
   { d: "Postgres outbox in front of Redis", w: "Every ERP job is written to Postgres before it's queued. Losing Redis delays a post; it never drops one." },
-  { d: "Keep the payload of every ERP attempt", w: "When the ERP rejects a post, the queue shows what was sent next to what came back — no log-diving." },
+  { d: "Keep the payload of every ERP attempt", w: "When the ERP rejects a post, the queue shows what was sent next to what came back, so rejected posts can be diagnosed without searching the logs." },
   { d: "Schema per tenant, fail-closed", w: "Each client gets its own Postgres schema. A request without a resolved tenant is refused outright." },
 ];
 
@@ -184,8 +184,9 @@ export default function SmartScanCaseStudy() {
                 Every tag, <span className="text-ss-300">accounted for.</span>
               </p>
               <p className="mt-6 max-w-2xl leading-relaxed text-muted md:text-lg">
-                RFID middleware that sits between Android handhelds and any ERP, starting with NetSuite. It tracks every physical unit by its tag, runs the
-                warehouse&apos;s floor workflows, and posts only finished, consistent transactions to the ERP.
+                I designed and built SmartScan, an RFID middleware platform that sits between Android handhelds and the ERP, beginning with
+                NetSuite. It tracks every physical unit by its tag, runs the warehouse floor workflows, and posts only completed, consistent
+                transactions to the ERP.
               </p>
               <div className="mt-6 font-mono text-xs text-white/40 md:text-sm">
                 <span className="mr-2 text-ss-300/70">EPC</span>
@@ -241,8 +242,8 @@ export default function SmartScanCaseStudy() {
                   by hand, and no record of which physical unit went where.
                 </p>
                 <p>
-                  SmartScan owns the warehouse state in between. Operators scan against it at floor speed. The ERP stays the
-                  financial system of record and receives only the finished result.
+                  I designed SmartScan to own the warehouse state between the two. Operators scan against it at floor speed, while the ERP
+                  remains the financial system of record and receives only the finished result.
                 </p>
               </div>
             </motion.div>
@@ -295,35 +296,35 @@ export default function SmartScanCaseStudy() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-5">
               <Tile
                 title="Built for the handheld"
-                caption="Operators live on an Android RFID gun. The app drives the reader through a native module and scopes everything to their warehouse."
+                caption="Operators work on an Android RFID reader. I integrated the reader through a native Kotlin module and scoped every operation to the operator's warehouse."
                 className="md:col-span-2 md:row-span-2"
               >
                 <HandheldVisual />
               </Tile>
               <Tile
                 title="One statement, every edge case"
-                caption="A single conditional UPDATE claims the scanned tags. Whatever it doesn't return is rejected, with a reason for each."
+                caption="Scanned tags are claimed in a single conditional UPDATE. Any tag it does not return is rejected, with a specific reason for each."
                 className="md:col-span-2"
               >
                 <AtomicClaimVisual />
               </Tile>
-              <Tile title="Session locks" caption="One active session per bin or order, via a partial unique index.">
+              <Tile title="Session locks" caption="A partial unique index enforces one active session per bin or order.">
                 <SessionLockVisual />
               </Tile>
-              <Tile title="Durable outbox" caption="Postgres first, Redis for dispatch, retries with backoff.">
+              <Tile title="Durable outbox" caption="Every ERP job is written to Postgres before dispatch through Redis, with retries and backoff.">
                 <OutboxVisual />
               </Tile>
               <Tile
                 title="19 modules × 3 actions"
-                caption="Granular RBAC. Stock edits are split from catalog edits; force-releasing a lock needs delete rights."
+                caption="Permissions are defined across 19 modules and three actions. Stock edits are separated from catalogue edits, and force-releasing a lock requires delete rights."
                 className="md:col-span-2"
               >
                 <RbacVisual />
               </Tile>
-              <Tile title="Schema per tenant" caption="New clients are cloned from a template schema.">
+              <Tile title="Schema per tenant" caption="Each client is provisioned with a dedicated schema, cloned from a template.">
                 <TenantsVisual />
               </Tile>
-              <Tile title="Survives a dead battery" caption="The scan buffer syncs to the server as a draft.">
+              <Tile title="Survives a dead battery" caption="The scan buffer is synchronised to the server as a draft, so no work is lost if a device's battery fails.">
                 <OfflineResumeVisual />
               </Tile>
             </div>
@@ -354,9 +355,9 @@ export default function SmartScanCaseStudy() {
                 <Kicker>Back office</Kicker>
                 <h2 className="font-display text-4xl italic md:text-5xl">When the ERP rejects a sync, you know why.</h2>
                 <p className="mt-4 max-w-xl leading-relaxed text-muted">
-                  The admin dashboard is where supervisors map records to the ERP and watch the sync queue. Every failed post
-                  carries the exact payload sent and the ERP&apos;s response, so an integration dispute takes minutes, not a log
-                  search.
+                  I built the admin dashboard, where supervisors map records to the ERP and monitor the sync queue. Each failed post retains
+                  the exact payload sent and the ERP&apos;s response, so integration issues can be resolved in minutes rather than through
+                  log searches.
                 </p>
               </div>
               <div className="flex gap-2">
@@ -423,7 +424,7 @@ export default function SmartScanCaseStudy() {
         <section className="px-6 pb-32 md:px-10">
           <div className="mx-auto max-w-6xl">
             <motion.div {...reveal} className="mb-10">
-              <Kicker>Decisions that paid off</Kicker>
+              <Kicker>Key design decisions</Kicker>
               <h2 className="font-display text-4xl italic md:text-5xl">The ledger.</h2>
             </motion.div>
             <div className="border-t border-white/10">
@@ -442,6 +443,11 @@ export default function SmartScanCaseStudy() {
                 </motion.div>
               ))}
             </div>
+            <motion.p {...reveal} className="mt-8 max-w-3xl leading-relaxed text-white/60">
+              SmartScan was my first project working directly with RFID hardware, from the reader SDK to handling tag reads at floor speed.
+              It also deepened my approach to integration design: synchronising with NetSuite idempotently, so that every transaction stays
+              consistent across both systems and every change remains fully auditable.
+            </motion.p>
           </div>
         </section>
 

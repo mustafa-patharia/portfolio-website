@@ -73,9 +73,10 @@ export default function NetSuiteOdooCaseStudy() {
                 Every POS order, <span className="text-oteal-300">on NetSuite&apos;s books.</span>
               </p>
               <p className="mt-6 max-w-xl leading-relaxed text-muted md:text-lg">
-                An Odoo addon that connects Odoo Point of Sale to NetSuite. Each POS order becomes the right NetSuite documents (invoices, credit memos,
-                customer payments, refunds and gift certificates), posted in the order NetSuite accepts them and never twice. NetSuite stays in charge:
-                it pushes the configuration and the product catalog into Odoo.
+                I designed and built an Odoo add-on that integrates Odoo Point of Sale with NetSuite. Each POS order is converted into the
+                correct NetSuite documents (invoices, credit memos, customer payments, refunds and gift certificates) and posted in the
+                sequence NetSuite requires, with no duplicates. NetSuite remains the system of record, supplying the configuration and
+                product catalogue to Odoo.
               </p>
             </motion.div>
 
@@ -136,7 +137,7 @@ export default function NetSuiteOdooCaseStudy() {
               <PosWalkthrough />
 
               <div className="mt-28">
-                <Chapter menu="Architecture" title="Connecting Odoo-POS to NetSuite" />
+                <Chapter menu="Architecture" title="Add-on architecture" />
                 <Architecture />
               </div>
             </div>
@@ -147,9 +148,9 @@ export default function NetSuiteOdooCaseStudy() {
             <div className="mx-auto max-w-6xl">
               <Chapter menu="Configuration" title="Managed via NetSuite">
                 <p>
-                  NetSuite is where the finance, management and ops teams work and use it for their daily operations and analysis, so that&apos;s where the integration is configured. NetSuite sends the credentials, sync
-                  mode, merge rules, retry policy and concurrency limit to Odoo, where they&apos;re stored read-only. There&apos;s one source of
-                  settings, so the two systems can&apos;t drift apart.
+                  Finance, management and operations teams work in NetSuite daily, so I designed the integration to be configured there.
+                  NetSuite supplies the credentials, sync mode, merge rules, retry policy and concurrency limit, which Odoo stores as
+                  read-only settings. A single source of configuration ensures the two systems cannot drift apart.
                 </p>
               </Chapter>
               <ConfigPush />
@@ -161,9 +162,9 @@ export default function NetSuiteOdooCaseStudy() {
             <div className="mx-auto max-w-6xl">
               <Chapter menu="Master Data Mappings" title="Mapping warehouses, payment methods and taxes">
                 <p>
-                  Most POS customers are anonymous, so a customer record can&apos;t tell NetSuite which branch a sale belongs to. The counter can. The
-                  add-on traces each order back to its shop&apos;s warehouse and maps that to a NetSuite subsidiary, department and location. Payment
-                  methods and taxes are mapped the same way.
+                  Most POS customers are anonymous, so the customer record cannot identify which branch a sale belongs to; the point of sale
+                  can. I implemented a mapping that resolves each order through its shop&apos;s warehouse to a NetSuite subsidiary,
+                  department and location. Payment methods and tax codes are mapped using the same approach.
                 </p>
               </Chapter>
               <MappingResolver />
@@ -175,28 +176,29 @@ export default function NetSuiteOdooCaseStudy() {
             <div className="mx-auto max-w-6xl">
               <Chapter menu="Invoices & Payments" title="Invoice and payment sync">
                 <p>
-                  Every invoice raised at the counter and every payment taken against it is sent to NetSuite. Invoices can go one at a time as they
-                  happen, or merged per shop at the end of the day. Payments are applied to the right invoice, net of any change handed back.
+                  I implemented the synchronisation of every POS invoice, and every payment recorded against it, to NetSuite. It supports
+                  two modes: real-time, where each document is sent as it is created, and scheduled, where transactions are consolidated per
+                  shop at the end of the day. Each payment is applied to its invoice, net of any change returned to the customer.
                 </p>
               </Chapter>
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
                 <Tile
                   title="Daily merge per shop"
-                  caption="In scheduled mode, each shop's invoices for the day become one NetSuite invoice, with lines merged by item and tax. Its payments become one customer payment per payment method, settling all of that day's invoices at once. Different shops and days are never combined."
+                  caption="In scheduled mode, each shop's invoices for the day are consolidated into a single NetSuite invoice, with lines merged by item and tax. Payments are consolidated into one customer payment per payment method, settling all of that day's invoices. Shops and days are never combined."
                   className="md:col-span-2"
                 >
                   <ConsolidationVisual />
                 </Tile>
                 <Tile
                   title="Change handled correctly"
-                  caption="Odoo records change given back as a separate negative line. The add-on combines them per order and payment method, so NetSuite receives what the customer actually paid."
+                  caption="Odoo records change returned to the customer as a separate negative line. I designed the add-on to net these per order and payment method, so NetSuite receives the amount the customer actually paid."
                 >
                   <ChangeNettingVisual />
                 </Tile>
                 <Tile
                   title="Payments wait for their invoice"
-                  caption="If an invoice hasn't reached NetSuite yet, its payment checks again every 30 seconds for up to 30 minutes, without using up its retries."
+                  caption="Where an invoice has not yet reached NetSuite, its payment is re-checked every 30 seconds for up to 30 minutes, without consuming its retry allowance."
                 >
                   <PaymentWaitVisual />
                 </Tile>
@@ -209,8 +211,9 @@ export default function NetSuiteOdooCaseStudy() {
             <div className="mx-auto max-w-6xl">
               <Chapter menu="Returns & Exchanges" title="Handling returns and exchanges">
                 <p>
-                  A return becomes a NetSuite credit memo. An exchange is harder: one order that returns one item and sells another. Scroll through a
-                  real exchange from testing to see how the add-on turns it into three linked NetSuite documents.
+                  A return is posted as a NetSuite credit memo. An exchange is more complex: a single order that both returns one item and
+                  sells another. The walkthrough below follows a real exchange from testing and shows how the add-on separates it into three
+                  linked NetSuite documents.
                 </p>
               </Chapter>
             </div>
@@ -223,14 +226,15 @@ export default function NetSuiteOdooCaseStudy() {
             <div className="mx-auto max-w-6xl">
               <Chapter menu="Gift Cards" title="Gift card and eWallet support">
                 <p>
-                  Customers can buy a gift card or top up an eWallet at the counter, then spend either one as payment later. The add-on carries all of
-                  it to NetSuite. Purchases and top-ups become NetSuite gift certificates, with the sender and recipient details attached, and every
-                  redemption is drawn from the right certificate when its invoice is posted. eWallets follow the same path, because NetSuite has no
-                  wallet record of its own.
+                  I extended the integration to cover gift cards and eWallets, which customers can purchase or top up at the counter and
+                  later redeem as payment. Each purchase and top-up is recorded in NetSuite as a gift certificate, including sender and
+                  recipient details, and each redemption is drawn from the correct certificate when its invoice is posted. eWallets follow
+                  the same process, as NetSuite has no native wallet record.
                 </p>
                 <p>
-                  Two NetSuite limits made this harder. Odoo gift card codes are 14 characters, but NetSuite allows 9, and a NetSuite certificate
-                  can&apos;t be topped up. So each purchase or top-up becomes its own certificate, with a code generated from the card number.
+                  Two NetSuite constraints shaped the design. Odoo gift card codes are 14 characters, whereas NetSuite accepts 9, and a
+                  NetSuite certificate cannot be topped up. I therefore issued a separate certificate for each purchase or top-up, with a
+                  code derived from the card number.
                 </p>
               </Chapter>
               <GiftCards />
@@ -251,20 +255,20 @@ export default function NetSuiteOdooCaseStudy() {
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
                 <Tile
                   title="A fixed sync order"
-                  caption="Invoices, then payments, then credit notes, then refunds. Credit notes come after payments so a credit can't absorb the balance a payment was meant to settle. If the invoice step fails, nothing after it runs."
+                  caption="Documents are processed in a fixed sequence: invoices, payments, credit notes, then refunds. Credit notes follow payments so that a credit cannot absorb a balance a payment was intended to settle, and a failed invoice step halts everything after it."
                   className="md:col-span-2"
                 >
                   <FourStepsVisual />
                 </Tile>
                 <Tile
                   title="No duplicate processing"
-                  caption="Each record is locked while it's being sent. A second job that tries to send it at the same moment steps back, checks again, and finds it's already done."
+                  caption="Each record is locked while it is being sent. A concurrent job attempting the same record waits, re-checks, and finds it already processed."
                 >
                   <RowLockVisual />
                 </Tile>
                 <Tile
                   title="Failures are never lost"
-                  caption="If a sync fails, the job's changes roll back but the failed status and its reason are still saved, so support always knows what went wrong."
+                  caption="When a sync fails, the job's changes are rolled back while the failure status and its reason are retained, giving support a clear record of what went wrong."
                 >
                   <StickyFailureVisual />
                 </Tile>
@@ -277,9 +281,9 @@ export default function NetSuiteOdooCaseStudy() {
             <div className="mx-auto max-w-6xl">
               <Chapter menu="Sync Logs" title="Monitoring, sync status and audit logs">
                 <p>
-                  Replacing manual reconciliation only works if people can trust what the integration did. Every record carries a sync status with a
-                  clear rule behind it, and every order shows exactly what it created in NetSuite. Hover over a status to see when it applies, then
-                  look at the screens the client&apos;s team uses day to day.
+                  Replacing manual reconciliation depends on trust in what the integration has done. I therefore gave every record a sync
+                  status governed by a clear rule, and added a view to each order listing every document it created in NetSuite. Hover over
+                  a status to see when it applies, then review the screens the client&apos;s team uses daily.
                 </p>
               </Chapter>
               <SyncLogs />
@@ -310,7 +314,7 @@ export default function NetSuiteOdooCaseStudy() {
             <div>
               <motion.div {...reveal} className="mb-8">
                 <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.28em] text-odoo-300">Log notes</p>
-                <h2 className="font-display text-4xl italic md:text-5xl">Key decisions and known limitations</h2>
+                <h2 className="font-display text-4xl italic md:text-5xl">Key decisions, limitations and lessons</h2>
               </motion.div>
               <Chatter />
             </div>

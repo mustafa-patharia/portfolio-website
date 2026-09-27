@@ -17,7 +17,7 @@ const SHOTS = [
     name: "About",
     src: "/projects/promax/mobile/about.jpg",
     alt: "About page on a phone: city skyline hero with the heading over a light wash",
-    text: "Full-width imagery with the heading kept readable at every screen size.",
+    text: "Headings remain legible over full-width imagery at every screen size.",
   },
   {
     id: "ports",
@@ -25,7 +25,7 @@ const SHOTS = [
     name: "Portfolio page",
     src: "/projects/promax/mobile/ports.jpg",
     alt: "Ports and Maritime Development page on a phone with a video hero",
-    text: "Each sector page is built from the same content system, so all of them behave the same on a phone.",
+    text: "Every sector page is generated from the same content system, ensuring consistent behaviour on mobile.",
   },
   {
     id: "home",
@@ -33,7 +33,7 @@ const SHOTS = [
     name: "Home",
     src: "/projects/promax/mobile/home.jpg",
     alt: "Home page on a phone: headline over a looping globe video",
-    text: "The headline is on screen immediately. On a phone the copy takes the full width and the background sits behind it.",
+    text: "The headline renders immediately; on mobile, the copy spans the full width with the background behind it.",
   },
   {
     id: "whyus",
@@ -41,7 +41,7 @@ const SHOTS = [
     name: "Why Us",
     src: "/projects/promax/mobile/whyus.jpg",
     alt: "Why Us page on a phone with a navy gradient hero",
-    text: "Lightweight headers on text-led pages keep them quick to load on mobile data.",
+    text: "Text-led pages use lightweight headers to load quickly on mobile networks.",
   },
   {
     id: "reach",
@@ -49,7 +49,7 @@ const SHOTS = [
     name: "Reach Us",
     src: "/projects/promax/mobile/reachus.jpg",
     alt: "Reach Us page on a phone with a container-yard video hero",
-    text: "One clear page for getting in touch, readable at a glance on any phone.",
+    text: "A single, clear contact page, legible at a glance on any device.",
   },
 ] as const;
 

@@ -334,7 +334,7 @@ export function ObservabilityVisual() {
   }, []);
   const d = pts.map((v, k) => `${k === 0 ? "M" : "L"}${((k / (pts.length - 1)) * 100).toFixed(2)},${(100 - v).toFixed(2)}`).join(" ");
   return (
-    <Panel label="5 services · healthy">
+    <Panel label="All services · healthy">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-20 w-full">
         <defs>
           <linearGradient id="inf-obs" x1="0" x2="1">

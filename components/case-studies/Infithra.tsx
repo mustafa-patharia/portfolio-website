@@ -33,7 +33,7 @@ import {
 /* ------------------------------------------------------------------ content */
 
 const META = [
-  { k: "Role", v: "Founding engineer · end-to-end ownership" },
+  { k: "Role", v: "End-to-end ownership" },
   { k: "Company", v: "KPI" },
   { k: "Duration", v: "Jan 2023 – Jul 2026" },
   { k: "Scope", v: "Client platform · admin platform · mobile backend" },
@@ -97,7 +97,7 @@ export default function InfithraCaseStudy() {
               <p className="mt-6 max-w-xl leading-relaxed text-muted md:text-lg">
                 A cloud HR and payroll platform for businesses in the UAE and Saudi Arabia, covering the full employee lifecycle from onboarding to
                 end-of-service: labour-law and WPS-compliant payroll, time and attendance, leave, expenses, people analytics and employee
-                self-service on web and mobile. I joined as the founding engineer at the very start of the project, and over more than three years
+                self-service on web and mobile. I joined at the inception of the project, and over more than three years
                 built it into a production platform used by enterprise clients every day.
               </p>
               <a
@@ -160,8 +160,9 @@ export default function InfithraCaseStudy() {
                 stand-alone tools and ERP payroll modules that are slow to run and hard to adapt.
               </p>
               <p>
-                Infithra brings it into a single multi-tenant platform. Each client&apos;s data is isolated, business rules live in configuration
-                rather than code, and heavy processing such as payroll runs in seconds rather than hours.
+                I architected Infithra to consolidate this into a single multi-tenant platform. Each client&apos;s data is isolated,
+                business rules are held in configuration rather than code, and intensive processing such as payroll completes in seconds
+                rather than hours.
               </p>
             </Chapter>
             <div className="flex flex-col gap-3 lg:pt-16">
@@ -190,7 +191,7 @@ export default function InfithraCaseStudy() {
               <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">What I owned</p>
               <h2 className="font-display text-4xl italic md:text-5xl">My role and contribution</h2>
               <p className="mt-5 leading-relaxed text-muted md:text-lg">
-                As the founding engineer at KPI, I owned the platform end to end: the architecture, the product modules, the UI and UX, the
+                At KPI, I owned the platform end to end: the architecture, the product modules, the UI and UX, the
                 integrations and delivery. I was part of every design and vendor discussion, and defined how the system would operate, from the
                 initial architecture through launch and scale.
               </p>
@@ -206,8 +207,8 @@ export default function InfithraCaseStudy() {
           <div className="mx-auto max-w-6xl">
             <Chapter module="Platform" title="Platform scope">
               <p>
-                One client platform, the product HR teams, managers and employees use every day, with two pieces built around it. Hover over an
-                area to see what it covers.
+                I built the client platform used daily by HR teams, managers and employees, together with the two supporting systems around
+                it. Hover over an area to see what it covers.
               </p>
             </Chapter>
             <PlatformScope />
@@ -219,7 +220,7 @@ export default function InfithraCaseStudy() {
           <div className="mx-auto max-w-6xl">
             <Chapter module="Engineering" title="Foundations and engineering standards">
               <p>
-                As the founding engineer, I set up the base that every other part of the platform, and every other developer, built on: the
+                From the outset, I established the foundation that every other part of the platform, and every other developer, built on: the
                 architecture, the data model, the codebase conventions and the shared building blocks.
               </p>
             </Chapter>
@@ -232,15 +233,15 @@ export default function InfithraCaseStudy() {
           <div className="mx-auto max-w-6xl">
             <Chapter module="Payroll" title="Payroll engine and compliance">
               <p>
-                Payroll is where the platform does its heaviest work. Every pay component is configurable, labour-law rules are applied from each
-                employee&apos;s contract and classification, and a full payroll run finishes in seconds. The engine went through several rebuilds as
-                client rules grew more complex, until every rule could be configured.
+                Payroll carries the platform&apos;s heaviest workload. I made every pay component configurable, applied labour-law rules
+                based on each employee&apos;s contract and classification, and reduced a full payroll run to seconds. The engine was rebuilt
+                several times as client requirements grew more complex, until every rule could be configured.
               </p>
             </Chapter>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
               <Tile
                 title="Configurable pay components"
-                caption="Earnings, allowances, contributions and deductions are defined per client and per employee classification. A run for 100 employees completes in seconds, not hours."
+                caption="Earnings, allowances, contributions and deductions are configurable per client and per employee classification. A run for 100 employees completes in seconds rather than hours."
                 className="md:col-span-2"
               >
                 <PayComponentsVisual />
@@ -248,12 +249,12 @@ export default function InfithraCaseStudy() {
               <Tile title="Labour-law rules" caption="Contract, contribution and classification rules are applied automatically to every employee record.">
                 <RuleSnapVisual />
               </Tile>
-              <Tile title="Payslips and reports" caption="Every run produces PDF payslips and payroll reports, delivered to employees through self-service.">
+              <Tile title="Payslips and reports" caption="Each run generates PDF payslips and payroll reports, delivered to employees through self-service.">
                 <PayslipExportVisual />
               </Tile>
               <Tile
                 title="The full employee lifecycle"
-                caption="Attendance, leave, overtime, expenses, reimbursements, advances and end-of-service all feed payroll from the same employee record."
+                caption="I integrated attendance, leave, overtime, expenses, reimbursements, advances and end-of-service into payroll through a single employee record."
                 className="md:col-span-2"
               >
                 <LifecycleVisual />
@@ -288,12 +289,12 @@ export default function InfithraCaseStudy() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
               <Tile
                 title="Metadata-driven forms"
-                caption="Forms are rendered from configuration. New fields and validations go live without a code change or a deployment."
+                caption="Forms are generated from configuration, so new fields and validations go live without a code change or deployment."
                 className="md:col-span-2"
               >
                 <MetaFormVisual />
               </Tile>
-              <Tile title="Admin platform" caption="Onboards new companies, applies system upgrades, and keeps scheduler logs and monitoring for every client.">
+              <Tile title="Admin platform" caption="I built the admin platform to onboard new companies, apply system upgrades, and maintain scheduler logs and monitoring for every client.">
                 <AdminPlatformVisual />
               </Tile>
               <Tile
@@ -343,15 +344,15 @@ export default function InfithraCaseStudy() {
               >
                 <DeployVisual />
               </Tile>
-              <Tile title="Multi-tenant migrations" caption="On every new deployment, the platform checks the version of the admin database and every client database, then applies any pending migrations in order. Every tenant stays on the same schema, with no manual database steps in a release.">
+              <Tile title="Multi-tenant migrations" caption="I automated database migrations across all tenants. On every deployment, the platform checks the version of the admin database and each client database, then applies pending migrations in order. Every tenant stays on the same schema, with no manual database steps in a release.">
                 <MigrationVisual />
               </Tile>
-              <Tile title="Observability" caption="Monitoring and alerting across all five services: New Relic for application performance and traces, Grafana for dashboards, and CloudWatch for logs and alarms, so a slow endpoint or failing job is traced to its source quickly.">
+              <Tile title="Observability" caption="I integrated New Relic across the backend services for application performance and tracing, and used Grafana dashboards and CloudWatch logs and alarms to monitor the platform and gain insight into its behaviour, so a slow endpoint or failing job can be traced to its source quickly.">
                 <ObservabilityVisual />
               </Tile>
               <Tile
                 title="AI-assisted development and debugging"
-                caption="In-house AI agents, Claude skills, MCP servers and workflows, connected to the codebase and the team's tools. They review changes against the project's standards and trace bugs to a likely root cause, cutting development and review effort by about 40%."
+                caption="I developed in-house AI agents, Claude skills, MCP servers and workflows, connected to the codebase and the team's tools. They review changes against the project's standards and trace bugs to a likely root cause, cutting development and review effort by about 40%."
               >
                 <AiAgentsVisual />
               </Tile>
