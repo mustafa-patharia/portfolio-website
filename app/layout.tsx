@@ -9,13 +9,17 @@ import { Analytics } from "@vercel/analytics/next";
 const GA_MEASUREMENT_ID = "G-69RBNWHM1D";
 export const metadata: Metadata = {
   metadataBase: new URL("https://mustafapatharia.vercel.app"), // Provide the base URL for resolving relative OG/Twitter images
-  title: "Mustafa Patharia | Senior Software Engineer & AI Engineer",
+  title: "Mustafa Patharia | Senior Full-Stack Engineer",
   description:
-    "Five years architecting multi-tenant SaaS platforms, distributed backends, and the agentic tooling that builds them faster.",
+    "Five years building software end to end, from SaaS platforms and mobile apps to the ERP integrations that keep a business running.",
   keywords: [
     "Mustafa Patharia",
     "Software Engineer",
-    "AI Engineer",
+    "Full Stack Engineer",
+    "SaaS Development",
+    "Mobile App Development",
+    "ERP Integration",
+    "Odoo Development",
     "Full Stack Developer",
     "Next.js",
     "Node.js",
@@ -31,7 +35,7 @@ export const metadata: Metadata = {
     url: "https://mustafapatharia.vercel.app", // Adjust as necessary
     title: "Mustafa Patharia | Senior Software Engineer",
     description:
-      "Five years architecting multi-tenant SaaS platforms, distributed backends, and the agentic tooling that builds them faster.",
+      "Five years building software end to end, from SaaS platforms and mobile apps to the ERP integrations that keep a business running.",
     siteName: "Mustafa Patharia Portfolio",
     images: [
       {
@@ -46,7 +50,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Mustafa Patharia | Senior Software Engineer",
     description:
-      "Architecting multi-tenant SaaS platforms and the agentic tooling that builds them faster.",
+      "Five years building software end to end, from SaaS platforms and mobile apps to the ERP integrations that keep a business running.",
     creator: "@mustafa-patharia",
     images: ["/og-image.jpg"],
   },
@@ -86,11 +90,11 @@ export default function RootLayout({
               "@type": "Person",
               name: "Mustafa Patharia",
               url: "https://mustafapatharia.vercel.app",
-              jobTitle: "Senior Software Engineer & AI Engineer",
-              description: "Architecting multi-tenant SaaS platforms, distributed backends, and the agentic tooling that builds them faster.",
+              jobTitle: "Senior Full-Stack Engineer",
+              description: "Five years building software end to end, from SaaS platforms and mobile apps to the ERP integrations that keep a business running.",
               knowsAbout: [
                 "Software Engineering",
-                "AI Engineering",
+                "ERP Integration",
                 "Next.js",
                 "Node.js",
                 "SaaS Architecture",

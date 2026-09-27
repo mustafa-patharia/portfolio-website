@@ -3,9 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { AnimatePresence, motion } from "framer-motion";
 import BlackHole from "./BlackHole";
 
-const ROLES = ["Fullstack", "AI", "Platform", "Systems"];
+// Asked of the visitor (clients first, then the recruiter hook); the one
+// answer below fits every question.
+const ASKS = [
+  "a SaaS platform?",
+  "a mobile app?",
+  "an ERP integration?",
+  "a custom add-on module?",
+  "a website?",
+  "a full-stack engineer on your team?",
+];
 
 export default function HeroScene({ ready }: { ready: boolean }) {
   const rootRef = useRef<HTMLElement>(null);
@@ -13,8 +23,8 @@ export default function HeroScene({ ready }: { ready: boolean }) {
 
   useEffect(() => {
     const id = window.setInterval(
-      () => setRoleIndex((i) => (i + 1) % ROLES.length),
-      2000
+      () => setRoleIndex((i) => (i + 1) % ASKS.length),
+      2600
     );
     return () => window.clearInterval(id);
   }, []);
@@ -33,7 +43,9 @@ export default function HeroScene({ ready }: { ready: boolean }) {
         .fromTo(
           ".blur-in",
           { opacity: 0, filter: "blur(10px)", y: 20 },
-          { opacity: 1, filter: "blur(0px)", y: 0, duration: 1, stagger: 0.1 },
+          // Drop the spent filter: a lingering blur(0px) re-rasterises the buttons'
+          // animated borders every frame over the live canvas, and they shimmer.
+          { opacity: 1, filter: "blur(0px)", y: 0, duration: 1, stagger: 0.1, clearProps: "filter" },
           0.3
         );
     },
@@ -51,28 +63,50 @@ export default function HeroScene({ ready }: { ready: boolean }) {
       <BlackHole />
 
       <div className="hero-copy relative z-10 flex h-full flex-col items-center justify-center px-6 pt-24 text-center md:pt-32">
-        <p className="blur-in mb-8 text-[10px] uppercase tracking-[0.3em] text-muted sm:text-xs">
-          Senior Software Engineer &middot; AI Engineer
+        <p className="blur-in mb-8 flex flex-col items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-muted sm:flex-row sm:gap-0 sm:text-xs sm:tracking-[0.3em]">
+          <span>Senior Full-Stack Engineer</span>
+          <span aria-hidden className="hidden sm:inline">&nbsp;&middot;&nbsp;</span>
+          <span className="inline-flex items-center gap-2">
+            <span aria-hidden className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#89AACC] opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#89AACC]" />
+            </span>
+            Available for freelance &amp; full-time
+          </span>
         </p>
 
         <h1 className="name-reveal mb-6 font-display text-6xl italic leading-[0.9] tracking-tight text-text-primary md:text-8xl lg:text-9xl">
           Mustafa Patharia
         </h1>
 
-        <p className="blur-in mb-4 text-base text-muted md:text-lg">
-          A{" "}
-          <span
-            key={roleIndex}
-            className="inline-block animate-role-fade-in font-display italic text-text-primary"
+        {/* The line stays centred on each question; "Need" glides to its new
+            spot while the old question pops out and the next fades in. */}
+        <p className="blur-in mb-5 flex items-baseline justify-center gap-2 md:gap-3">
+          <motion.span
+            layout="position"
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="text-base text-text-primary/70 md:text-lg"
           >
-            {ROLES[roleIndex]}
-          </span>{" "}
-          engineer, architecting the systems that scale.
+            Need
+          </motion.span>
+          <AnimatePresence mode="popLayout" initial={false}>
+            <motion.span
+              key={roleIndex}
+              layout="position"
+              initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="whitespace-nowrap font-display text-xl italic text-text-primary sm:text-2xl md:text-3xl"
+            >
+              {ASKS[roleIndex % ASKS.length]}
+            </motion.span>
+          </AnimatePresence>
         </p>
 
-        <p className="blur-in mb-12 max-w-md text-sm text-muted md:text-base">
-          Five years architecting multi-tenant SaaS platforms, distributed
-          backends, and the agentic tooling that builds them faster.
+        <p className="blur-in mb-12 max-w-md text-[15px] leading-relaxed text-text-primary/70 md:max-w-lg md:text-lg">
+          I&apos;ve spent five years taking software from first idea to launch,
+          working on my own and as part of a team.
         </p>
 
         <div className="blur-in inline-flex flex-wrap items-center justify-center gap-4">

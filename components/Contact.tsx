@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import HlsVideo from "./HlsVideo";
-import { RESUME_MAP, DEFAULT_RESUME } from "@/lib/resumes";
 
 const SOCIALS = [
   {
@@ -31,18 +30,6 @@ const SOCIALS = [
 
 export default function Contact() {
   const marqueeRef = useRef<HTMLDivElement>(null);
-  const [resumeInfo, setResumeInfo] = useState(DEFAULT_RESUME);
-
-  useEffect(() => {
-    fetch("https://ipapi.co/json/", { cache: "no-store" })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        const code = data?.country_code;
-        if (code && RESUME_MAP[code]) setResumeInfo(RESUME_MAP[code]);
-      })
-      .catch(() => { });
-  }, []);
-
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.to(marqueeRef.current, {

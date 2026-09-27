@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import LoadingScreen from "@/components/LoadingScreen";
-import Navbar from "@/components/Navbar";
 import Stage from "@/components/home/Stage";
+import JourneyNav from "@/components/home/JourneyNav";
 import { jumpToScene } from "@/components/home/journey";
 
 export default function Index() {
@@ -40,7 +40,7 @@ export default function Index() {
         animate={{ opacity: isLoading ? 0 : 1 }}
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <Navbar />
+        <JourneyNav />
         <Stage ready={!isLoading} />
       </motion.main>
     </>

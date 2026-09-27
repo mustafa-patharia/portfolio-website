@@ -19,6 +19,18 @@ export const JOURNEY_LENGTH = SCENES[SCENES.length - 1].at;
  *  camera through the horizon. */
 export const dive = { center: 0, zoom: 0 };
 
+/** Scrubbed by the master timeline, read each frame by the work ring:
+ *  `form` flies the posters in from depth, `turn` is how many cards the
+ *  ring has rotated past (0 → last case study). */
+export const ring = { form: 0, turn: 0 };
+
+/** Screens of scroll per poster step inside the ring (labels `work-1`…). */
+export const RING_STEP = 0.4;
+
+/** Live timeline position in screen-heights, written by the stage on every
+ *  scroll update and read each frame by the scene rail. */
+export const progress = { t: 0 };
+
 /** Fired on window with the settled scene id whenever it changes. */
 export const SCENE_EVENT = "journey:scene";
 

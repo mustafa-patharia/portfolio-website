@@ -37,7 +37,7 @@ export default function Navbar() {
   const smoothTo = (e: React.MouseEvent, href: string, label?: string) => {
     e.preventDefault();
     if (label) setActive(label);
-    
+
     if (pathname === "/") {
       jumpToScene(href.slice(1));
     } else {
@@ -48,12 +48,11 @@ export default function Navbar() {
   return (
     <header className="fixed left-0 right-0 top-0 z-50 flex justify-center px-4 pt-4 md:pt-6">
       <nav
-        className={`inline-flex items-center rounded-full border border-white/10 bg-surface px-2 py-2 backdrop-blur-md transition-shadow duration-300 ${
-          scrolled ? "shadow-md shadow-black/10" : ""
-        }`}
+        className={`inline-flex items-center rounded-full border border-white/10 bg-surface px-2 py-2 backdrop-blur-md transition-shadow duration-300 ${scrolled ? "shadow-md shadow-black/10" : ""
+          }`}
       >
         {/* Logo */}
-        <a
+        {/* <a
           href="#home"
           onClick={(e) => smoothTo(e, "#home", "Home")}
           className="group relative flex h-9 w-9 items-center justify-center rounded-full transition-transform duration-300 hover:scale-110"
@@ -65,7 +64,7 @@ export default function Navbar() {
               MP
             </span>
           </span>
-        </a>
+        </a> */}
 
         <span className="mx-1 hidden h-5 w-px bg-stroke sm:block" />
 
@@ -74,11 +73,10 @@ export default function Navbar() {
             <a
               key={link.label}
               href={link.href}
-              className={`rounded-full px-3 py-1.5 text-xs transition-colors duration-200 sm:px-4 sm:py-2 sm:text-sm ${
-                pathname === link.href
-                  ? "bg-stroke/50 text-text-primary"
-                  : "text-muted hover:bg-stroke/50 hover:text-text-primary"
-              }`}
+              className={`rounded-full px-3 py-1.5 text-xs transition-colors duration-200 sm:px-4 sm:py-2 sm:text-sm ${pathname === link.href
+                ? "bg-stroke/50 text-text-primary"
+                : "text-muted hover:bg-stroke/50 hover:text-text-primary"
+                }`}
             >
               {link.label}
             </a>
@@ -87,13 +85,11 @@ export default function Navbar() {
               key={link.label}
               href={link.href}
               onClick={(e) => smoothTo(e, link.href, link.label)}
-              className={`rounded-full px-3 py-1.5 text-xs transition-colors duration-200 sm:px-4 sm:py-2 sm:text-sm ${
-                link.wide ? "hidden md:inline-block" : ""
-              } ${
-                active === link.label
+              className={`rounded-full px-3 py-1.5 text-xs transition-colors duration-200 sm:px-4 sm:py-2 sm:text-sm ${link.wide ? "hidden md:inline-block" : ""
+                } ${active === link.label
                   ? "bg-stroke/50 text-text-primary"
                   : "text-muted hover:bg-stroke/50 hover:text-text-primary"
-              }`}
+                }`}
             >
               {link.label}
             </a>

@@ -81,10 +81,11 @@ vec3 disc(vec3 hp, vec3 dir, out float a) {
   float ang = fract(atan(hp.z, hp.x) / 6.28318 - uTime * omega / 6.28318);
   float n = fbmP(vec2(ang * 28.0, rr * 2.2), 28.0) * 0.7 + fbmP(vec2(ang * 10.0, rr * 0.8 + 3.0), 10.0) * 0.5;
   float t = smoothstep(13.0, 2.6, rr);                 // 1 at the hot inner edge
-  // Site accent: #4E85BF outer → #89AACC → near-white at the hot inner edge.
-  vec3 col = mix(vec3(0.16, 0.34, 0.68), vec3(0.31, 0.52, 0.75), smoothstep(0.0, 0.5, t));
-  col = mix(col, vec3(0.54, 0.67, 0.8), smoothstep(0.4, 0.8, t));
-  col = mix(col, vec3(0.9, 0.95, 1.0), smoothstep(0.8, 1.0, t));
+  // Site accent, pushed deeper: saturated blue outside, #4E85BF → #89AACC
+  // through the middle, a pale ice-blue (never white) at the hot inner edge.
+  vec3 col = mix(vec3(0.07, 0.2, 0.62), vec3(0.2, 0.44, 0.86), smoothstep(0.0, 0.5, t));
+  col = mix(col, vec3(0.42, 0.62, 0.94), smoothstep(0.4, 0.8, t));
+  col = mix(col, vec3(0.7, 0.84, 1.0), smoothstep(0.8, 1.0, t));
   vec3 v = normalize(vec3(-hp.z, 0.0, hp.x));          // orbital velocity
   float beam = 1.0 + 0.5 * dot(v, -normalize(dir));    // Doppler beaming
   a = smoothstep(13.0, 9.0, rr) * smoothstep(2.6, 3.4, rr) * clamp(0.25 + 0.8 * n, 0.0, 1.0);
@@ -136,7 +137,8 @@ void main() {
   }
   if (escaped) col += trans * stars(normalize(dir));
 
-  col = 1.0 - exp(-col * 1.1);                         // soft tonemap
+  // Per-channel tonemap: blue saturates last, so highlights stay blue.
+  col = 1.0 - exp(-col * vec3(0.8, 1.0, 1.35));
 
   // Cursor lens' own shadow and photon ring, with a faint chromatic rim.
   float hz = uHorizon * uLensOn;

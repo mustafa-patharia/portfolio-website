@@ -28,6 +28,11 @@
     scroll-behavior: auto;
   }
 
+  /* The journey's viewport never moves, so neither does its sky. */
+  html:has(.journey) .global-bg {
+    position: fixed;
+  }
+
   body {
     @apply bg-bg text-text-primary font-body antialiased;
     overflow-x: hidden;
@@ -54,11 +59,24 @@
     background: linear-gradient(90deg, #89aacc 0%, #4e85bf 100%);
   }
 
-  /* Animated gradient border ring — used behind pills/buttons on hover */
+  /* Gradient border ring behind pills/buttons on hover: a steady blue ring
+     with one soft highlight gliding around it, slowly. */
   .accent-gradient-animated {
-    background: linear-gradient(90deg, #89aacc 0%, #4e85bf 50%, #89aacc 100%);
-    background-size: 200% 200%;
-    animation: gradient-shift 6s ease infinite;
+    background: conic-gradient(
+      from var(--ring-angle),
+      #4e85bf 0deg,
+      #4e85bf 230deg,
+      #89aacc 295deg,
+      #b9cfe6 325deg,
+      #89aacc 345deg,
+      #4e85bf 360deg
+    );
+    animation: ring-orbit 8s linear infinite;
+  }
+  /* tailwindcss-animate makes `duration-300` (meant for the fade-in) set
+     animation-duration too, which spun this ring at 0.3s. Out-rank it. */
+  .accent-gradient-animated.accent-gradient-animated {
+    animation-duration: 8s;
   }
 
   .halftone {
@@ -175,6 +193,17 @@
   }
 }
 
+@property --ring-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes ring-orbit {
+  to {
+    --ring-angle: 360deg;
+  }
+}
+
 @keyframes gradient-shift {
   0% {
     background-position: 0% 50%;
@@ -220,6 +249,7 @@
   to { --pg-gold-angle: 360deg; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .accent-gradient-animated { animation: none; }
   .pg-gold-run { animation: none; background: rgb(212 175 55 / 0.6); }
 }
 

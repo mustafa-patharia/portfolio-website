@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import SectionHeader from "./SectionHeader";
-import { RESUME_MAP, DEFAULT_RESUME } from "@/lib/resumes";
+import { RESUME } from "@/lib/resumes";
 
 const EXPERIENCE = [
   {
@@ -32,31 +31,7 @@ const EXPERIENCE = [
   },
 ];
 
-async function detectCountry(): Promise<string | null> {
-  try {
-    // Using a lightweight geo-IP API — no API key needed
-    const res = await fetch("https://ipapi.co/json/", { cache: "no-store" });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.country_code ?? null;
-  } catch {
-    return null;
-  }
-}
-
 export default function Stats() {
-  const [resumeInfo, setResumeInfo] = useState(DEFAULT_RESUME);
-  const [isDetecting, setIsDetecting] = useState(true);
-
-  useEffect(() => {
-    detectCountry().then((code) => {
-      if (code && RESUME_MAP[code]) {
-        setResumeInfo(RESUME_MAP[code]);
-      }
-      setIsDetecting(false);
-    });
-  }, []);
-
   return (
     <section id="resume" className="py-16 md:py-24">
       <div className="mx-auto max-w-[1200px] px-6 md:px-10 lg:px-16">
@@ -76,14 +51,12 @@ export default function Stats() {
             <span className="font-display italic">résumé</span>
           </h3>
           <p className="mb-6 max-w-sm text-sm text-muted">
-            {isDetecting
-              ? "Detecting your region…"
-              : `Serving the ${resumeInfo.label} version based on your location.`}
+            PDF, ATS-friendly.
           </p>
 
           <a
-            href={resumeInfo.file}
-            download
+            href={RESUME.file}
+            download={RESUME.downloadName}
             className="group relative inline-flex rounded-full transition-transform duration-300 hover:scale-105"
           >
             <span
@@ -219,8 +192,8 @@ export default function Stats() {
                   </div>
                   <div className="md:col-span-8">
                     <a
-                      href={resumeInfo.file}
-                      download
+                      href={RESUME.file}
+                      download={RESUME.downloadName}
                       className="cosmic-btn group relative inline-flex rounded-full transition-transform duration-300 hover:-translate-y-0.5"
                     >
                       <span
@@ -237,9 +210,7 @@ export default function Stats() {
                       </span>
                     </a>
                     <p className="mt-3 text-xs text-muted">
-                      {isDetecting
-                        ? "Detecting your region…"
-                        : `${resumeInfo.label} version, matched to your location.`}
+                      PDF, ATS-friendly.
                     </p>
                   </div>
                 </div>

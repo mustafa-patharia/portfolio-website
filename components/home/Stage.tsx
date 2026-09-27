@@ -6,16 +6,23 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import HeroScene from "./HeroScene";
 import PlaceholderScene from "./PlaceholderScene";
+import WorkScene from "./WorkScene";
+import { CASE_STUDIES } from "@/lib/case-studies";
 import {
   JOURNEY_LENGTH,
   SCENES,
   dive,
+  ring,
+  progress,
+  RING_STEP,
   jumpToScene,
   SCENE_EVENT,
   setJourneyJump,
 } from "./journey";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const WORK_COUNT = CASE_STUDIES.length;
 
 /**
  * One viewport pinned for the whole home page. Scroll scrubs a single master
@@ -24,7 +31,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  */
 export default function Stage({ ready }: { ready: boolean }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const counterRef = useRef<HTMLSpanElement>(null);
 
   useGSAP(
     () => {
@@ -43,18 +49,18 @@ export default function Stage({ ready }: { ready: boolean }) {
           scrub: 1,
           snap: {
             snapTo: "labels",
+            inertia: false, // velocity projection flings fast flicks past whole scenes
             duration: { min: 0.4, max: 1.2 },
             delay: 0.15,
             ease: "power2.inOut",
           },
           onUpdate: (self) => {
             const t = self.progress * JOURNEY_LENGTH;
+            progress.t = t;
             const i = SCENES.filter((s) => s.at <= t + 0.3).length - 1;
             const id = SCENES[i].id;
             if (id === current) return;
             current = id;
-            if (counterRef.current)
-              counterRef.current.textContent = String(i + 1).padStart(2, "0");
             window.dispatchEvent(new CustomEvent(SCENE_EVENT, { detail: id }));
           },
         },
@@ -77,10 +83,25 @@ export default function Stage({ ready }: { ready: boolean }) {
           1.36
         );
 
+      // Transition 2 — the ring forms. About falls past the camera while the
+      // seven posters fly in from depth and take their places around you.
+      const work = SCENES.find((s) => s.id === "work")!.at;
+      tl.to(scene("about"), { scale: 1.6, autoAlpha: 0, duration: 0.3, ease: "power2.in" }, work - 0.5)
+        .set(scene("work"), { autoAlpha: 1 }, work - 0.4)
+        .fromTo(ring, { form: 0 }, { form: 1, duration: 0.4 }, work - 0.4)
+        .fromTo(".work-chrome", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out" }, work - 0.2);
+
+      // Inside the ring: each step turns it one poster and is its own snap point.
+      for (let k = 1; k < WORK_COUNT; k++) {
+        const at = work + k * RING_STEP;
+        tl.to(ring, { turn: k, duration: RING_STEP * 0.8, ease: "power1.inOut" }, at - RING_STEP * 0.8)
+          .addLabel(`work-${k}`, at);
+      }
+
       // Remaining transitions — placeholder depth fly-through until each
-      // scene gets its bespoke one (ring forms, turn sideways, corridor, wormhole).
-      SCENES.slice(2).forEach((s, i) => {
-        const prev = SCENES[i + 1];
+      // scene gets its bespoke one (turn sideways, corridor, wormhole).
+      SCENES.slice(3).forEach((s, i) => {
+        const prev = SCENES[i + 2];
         tl.to(scene(prev.id), { scale: 1.6, autoAlpha: 0, duration: 0.3, ease: "power2.in" }, s.at - 0.5)
           .fromTo(scene(s.id), { scale: 0.55, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: "power2.out" }, s.at - 0.3);
       });
@@ -102,25 +123,28 @@ export default function Stage({ ready }: { ready: boolean }) {
     if (ready) ScrollTrigger.refresh();
   }, [ready]);
 
+  // Outer wrapper keeps ScrollTrigger's pin-spacer inside this component, so
+  // React's sibling bookkeeping in the page never points at a moved node.
   return (
-    <div
-      ref={rootRef}
-      className="journey relative h-screen w-full overflow-hidden"
-      onClick={(e) => {
-        const link = (e.target as HTMLElement).closest<HTMLElement>("[data-journey]");
-        if (!link) return;
-        e.preventDefault();
-        jumpToScene(link.dataset.journey!);
-      }}
-    >
-      <HeroScene ready={ready} />
-      {SCENES.slice(1).map((s, i) => (
-        <PlaceholderScene key={s.id} id={s.id} index={i + 1} title={s.title} note={s.note} />
-      ))}
-
-      <div className="pointer-events-none absolute bottom-6 left-6 z-40 hidden items-baseline gap-1 font-display italic text-muted md:flex">
-        <span ref={counterRef} className="text-2xl text-text-primary">01</span>
-        <span className="text-sm">/ {String(SCENES.length).padStart(2, "0")}</span>
+    <div>
+      <div
+        ref={rootRef}
+        className="journey relative h-screen w-full overflow-hidden"
+        onClick={(e) => {
+          const link = (e.target as HTMLElement).closest<HTMLElement>("[data-journey]");
+          if (!link) return;
+          e.preventDefault();
+          jumpToScene(link.dataset.journey!);
+        }}
+      >
+        <HeroScene ready={ready} />
+        {SCENES.slice(1).map((s, i) =>
+          s.id === "work" ? (
+            <WorkScene key={s.id} />
+          ) : (
+            <PlaceholderScene key={s.id} id={s.id} index={i + 1} title={s.title} note={s.note} />
+          )
+        )}
       </div>
     </div>
   );
