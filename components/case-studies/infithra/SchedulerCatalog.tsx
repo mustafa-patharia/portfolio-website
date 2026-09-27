@@ -85,7 +85,7 @@ function ClockVisual() {
 
 function MigrateVisual() {
   const i = useTicker(6, 650);
-  const dbs = ["admin", "client-a", "client-b", "client-c"];
+  const dbs = ["admin", "tenant-a", "tenant-b", "tenant-c"];
   return (
     <Panel className="h-[92px]">
       <p className={`${mono} mb-2 text-white/45`}>server start · version check</p>
@@ -142,23 +142,24 @@ function PlannedLeaveVisual() {
 const ITEMS = [
   { icon: Mail, t: "Email delivery", d: "Birthday and work anniversary emails, and reminders before employee documents expire.", v: EmailVisual },
   { icon: MailCheck, t: "Acknowledgement follow-ups", d: "Follow-up emails for announcements, policy handbooks, polls and surveys until employees acknowledge them.", v: FollowUpVisual },
-  { icon: CalendarPlus, t: "Leave accruals", d: "Leave balances accrue on schedule, following each client's policy.", v: AccrualVisual },
+  { icon: CalendarPlus, t: "Leave accruals", d: "Leave balances accrue on schedule, following each company's policy.", v: AccrualVisual },
   { icon: CalendarCheck, t: "Planned leave applications", d: "Employees plan leave ahead and get the plan approved. When the planned date arrives, a scheduler creates the leave application for it automatically.", v: PlannedLeaveVisual, span: "lg:col-span-2" },
   { icon: Clock, t: "Auto attendance and clock-out", d: "Attendance is marked from the schedule, and open shifts are closed automatically at the end of the day.", v: ClockVisual },
   { icon: BellOff, t: "Notification cleanup", d: "Old notifications are cleared on a schedule, so feeds and tables stay fast.", v: CleanupVisual },
-  { icon: DatabaseZap, t: "Self-upgrading databases", d: "On every new deployment, the platform checks the admin database and every client database, and applies any pending migrations.", v: MigrateVisual, span: "sm:col-span-2" },
+  { icon: DatabaseZap, t: "Self-upgrading databases", d: "On every new deployment, the platform checks the admin database and every tenant database, and applies any pending migrations.", v: MigrateVisual, span: "sm:col-span-2" },
 ];
 
 export default function SchedulerCatalog() {
   return (
     <section data-chapter="scheduling" className="px-6 pb-28 pt-2 md:px-10">
       <div className="mx-auto max-w-6xl">
-        <motion.div {...reveal} className="mb-8 max-w-3xl">
+        <motion.div {...reveal} className="mb-8 max-w-5xl">
           <p className="mb-3 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">
             <span className="h-px w-6 bg-ipink-500/70" /> The schedulers
           </p>
           <p className="leading-relaxed text-muted md:text-lg">
-            Seven kinds of jobs run behind the platform, each for every client and subsidiary in its own time zone.
+            I built a range of scheduled jobs that run behind the platform for every tenant and subsidiary, each in its own time zone. Routine
+            work is handled automatically in the background, without manual intervention.
           </p>
         </motion.div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-5">

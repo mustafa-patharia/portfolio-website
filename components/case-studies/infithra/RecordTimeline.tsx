@@ -9,11 +9,11 @@ const ENTRIES = [
   { when: "Layer 01", status: "Foundation", title: "Architecture, infrastructure and standards", body: "The cloud services, the split into domain services, the database schema, and the repository structure and coding standards every developer followed." },
   { when: "Layer 02", status: "Platform services", title: "The shared core", body: "Authentication with multi-factor sign-in, multi-tenancy, access control, multi-language data, a standard API structure, reusable components and a global theme." },
   { when: "Layer 03", status: "HR modules", title: "Core HR and the employee lifecycle", body: "Core HR, employee management, onboarding and offboarding, leave, attendance, custom dashboards, analytics and reports." },
-  { when: "Layer 04", status: "Payroll engine", title: "Rebuilt until it was configurable", body: "The engine went through several rebuilds as client rules grew more complex, until every pay component and labour-law rule could be configured." },
-  { when: "Layer 05", status: "Automation", title: "Schedulers and background workers", body: "More than ten, running for every client and subsidiary in its own time zone." },
-  { when: "Layer 06", status: "Admin platform", title: "Running every client platform", body: "Company onboarding, system upgrades and scheduler logs across all clients." },
+  { when: "Layer 04", status: "Payroll engine", title: "Rebuilt until it was configurable", body: "The engine went through several rebuilds as system rules grew more complex, until every pay component and labour-law rule could be configured." },
+  { when: "Layer 05", status: "Automation", title: "Schedulers and background workers", body: "More than ten, running for every tenant and subsidiary in its own time zone." },
+  { when: "Layer 06", status: "Admin platform", title: "Running every tenant", body: "Company onboarding, system upgrades and scheduler logs across all tenants." },
   { when: "Layer 07", status: "Integrations", title: "Connected systems and mobile", body: "NetSuite ledger sync, open APIs, and the backend services and APIs the mobile app is built on." },
-  { when: "Live", status: "Production", title: "In daily use", body: "Launched in production and grown to more than ten enterprise clients and over 2,000 daily users." },
+  { when: "Live", status: "Production", title: "In daily use", body: "Launched in production and grown to more than ten enterprise companies and over 2,000 daily users." },
 ];
 
 export default function RecordTimeline() {

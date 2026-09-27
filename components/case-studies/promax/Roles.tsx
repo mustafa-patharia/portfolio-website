@@ -14,11 +14,11 @@ const ROLES: Role[] = [
     line: "A site that grows without a rebuild.",
     points: [
       { text: "One route map drives the menu, the sitemap and every page, so a link can never point at a page that doesn't exist." },
-      { text: "Pages are built from structured content rendered into twelve section types. Every page on the site came from the same system, and the next one is a content entry, not new code." },
+      { text: "Pages are built from structured content rendered into more than ten section types. Every page on the site came from the same system, and the next one is a content entry, not new code." },
       { text: "A three-level menu that deep-links straight into sections of each sector page." },
       { text: "Separate URLs per language (/en, /ar), so both are indexable, with the entire layout mirrored for right-to-left.", release: "arabic" },
     ],
-    proof: ["Multi-page", "12 section types"],
+    proof: ["Multi-page", "10+ section types"],
   },
   {
     id: "optimised",
@@ -27,7 +27,7 @@ const ROLES: Role[] = [
     points: [
       { text: "Largest Contentful Paint 0.7 s, zero blocking time and zero layout shift on Lighthouse, with Performance at 92." },
       { text: "Media cut by 84% in one pass: video from 306 to 58 MB, images from 173 to 19 MB." },
-      { text: "Headlines are server-rendered, so they never wait on JavaScript to appear; compression and edge caching do the rest." },
+      { text: "Headlines are server-rendered, so they never wait on JavaScript to appear, with compression and edge caching applied on top." },
     ],
     proof: ["Performance 92", "LCP 0.7 s"],
   },
@@ -38,7 +38,7 @@ const ROLES: Role[] = [
     points: [
       { text: "A title, description, canonical address and link-preview card on every page, so each one ranks and shares correctly." },
       { text: "Structured data describing the company as an organisation with services, plus breadcrumb trails on every inner page." },
-      { text: "14 AI crawlers welcomed by name and an llms.txt guide generated from the site's own content, so ChatGPT, Perplexity, Gemini and Claude can read and cite it." },
+      { text: "10+ AI crawlers welcomed by name and an llms.txt guide generated from the site's own content, so ChatGPT, Perplexity, Gemini and Claude can read and cite it." },
       { text: "Per-language metadata with hreflang, and a sitemap that lists both languages.", release: "arabic" },
     ],
     proof: ["SEO 100", "llms.txt"],
@@ -50,7 +50,7 @@ const ROLES: Role[] = [
     points: [
       { text: "A fully pre-built static site: no database, no admin login and no server code for anyone to break into." },
       { text: "Served HTTPS-only over TLS 1.3 and HTTP/2, behind always-on edge protection and monitoring." },
-      { text: "Deploys travel over SSH with a key held in repository secrets — never a password, never an open upload." },
+      { text: "Deploys travel over SSH with a key held in repository secrets, with no passwords or open upload endpoints." },
       { text: "Best Practices scores 100 on Lighthouse." },
     ],
     proof: ["TLS 1.3", "Best Practices 100"],
@@ -74,7 +74,7 @@ const ROLES: Role[] = [
     points: [
       { text: "Every push to main builds the site and deploys it automatically; rsync sends only the files that changed." },
       { text: "Worked every review round with the client through to launch." },
-      { text: "Every commit on the project is mine." },
+      { text: "I authored the entire codebase." },
     ],
     proof: ["CI/CD", "live"],
   },

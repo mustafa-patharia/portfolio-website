@@ -12,7 +12,7 @@ function ArchitectureVisual() {
   const i = useTicker(4, 1500);
   const svc = i % 4;
   const db = [1, 2, 3, 1][i];
-  const dbs = ["Admin", "Client A", "Client B", "Client C"];
+  const dbs = ["Admin", "Tenant A", "Tenant B", "Tenant C"];
   const row = "grid grid-cols-4 gap-1.5 sm:gap-2";
   const box = (on: boolean) =>
     `rounded-lg border px-1.5 py-2 text-center font-mono text-[9px] transition-colors duration-300 sm:text-[10px] ${on ? "border-ipink-500/60 bg-ipink-500/10 text-ipink-200" : "border-white/10 text-white/40"}`;
@@ -34,7 +34,7 @@ function ArchitectureVisual() {
           ))}
         </div>
         <Flow />
-        <p className={`${mono} text-white/35`}>Databases · one per client</p>
+        <p className={`${mono} text-white/35`}>Databases · one per tenant</p>
         <div className={row}>
           {dbs.map((d, k) => (
             <div key={d} className={box(k === db)}>
@@ -220,7 +220,7 @@ export default function Foundations() {
     <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
       <Tile
         title="Architecture and infrastructure"
-        caption="I chose the cloud services, split the backend into domain services, and designed the database schema and table structure, with a separate database for every client."
+        caption="I chose the cloud services, split the backend into domain services, and designed the database schema and table structure, with a separate database for every tenant."
         className="md:col-span-2"
       >
         <ArchitectureVisual />

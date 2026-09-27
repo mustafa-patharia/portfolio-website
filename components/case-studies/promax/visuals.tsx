@@ -95,7 +95,7 @@ export function AiCrawlersVisual() {
             <span className="shrink-0 text-pg-200">Allow: /</span>
           </motion.p>
         ))}
-        <p className="text-white/30">… 14 AI crawlers named</p>
+        <p className="text-white/30">… 10+ AI crawlers named</p>
       </div>
       <div className={`${mono} flex items-center gap-2 border border-pg-500/25 bg-pg-500/[0.06] px-3 py-2 text-pg-100`}>
         <Check className="h-3 w-3 shrink-0 text-pg-500" />

@@ -39,7 +39,7 @@ export function Ribbon({ className = "" }: { className?: string }) {
 /** Chapter heading, labelled with the platform module it belongs to. */
 export function Chapter({ module, title, children }: { module: string; title: string; children?: React.ReactNode }) {
   return (
-    <motion.div {...reveal} className="mb-10 max-w-4xl">
+    <motion.div {...reveal} className="mb-10 max-w-5xl">
       <p className="mb-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">
         <span className="h-1.5 w-1.5 rounded-full bg-ipink-500 shadow-[0_0_10px_rgba(252,23,119,0.8)]" />
         {module}

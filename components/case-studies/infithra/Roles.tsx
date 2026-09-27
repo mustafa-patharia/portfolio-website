@@ -11,7 +11,7 @@ const ROLES = [
     points: [
       "Designed the cloud infrastructure and the service-based backend: a frontend service and multiple backend services, split by domain.",
       "Designed the database schema, and set the repository structure and coding standards every other developer followed.",
-      "Defined the tenant isolation strategy and how new clients are onboarded.",
+      "Defined the tenant isolation strategy and how new tenants are onboarded.",
       "Took part in every design and vendor discussion, and decided how the system would operate as it grew.",
     ],
     tags: ["System architecture", "Cloud infrastructure", "Tenant isolation"],
@@ -21,7 +21,7 @@ const ROLES = [
     hat: "Designed",
     line: "Shaped how HR teams, managers and employees use it.",
     points: [
-      "Designed screens and user flows across the client platform and the admin platform.",
+      "Designed screens and user flows across the HR platform and the admin platform.",
       "Built a metadata-driven form system with the frontend developer, so new fields and validations need no code change.",
       "A standard set of reusable components and a global theme, so every screen looks and behaves the same.",
     ],
@@ -45,7 +45,7 @@ const ROLES = [
     points: [
       "A hybrid role- and attribute-based permission system, designed after researching how leading HR and cloud platforms handle access.",
       "Module-level create, read, update and delete rights, scoped by organisational structure in any combination.",
-      "Multi-tenant sign-in with multi-factor authentication: one login across clients, with access granted in stages.",
+      "Multi-tenant sign-in with multi-factor authentication: one login across tenants, with access granted in stages.",
       "Tenant isolation built into every service from day one.",
     ],
     tags: ["RBAC + ABAC", "Multi-factor sign-in", "Data isolation"],
@@ -55,18 +55,18 @@ const ROLES = [
     hat: "Automated",
     line: "Built the background systems that run the platform every day.",
     points: [
-      "More than ten schedulers and background workers, each running per client and per subsidiary, in that entity's own time zone.",
+      "More than ten schedulers and background workers, each running per tenant and per subsidiary, in that entity's own time zone.",
       "Leave accruals, auto attendance, auto clock-out, and leave applications created automatically from approved leave plans.",
       "Scheduled emails for birthdays, work anniversaries and expiring documents.",
       "Follow-up reminders until employees acknowledge announcements, policy handbooks, polls and surveys, and routine notification cleanup.",
-      "Self-upgrading databases: on every new deployment, the platform checks every client database's version and applies pending migrations, the admin database included.",
+      "Self-upgrading databases: on every new deployment, the platform checks every tenant database's version and applies pending migrations, the admin database included.",
     ],
-    tags: ["10+ schedulers", "Per client & subsidiary", "Time-zone aware", "Auto migrations"],
+    tags: ["10+ schedulers", "Per tenant & subsidiary", "Time-zone aware", "Auto migrations"],
   },
   {
     id: "integrate",
     hat: "Integrated",
-    line: "Connected the platform to the systems clients already run.",
+    line: "Connected the platform to the systems companies already run.",
     points: [
       "Owned the NetSuite integration end to end: API and system design, the mapping UI and the background sync workers.",
       "Built the backend services and APIs the mobile app runs on.",
@@ -80,7 +80,7 @@ const ROLES = [
     line: "Took it live and kept it improving.",
     points: [
       "Launched the platform into production.",
-      "Stabilised it through real user feedback, then scaled it to more than ten enterprise clients.",
+      "Stabilised it through real user feedback, then scaled it to more than ten enterprise companies.",
       "Ongoing work on performance, reliability, analytics and deployment speed, with in-house AI agents in the workflow.",
     ],
     tags: ["Launch", "Stabilisation", "Scale"],

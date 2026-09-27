@@ -237,7 +237,7 @@ export function MetaFormVisual() {
 const PLANS = [
   { k: "Company onboarding", v: "ready" },
   { k: "System upgrades", v: "applied" },
-  { k: "Scheduler logs", v: "all clients" },
+  { k: "Scheduler logs", v: "all tenants" },
 ];
 
 /** The admin platform: the supporting tools behind every client platform. */

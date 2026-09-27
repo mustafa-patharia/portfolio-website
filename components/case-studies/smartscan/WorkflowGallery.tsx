@@ -35,7 +35,7 @@ const CARDS: Card[] = [
     name: "One scanning model",
     src: "/projects/smartscan/device/workflow-menu.jpeg",
     alt: "Handheld workflow menu: stock availability, receiving, cycle count, picking, bin transfer",
-    text: "Every workflow starts the same way — pick a document or a bin, scan, review, complete — and every one is scoped to the operator's warehouse. Learn one, and you know them all.",
+    text: "Every workflow starts the same way — pick a document or a bin, scan, review, complete — and every one is scoped to the operator's warehouse. Once an operator learns one, the rest follow the same pattern.",
   },
   {
     id: "picking",
@@ -51,7 +51,7 @@ const CARDS: Card[] = [
     name: "Stock availability",
     src: "/projects/smartscan/device/stock-availability.jpeg",
     alt: "Stock availability lookup grouped by location",
-    text: "A read-only lookup: search or scan an item and see what's on hand, grouped by location. No session, no lock — just the answer.",
+    text: "A read-only lookup: search or scan an item and see what's on hand, grouped by location. It requires no session or lock.",
   },
 ];
 

@@ -16,7 +16,7 @@ const STEPS = [
   {
     file: "robots.txt",
     title: "Invited in",
-    body: "Search engines have full access, and 14 AI crawlers are explicitly permitted by name, as several will not crawl a site unless they are named.",
+    body: "Search engines have full access, and more than ten AI crawlers are explicitly permitted by name, as several will not crawl a site unless they are named.",
     readers: ["Google", "Bing", "ChatGPT", "Perplexity", "Gemini", "Claude"],
     lines: [
       ["User-Agent: *", "Allow: /"],

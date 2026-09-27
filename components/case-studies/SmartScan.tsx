@@ -39,10 +39,10 @@ const META = [
 ];
 
 const STATS = [
-  { n: 174, label: "API endpoints" },
-  { n: 43, label: "Postgres tables" },
-  { n: 19, label: "Permission modules" },
-  { n: 5, label: "Handheld workflows" },
+  { n: 170, suffix: "+", label: "API endpoints" },
+  { n: 40, suffix: "+", label: "Postgres tables" },
+  { n: 15, suffix: "+", label: "Permission modules" },
+  { n: 5, suffix: "+", label: "Handheld workflows" },
 ];
 
 const CONSTRAINTS = [
@@ -57,12 +57,12 @@ const ADMIN = [
 ];
 
 const DECISIONS = [
-  { d: "Track tags, not quantities", w: "Every quantity is derived from tags that were physically scanned, so typing errors stop existing." },
+  { d: "Track tags, not quantities", w: "Every quantity is derived from tags that were physically scanned, which eliminates manual entry errors." },
   { d: "One conditional UPDATE claims the tags", w: "Wrong item, duplicate, already-shipped and two operators racing are all resolved by the database in one statement." },
-  { d: "Locks live in the database", w: "A partial unique index allows one active session per bin or order. The second operator gets a 409, not a race." },
+  { d: "Locks live in the database", w: "A partial unique index allows one active session per bin or order. A second operator receives a conflict response rather than a race condition." },
   { d: "Postgres outbox in front of Redis", w: "Every ERP job is written to Postgres before it's queued. Losing Redis delays a post; it never drops one." },
   { d: "Keep the payload of every ERP attempt", w: "When the ERP rejects a post, the queue shows what was sent next to what came back, so rejected posts can be diagnosed without searching the logs." },
-  { d: "Schema per tenant, fail-closed", w: "Each client gets its own Postgres schema. A request without a resolved tenant is refused outright." },
+  { d: "Schema per tenant, fail-closed", w: "Each tenant has its own Postgres schema. A request without a resolved tenant is refused outright." },
 ];
 
 const STACK = [
@@ -219,7 +219,10 @@ export default function SmartScanCaseStudy() {
             <div className="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">
               {STATS.map((s, k) => (
                 <motion.div key={s.label} {...reveal} transition={{ ...reveal.transition, delay: k * 0.08 }}>
-                  <CountUp to={s.n} duration={1.6} className="font-display text-5xl italic text-ss-300 md:text-6xl" />
+                  <span className="font-display text-5xl italic text-ss-300 md:text-6xl">
+                    <CountUp to={s.n} duration={1.6} />
+                    {s.suffix}
+                  </span>
                   <p className="mt-1 text-sm text-muted">{s.label}</p>
                 </motion.div>
               ))}
@@ -315,13 +318,13 @@ export default function SmartScanCaseStudy() {
                 <OutboxVisual />
               </Tile>
               <Tile
-                title="19 modules × 3 actions"
-                caption="Permissions are defined across 19 modules and three actions. Stock edits are separated from catalogue edits, and force-releasing a lock requires delete rights."
+                title="Granular permissions"
+                caption="Permissions are defined across more than 15 modules and three actions. Stock edits are separated from catalogue edits, and force-releasing a lock requires delete rights."
                 className="md:col-span-2"
               >
                 <RbacVisual />
               </Tile>
-              <Tile title="Schema per tenant" caption="Each client is provisioned with a dedicated schema, cloned from a template.">
+              <Tile title="Schema per tenant" caption="Each tenant is provisioned with a dedicated schema, cloned from a template.">
                 <TenantsVisual />
               </Tile>
               <Tile title="Survives a dead battery" caption="The scan buffer is synchronised to the server as a draft, so no work is lost if a device's battery fails.">
@@ -341,7 +344,7 @@ export default function SmartScanCaseStudy() {
           <div className="mx-auto max-w-6xl">
             <motion.div {...reveal} className="mb-6 text-center">
               <Kicker>On the floor</Kicker>
-              <h2 className="font-display text-4xl italic md:text-5xl">Five workflows, one scanning model.</h2>
+              <h2 className="font-display text-4xl italic md:text-5xl">Every workflow, one scanning model.</h2>
             </motion.div>
             <WorkflowGallery />
           </div>
@@ -443,7 +446,7 @@ export default function SmartScanCaseStudy() {
                 </motion.div>
               ))}
             </div>
-            <motion.p {...reveal} className="mt-8 max-w-3xl leading-relaxed text-white/60">
+            <motion.p {...reveal} className="mt-8 max-w-5xl leading-relaxed text-white/60">
               SmartScan was my first project working directly with RFID hardware, from the reader SDK to handling tag reads at floor speed.
               It also deepened my approach to integration design: synchronising with NetSuite idempotently, so that every transaction stays
               consistent across both systems and every change remains fully auditable.

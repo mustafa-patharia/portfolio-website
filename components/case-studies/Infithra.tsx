@@ -36,21 +36,21 @@ const META = [
   { k: "Role", v: "End-to-end ownership" },
   { k: "Company", v: "KPI" },
   { k: "Duration", v: "Jan 2023 – Jul 2026" },
-  { k: "Scope", v: "Client platform · admin platform · mobile backend" },
+  { k: "Scope", v: "HR platform · admin platform · mobile backend" },
 ];
 
 const STATS = [
   { n: 3, suffix: "+", label: "Years, from concept to production" },
   { n: 800, suffix: "+", label: "Production APIs" },
   { n: 2000, suffix: "+", label: "Daily users" },
-  { n: 10, suffix: "+", label: "Enterprise clients" },
+  { n: 10, suffix: "+", label: "Enterprise companies" },
   { n: 10, suffix: "+", label: "Automated schedulers" },
 ];
 
 const PRINCIPLES = [
-  { n: "01", t: "Configurable by design", d: "Fields, validations, pay components and permissions are configuration, so the platform adapts to a client without a release." },
-  { n: "02", t: "Isolated per client", d: "Tenant data separation was part of the architecture from the first release." },
-  { n: "03", t: "Built for scale", d: "Processing, scheduling and deployment were designed for many clients running at the same time." },
+  { n: "01", t: "Configurable by design", d: "Fields, validations, pay components and permissions are configuration, so the platform adapts to each company without a release." },
+  { n: "02", t: "Isolated per tenant", d: "Tenant data separation was part of the architecture from the first release." },
+  { n: "03", t: "Built for scale", d: "Processing, scheduling and deployment were designed for many tenants running at the same time." },
   { n: "04", t: "One standard for every module", d: "Shared structure, APIs and components, so the codebase stays predictable as the team and the product grow." },
 ];
 
@@ -98,7 +98,7 @@ export default function InfithraCaseStudy() {
                 A cloud HR and payroll platform for businesses in the UAE and Saudi Arabia, covering the full employee lifecycle from onboarding to
                 end-of-service: labour-law and WPS-compliant payroll, time and attendance, leave, expenses, people analytics and employee
                 self-service on web and mobile. I joined at the inception of the project, and over more than three years
-                built it into a production platform used by enterprise clients every day.
+                built it into a production platform used by enterprise companies every day.
               </p>
               <a
                 href="https://infithra.com"
@@ -160,7 +160,7 @@ export default function InfithraCaseStudy() {
                 stand-alone tools and ERP payroll modules that are slow to run and hard to adapt.
               </p>
               <p>
-                I architected Infithra to consolidate this into a single multi-tenant platform. Each client&apos;s data is isolated,
+                I architected Infithra to consolidate this into a single multi-tenant platform. Each tenant&apos;s data is isolated,
                 business rules are held in configuration rather than code, and intensive processing such as payroll completes in seconds
                 rather than hours.
               </p>
@@ -187,7 +187,7 @@ export default function InfithraCaseStudy() {
         {/* ---------------------------------------------------- Roles */}
         <section className="px-6 pb-28 md:px-10">
           <div className="mx-auto max-w-6xl">
-            <motion.div {...reveal} className="mb-10 max-w-4xl">
+            <motion.div {...reveal} className="mb-10 max-w-5xl">
               <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">What I owned</p>
               <h2 className="font-display text-4xl italic md:text-5xl">My role and contribution</h2>
               <p className="mt-5 leading-relaxed text-muted md:text-lg">
@@ -207,7 +207,7 @@ export default function InfithraCaseStudy() {
           <div className="mx-auto max-w-6xl">
             <Chapter module="Platform" title="Platform scope">
               <p>
-                I built the client platform used daily by HR teams, managers and employees, together with the two supporting systems around
+                I built the HR platform used daily by HR teams, managers and employees, together with the two supporting systems around
                 it. Hover over an area to see what it covers.
               </p>
             </Chapter>
@@ -234,14 +234,15 @@ export default function InfithraCaseStudy() {
             <Chapter module="Payroll" title="Payroll engine and compliance">
               <p>
                 Payroll carries the platform&apos;s heaviest workload. I made every pay component configurable, applied labour-law rules
-                based on each employee&apos;s contract and classification, and reduced a full payroll run to seconds. The engine was rebuilt
-                several times as client requirements grew more complex, until every rule could be configured.
+                based on each employee&apos;s contract and classification, and reduced a full payroll run to seconds. Every build and
+                enhancement was rigorously tested with the QA and functional teams, making the engine progressively more precise and efficient
+                as it grew to support more rules and configuration.
               </p>
             </Chapter>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
               <Tile
                 title="Configurable pay components"
-                caption="Earnings, allowances, contributions and deductions are configurable per client and per employee classification. A run for 100 employees completes in seconds rather than hours."
+                caption="Earnings, allowances, contributions and deductions are configurable per company and per employee classification. A run for 100 employees completes in seconds rather than hours."
                 className="md:col-span-2"
               >
                 <PayComponentsVisual />
@@ -282,8 +283,8 @@ export default function InfithraCaseStudy() {
           <div className="mx-auto max-w-6xl">
             <Chapter module="Configuration" title="Configuration and administration">
               <p>
-                Every client runs HR differently. I made the product configurable, so most client requirements are met in settings rather than in
-                a new release. Alongside it I built the admin platform, the supporting platform used to run every client platform.
+                Every company runs HR differently. I made the product configurable, so most business needs are met through settings rather than
+                a new release. Alongside it I built the admin platform, the supporting platform used to run every tenant.
               </p>
             </Chapter>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
@@ -294,12 +295,12 @@ export default function InfithraCaseStudy() {
               >
                 <MetaFormVisual />
               </Tile>
-              <Tile title="Admin platform" caption="I built the admin platform to onboard new companies, apply system upgrades, and maintain scheduler logs and monitoring for every client.">
+              <Tile title="Admin platform" caption="I built the admin platform to onboard new companies, apply system upgrades, and maintain scheduler logs and monitoring for every tenant.">
                 <AdminPlatformVisual />
               </Tile>
               <Tile
-                title="Faster client setup"
-                caption="I improved the admin panel's client setup, so a new tenant is configured from one form in under a minute instead of about 20."
+                title="Faster tenant setup"
+                caption="I improved tenant setup in the admin panel, so a new tenant is configured from one form in under a minute instead of about 20."
                 className="md:col-span-3"
               >
                 <ProvisionVisual />
@@ -333,7 +334,7 @@ export default function InfithraCaseStudy() {
           <div className="mx-auto max-w-6xl">
             <Chapter module="Engineering" title="Delivery and engineering operations">
               <p>
-                A platform serving many clients needs to ship often and safely. I rebuilt the delivery pipeline, automated database changes across
+                A platform serving many tenants needs to ship often and safely. I rebuilt the delivery pipeline, automated database changes across
                 every tenant, and brought AI agents into the development workflow.
               </p>
             </Chapter>
@@ -344,7 +345,7 @@ export default function InfithraCaseStudy() {
               >
                 <DeployVisual />
               </Tile>
-              <Tile title="Multi-tenant migrations" caption="I automated database migrations across all tenants. On every deployment, the platform checks the version of the admin database and each client database, then applies pending migrations in order. Every tenant stays on the same schema, with no manual database steps in a release.">
+              <Tile title="Multi-tenant migrations" caption="I automated database migrations across all tenants. On every deployment, the platform checks the version of the admin database and each tenant database, then applies pending migrations in order. Every tenant stays on the same schema, with no manual database steps in a release.">
                 <MigrationVisual />
               </Tile>
               <Tile title="Observability" caption="I integrated New Relic across the backend services for application performance and tracing, and used Grafana dashboards and CloudWatch logs and alarms to monitor the platform and gain insight into its behaviour, so a slow endpoint or failing job can be traced to its source quickly.">
@@ -376,7 +377,7 @@ export default function InfithraCaseStudy() {
         {/* ============================================================ LESSONS */}
         <section className="px-6 pb-28 md:px-10">
           <div className="mx-auto max-w-6xl">
-            <motion.div {...reveal} className="mb-10 max-w-3xl">
+            <motion.div {...reveal} className="mb-10 max-w-5xl">
               <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.28em] text-inf-300">Reflection</p>
               <h2 className="font-display text-4xl italic md:text-5xl">Lessons learned</h2>
               <p className="mt-5 leading-relaxed text-muted md:text-lg">
@@ -385,7 +386,7 @@ export default function InfithraCaseStudy() {
               </p>
             </motion.div>
             <Lessons />
-            <motion.p {...reveal} className="mt-8 max-w-3xl leading-relaxed text-white/60">
+            <motion.p {...reveal} className="mt-8 max-w-5xl leading-relaxed text-white/60">
               These lessons shape how I design systems today: start simple, split only when there is a real reason, and choose tools that fit how
               the product works.
             </motion.p>

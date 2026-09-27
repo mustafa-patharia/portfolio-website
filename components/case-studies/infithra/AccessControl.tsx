@@ -129,8 +129,8 @@ function PermissionDemo() {
 
 /* One login across clients: roles differ per client, and mobile access opens only after onboarding. */
 const TENANTS = {
-  "Client A": { role: "HR manager", spaces: ["hr", "ess", "mobile"] },
-  "Client B": { role: "Employee", spaces: ["ess", "mobile"] },
+  "Company A": { role: "HR manager", spaces: ["hr", "ess", "mobile"] },
+  "Company B": { role: "Employee", spaces: ["ess", "mobile"] },
 } as const;
 type TenantName = keyof typeof TENANTS;
 const SPACES = [
@@ -141,7 +141,7 @@ const SPACES = [
 type Space = (typeof SPACES)[number]["id"];
 
 function SignInDemo() {
-  const [tenant, setTenant] = useState<TenantName>("Client A");
+  const [tenant, setTenant] = useState<TenantName>("Company A");
   const [space, setSpace] = useState<Space>("hr");
   const [onboarded, setOnboarded] = useState(false);
 
@@ -161,7 +161,7 @@ function SignInDemo() {
       <Panel label="One login">
         <div className="space-y-4">
           <div>
-            <p className={`${mono} mb-1.5 text-white/40`}>Switch client</p>
+            <p className={`${mono} mb-1.5 text-white/40`}>Switch company</p>
             <div className="flex flex-wrap gap-1.5">
               {(Object.keys(TENANTS) as TenantName[]).map((t) => (
                 <button
@@ -213,7 +213,7 @@ function SignInDemo() {
               <ShieldCheck className="h-4 w-4 text-ipink-300" /> Signed in · multi-factor verified
             </div>
             {[
-              ["Client", tenant],
+              ["Company", tenant],
               ["Platform", current.label],
               ["Role", TENANTS[tenant].role],
             ].map(([k, v]) => (
@@ -237,7 +237,7 @@ function IsolationVisual() {
   const i = useTicker(3, 1400);
   return (
     <div className="grid grid-cols-3 gap-3">
-      {["Client A", "Client B", "Client C"].map((c, k) => (
+      {["Company A", "Company B", "Company C"].map((c, k) => (
         <div key={c} className={`relative rounded-2xl border p-3 transition-colors duration-300 ${k === i ? "border-ipink-500/50 bg-ipink-500/[0.06]" : "border-white/[0.07] bg-[#0b0811]"}`}>
           <p className={`${mono} mb-3 ${k === i ? "text-ipink-200" : "text-white/40"}`}>{c}</p>
           <div className="relative h-16">
@@ -265,7 +265,7 @@ export default function AccessControl() {
     <div className="grid gap-4 md:gap-5">
       <Tile
         title="Multi-tenant sign-in"
-        caption="A single user can belong to multiple clients and switch between them without signing out, and each switch moves the session into that client's own data. Users move between the HR platform and self-service on the web, and self-service also runs on mobile. Access is granted in stages: web access when the employee record is created, mobile access once onboarding is complete. Sign-in is protected with multi-factor authentication. Try it."
+        caption="A single user can belong to multiple companies and switch between them without signing out, and each switch moves the session into that company's own data. Users move between the HR platform and self-service on the web, and self-service also runs on mobile. Access is granted in stages: web access when the employee record is created, mobile access once onboarding is complete. Sign-in is protected with multi-factor authentication. Try it."
       >
         <SignInDemo />
       </Tile>
@@ -277,7 +277,7 @@ export default function AccessControl() {
       </Tile>
       <Tile
         title="Tenant isolation"
-        caption="Every client's data is isolated, and a request can only reach its own tenant. This was built into the architecture from the first release."
+        caption="Every tenant's data is isolated, and a request can only reach its own data. This was built into the architecture from the first release."
       >
         <IsolationVisual />
       </Tile>

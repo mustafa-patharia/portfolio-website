@@ -61,7 +61,7 @@ export default function NetSuiteSync() {
       {/* account type toggle */}
       <div className="p-5 md:p-8">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
-          <p className="text-sm text-muted">Field mapping is set per client. Switch the account type to see how the mapping and the posted entry change.</p>
+          <p className="text-sm text-muted">Field mapping is set per company. Switch the account type to see how the mapping and the posted entry change.</p>
           <div className="relative flex rounded-full border border-white/10 bg-white/[0.03] p-1 text-xs">
             {[
               { v: true, l: "Multi-subsidiary" },

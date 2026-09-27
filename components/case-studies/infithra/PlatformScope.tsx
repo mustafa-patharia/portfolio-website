@@ -30,9 +30,9 @@ const AREAS = [
   { id: "ess", name: "Employee self-service", icon: Smartphone, items: ["Payslips and documents", "Requests and approvals", "Announcements, polls and surveys", "On web and mobile"] },
   { id: "access", name: "Identity and access", icon: KeyRound, items: ["Multi-tenant sign-in", "Multi-factor authentication", "Role- and attribute-based permissions"] },
   { id: "lang", name: "Multi-language", icon: Globe, items: ["Interface, emails and stored data", "Arabic in production", "Any further language without custom code"] },
-  { id: "config", name: "Settings and configuration", icon: Settings2, items: ["Metadata-driven forms", "Pay components and policies", "Per-client rules"] },
+  { id: "config", name: "Settings and configuration", icon: Settings2, items: ["Metadata-driven forms", "Pay components and policies", "Per-company rules"] },
   { id: "int", name: "Integrations", icon: Cable, items: ["NetSuite ledger sync", "Open APIs"] },
-  { id: "jobs", name: "Schedulers and workers", icon: CalendarClock, items: ["More than ten schedulers", "Per client, subsidiary and time zone"] },
+  { id: "jobs", name: "Schedulers and workers", icon: CalendarClock, items: ["More than ten schedulers", "Per tenant, subsidiary and time zone"] },
 ];
 
 const SATELLITES = [
@@ -40,7 +40,7 @@ const SATELLITES = [
     icon: ShieldCheck,
     name: "Admin platform",
     role: "Supporting platform",
-    body: "Onboards new companies, runs system upgrades and keeps scheduler logs across every client platform.",
+    body: "Onboards new companies, runs system upgrades and keeps scheduler logs across every tenant.",
   },
   {
     icon: Smartphone,
@@ -63,7 +63,7 @@ export default function PlatformScope() {
         <div className="relative mb-5 flex flex-wrap items-end justify-between gap-2">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-ipink-300">The product</p>
-            <h3 className="mt-1 font-display text-3xl italic text-white">Client platform</h3>
+            <h3 className="mt-1 font-display text-3xl italic text-white">HR platform</h3>
           </div>
           <p className="font-mono text-[11px] text-white/40">HR teams · managers · employees</p>
         </div>

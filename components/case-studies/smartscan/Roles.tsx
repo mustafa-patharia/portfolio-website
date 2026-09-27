@@ -19,9 +19,9 @@ const ROLES: Role[] = [
     area: "Architecture",
     line: "Designed the system before a line of it was written.",
     points: [
-      "Put the middleware in charge of warehouse state and kept the ERP as the financial record — the call everything else hangs on.",
+      "Made the middleware the owner of warehouse state, with the ERP remaining the financial system of record: the decision the rest of the architecture depends on.",
       "Chose tag-level tracking over quantities, a Postgres outbox ahead of Redis, and database-enforced locks.",
-      "Made the ERP a pluggable connector, and multi-tenancy a schema per client, so one deployment serves many companies, on any ERP.",
+      "Made the ERP a pluggable connector, and multi-tenancy a schema per tenant, so one deployment serves many companies, on any ERP.",
     ],
     artifacts: ["Technical Design Document", "Architecture & data model"],
   },
@@ -32,7 +32,7 @@ const ROLES: Role[] = [
     line: "Plugs into any NetSuite account, and any ERP after it.",
     points: [
       "Kept the core ERP-agnostic. An ERP is a connector class with two methods, fetch records and post transactions, so supporting SAP or another ERP is one new class with no API, route or dashboard changes.",
-      "Made the NetSuite connector account-independent. Credentials, RESTlet URLs and record mappings are set per client in the dashboard, not written into the code.",
+      "Made the NetSuite connector account-independent. Credentials, RESTlet URLs and record mappings are set per tenant in the dashboard, not written into the code.",
       "Mapped each warehouse flow to the ERP transaction it becomes (receipts, fulfillments, bin transfers, inventory adjustments), and caught anything the ERP would reject at scan time, on the floor.",
     ],
     artifacts: ["Pluggable connector interface", "NetSuite Integration Guide"],
@@ -55,7 +55,7 @@ const ROLES: Role[] = [
     area: "Experience",
     line: "Designed for the person holding the scanner.",
     points: [
-      "Designed the handheld app's five workflows around one scanning model, scoped to the operator's own warehouse.",
+      "Designed every handheld workflow around one scanning model, scoped to the operator's own warehouse.",
       "Every rejected tag comes back with a plain reason, and every sync error goes to the person who can fix it — 'map this item in Connectors'.",
       "Locked Android's back gesture during an active scan so one stray swipe can't throw away a session.",
     ],
@@ -65,7 +65,7 @@ const ROLES: Role[] = [
     id: "engineer",
     hat: "Shipped",
     area: "Delivery",
-    line: "Built and shipped all four surfaces.",
+    line: "Built and shipped every surface.",
     points: [
       "Middleware API — NestJS 11, Drizzle, PostgreSQL 17: tag registry, warehouse flows, RBAC, tenant isolation, pluggable ERP connectors.",
       "Admin dashboard — Next.js 16, React 19: master data, orders, the ERP sync queue and connector mappings.",

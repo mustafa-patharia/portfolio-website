@@ -216,7 +216,7 @@ const SCHEMAS = ["root", "tenant_acme", "tenant_nova", "template"];
 export function TenantsVisual() {
   return (
     <div className="flex h-full min-h-[170px] items-center justify-center [perspective:700px]">
-      <div className="relative h-36 w-44 [--gap:22px] [transform:rotateX(55deg)_rotateZ(-35deg)] [transform-style:preserve-3d] group-hover:[--gap:36px]">
+      <div className="absolute right-0 top-[70px] h-36 w-44 [--gap:22px] [transform:rotateX(55deg)_rotateZ(-35deg)] [transform-style:preserve-3d] group-hover:[--gap:36px]">
         {SCHEMAS.map((s, k) => (
           <div
             key={s}

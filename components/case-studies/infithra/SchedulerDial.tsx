@@ -37,11 +37,11 @@ const utc = (local: number, off: number) => (((local - off) % 24) + 24) % 24;
 const EVENTS = TENANTS.flatMap((t, row) => JOBS.map((j) => ({ row, job: j, at: utc(j.local, t.off) })));
 
 const BEATS = [
-  { t: "Per client, subsidiary and time zone", b: "More than ten schedulers and background workers run for every client and each of its subsidiaries, at the right moment in that entity's own local day." },
-  { t: "Many clients, one peak hour", b: "Entities in the same time zone start their jobs together, so the platform sees sharp bursts of load at predictable hours." },
-  { t: "Built for autoscaling", b: "The cluster adds capacity during a burst. Queued work stays intact while new instances join, so no client's job is ever skipped." },
+  { t: "Per tenant, subsidiary and time zone", b: "More than ten schedulers and background workers run for every tenant and each of its subsidiaries, at the right moment in that entity's own local day." },
+  { t: "Many tenants, one peak hour", b: "Entities in the same time zone start their jobs together, so the platform sees sharp bursts of load at predictable hours." },
+  { t: "Built for autoscaling", b: "The cluster adds capacity during a burst. Queued work stays intact while new instances join, so no tenant's job is ever skipped." },
   { t: "Optimised for peak load", b: "Heavy processing runs close to the data, so each job is light on the application servers and the busiest hours stay stable." },
-  { t: "Reliable across every client", b: "The same schedules run every day for more than ten enterprise clients, whatever the load." },
+  { t: "Reliable across every tenant", b: "The same schedules run every day for more than ten enterprise companies, whatever the load." },
 ];
 
 export default function SchedulerDial() {
@@ -86,7 +86,7 @@ export default function SchedulerDial() {
             </p>
             <h2 className="font-display text-3xl italic md:text-5xl">Scheduling and background processing</h2>
           </div>
-          <p className="max-w-xs text-sm text-muted">Scroll through one day across six client subsidiaries in four time zones. Schedule shown is illustrative.</p>
+          <p className="max-w-xs text-sm text-muted">Scroll through one day across six company subsidiaries in four time zones. Schedule shown is illustrative.</p>
         </div>
 
         <div className="grid items-center gap-6 md:grid-cols-[260px_1fr] md:gap-10">

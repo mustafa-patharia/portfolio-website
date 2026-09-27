@@ -17,13 +17,13 @@ const LESSONS = [
     t: "A schema per tenant, not a database per tenant",
     then: "Database per tenant",
     now: "Schema per tenant",
-    d: "A separate database for every client made isolation simple, but connection management grew with every new client: each database needed its own credentials and connection pool, in every service. A schema per tenant in a shared database would have kept isolation strong while keeping connection pooling, migrations and day-to-day operations far simpler.",
+    d: "A separate database for every tenant made isolation simple, but connection management grew with every new tenant: each database needed its own credentials and connection pool, in every service. A schema per tenant in a shared database would have kept isolation strong while keeping connection pooling, migrations and day-to-day operations far simpler.",
   },
   {
     t: "Own the authentication layer",
     then: "Third-party identity provider",
     now: "In-house authentication",
-    d: "A third-party identity provider got sign-in working quickly, but multi-tenant rules, such as one person across multiple clients and access granted in stages, meant working around the provider rather than with it. When identity is this central to the product, I would build authentication in-house.",
+    d: "A third-party identity provider got sign-in working quickly, but multi-tenant rules, such as one person across multiple tenants and access granted in stages, meant working around the provider rather than with it. When identity is this central to the product, I would build authentication in-house.",
   },
   {
     t: "Components with one job",
