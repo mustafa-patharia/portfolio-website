@@ -1,3 +1,5 @@
+import { RELEASES } from "@/components/case-studies/promax/releases";
+
 export interface CaseStudyMeta {
   slug: string;
   title: string;
@@ -37,11 +39,19 @@ export const CASE_STUDIES: CaseStudyMeta[] = [
   },
   {
     slug: "promax-global",
-    title: "Promax Global",
-    kicker: "Website Development",
-    stack: "React · CMS",
+    title: "Corporate Website — Ports & Infrastructure Group",
+    kicker: "Website Development · SEO · GEO",
+    stack: [
+      "Next.js",
+      "Tailwind CSS",
+      "TypeScript",
+      ...(RELEASES.cms ? ["Payload CMS"] : []),
+      ...(RELEASES.arabic ? ["i18n / RTL"] : []),
+    ].join(" · "),
     description:
-      "Corporate website on a custom content platform — multilingual content, role-based publishing, and built-in search-engine optimization.",
+      "A multi-page corporate website I built end to end as a freelancer, made to be found, trusted and fast: SEO 100 and Best Practices 100 on Lighthouse, 0.7 s largest paint, structured data and llms.txt so AI assistants can read and cite it, and a static build served HTTPS-only over TLS 1.3." +
+      (RELEASES.cms ? " Includes a Payload CMS blog running inside the same Next.js app." : "") +
+      (RELEASES.arabic ? " Bilingual English/Arabic with full right-to-left layout." : ""),
     image: "/projects/poster/promax-gloabal.png",
   },
   {

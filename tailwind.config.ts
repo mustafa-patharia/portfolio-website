@@ -59,6 +59,28 @@ const config: Config = {
         },
         iblue: "#3a86ff",
         iorange: "#ff8001",
+        /* Promax Global brand green (--color-brand #3aa328) — tokens from the site's own @theme; 200 is its mask-number highlight */
+        pg: {
+          100: "#ecf7ea",
+          200: "#a8e6a0",
+          500: "#3aa328",
+          600: "#2f8a21",
+          700: "#256d1a",
+        },
+        /* Promax Global navy family (--color-navy*) */
+        pnavy: {
+          500: "#3a6aa0",
+          600: "#234b74",
+          700: "#1a3a5c",
+          800: "#16324f",
+          900: "#12293f",
+        },
+        /* Promax Global gold foil (--color-gold*) — investor-facing accent */
+        pgold: {
+          300: "#e8ce7a",
+          500: "#d4af37",
+          600: "#a9871f",
+        },
       },
       fontFamily: {
         body: ["var(--font-body)", "sans-serif"],

@@ -1,189 +1,347 @@
-import { motion } from "framer-motion";
-import TechPill from "@/components/TechPill";
-import { BentoGrid, BentoCard } from "./blocks/BentoGrid";
-import { Timeline, TimelineStep } from "./blocks/Timeline";
-import { Globe, Shield, Users, Layers, LayoutGrid, LayoutTemplate, Briefcase, Plane, Navigation2 } from "lucide-react";
+"use client";
 
-// --- Custom Interactive Visual Components (SaaS Aesthetic) ---
+import { Fragment, useRef } from "react";
+import Link from "next/link";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { MotionConfig, motion } from "framer-motion";
+import { ArrowUpRight, LayoutGrid, Search, Sparkles } from "lucide-react";
+import FoundScroll from "./promax/FoundScroll";
+import Lighthouse, { Ring } from "./promax/Lighthouse";
+import MobileFan from "./promax/MobileFan";
+import Roles from "./promax/Roles";
+import { ArabicSection, CmsSection } from "./promax/NextReleases";
+import { RELEASES } from "./promax/releases";
+import { DotField, EASE, Heading, Label, Tile, reveal } from "./promax/shared";
+import {
+  AiCrawlersVisual,
+  CmsRevalidateVisual,
+  EntityGraphVisual,
+  FastVisual,
+  HandshakeVisual,
+  MetaTagsVisual,
+  NoAttackSurfaceVisual,
+  PagesFromDataVisual,
+  RtlMirrorVisual,
+  ShipVisual,
+} from "./promax/visuals";
 
-const BrandSeparationVisual = () => (
-  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex items-center justify-center border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)] perspective-[1200px]">
-    <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/10 via-transparent to-blue-900/10" />
-    
-    <div className="relative z-10 flex w-full max-w-[280px] flex-col items-center justify-center transform-gpu rotate-x-[15deg]">
-      {/* Platform Core */}
-      <motion.div 
-        animate={{ y: [-5, 5, -5] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="relative z-20 flex h-24 w-64 items-center justify-center gap-4 rounded-2xl border border-indigo-500/40 bg-indigo-500/10 backdrop-blur-xl shadow-[0_20px_40px_rgba(79,70,229,0.2)]"
-      >
-        <Globe className="h-10 w-10 text-indigo-400 drop-shadow-[0_0_15px_rgba(79,70,229,0.5)]" strokeWidth={1.5} />
-        <span className="font-display text-xl tracking-widest text-indigo-100">PROMAX</span>
-      </motion.div>
+/* ------------------------------------------------------------------ content */
 
-      {/* Brand Splits */}
-      <div className="flex w-full justify-between px-4 mt-6">
-        {/* Aerospace */}
-        <motion.div 
-          animate={{ x: [-10, 0, -10], y: [10, 0, 10] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center justify-center rounded-xl border border-sky-500/40 bg-sky-500/10 backdrop-blur-md p-4 shadow-[0_10px_20px_rgba(14,165,233,0.2)]"
-        >
-          <Plane className="h-6 w-6 text-sky-400 mb-2" strokeWidth={1.5} />
-          <span className="text-[9px] font-mono font-bold text-sky-200 uppercase">Aerospace</span>
-        </motion.div>
-        
-        {/* Oil & Gas */}
-        <motion.div 
-          animate={{ x: [10, 0, 10], y: [10, 0, 10] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          className="flex flex-col items-center justify-center rounded-xl border border-amber-500/40 bg-amber-500/10 backdrop-blur-md p-4 shadow-[0_10px_20px_rgba(245,158,11,0.2)]"
-        >
-          <Briefcase className="h-6 w-6 text-amber-400 mb-2" strokeWidth={1.5} />
-          <span className="text-[9px] font-mono font-bold text-amber-200 uppercase">Oil & Gas</span>
-        </motion.div>
-      </div>
-    </div>
-  </div>
-);
+const META = [
+  { k: "Role", v: "Freelancer · end-to-end ownership" },
+  { k: "Client", v: "InnovateNex, for Promax Global" },
+  { k: "Timeline", v: "Jul – Sep 2026 · live" },
+  { k: "Scope", v: "Multi-page site · SEO + GEO · hosting & deploy" },
+];
 
-const StakeholderVisual = () => (
-  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex items-center justify-center border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)] perspective-[1000px]">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1)_0%,transparent_70%)]" />
-    <motion.div 
-      initial={{ rotateX: 20 }}
-      animate={{ rotateX: [20, 0, 20], rotateZ: [0, 5, 0] }} 
-      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-      className="relative z-10 flex h-24 w-40 flex-col items-center justify-center rounded-2xl border border-blue-500/40 bg-blue-500/10 backdrop-blur-xl shadow-[0_20px_40px_rgba(59,130,246,0.2)]"
-    >
-      <Users className="h-8 w-8 text-blue-400 mb-2 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]" strokeWidth={1.5} />
-      <span className="text-[10px] font-mono font-bold tracking-widest text-blue-300">STAKEHOLDERS</span>
-    </motion.div>
-  </div>
-);
+const HERO_SCORES = [
+  { label: "Performance", n: 92 },
+  { label: "Accessibility", n: 93 },
+  { label: "Best Practices", n: 100 },
+  { label: "SEO", n: 100 },
+];
 
-const IndustrySpecialistsVisual = () => (
-  <div className="relative h-full w-full overflow-hidden rounded-xl bg-[#09090b] flex items-center justify-center border border-white/10 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)]">
-     <div className="absolute inset-0 bg-[linear-gradient(to_bottom,#8b5cf610_1px,transparent_1px)] bg-[size:100%_20px]" />
-     <div className="flex gap-4 relative z-10">
-        {[0, 1, 2].map((i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: [0, 1, 0], scale: [0.8, 1, 0.8], y: [10, 0, -10] }}
-            transition={{ duration: 3, repeat: Infinity, delay: i * 0.8 }}
-            className="flex h-14 w-14 items-center justify-center rounded-xl border border-violet-500/40 bg-violet-500/10 backdrop-blur-md shadow-[0_0_20px_rgba(139,92,246,0.2)]"
-          >
-            <Shield className="h-6 w-6 text-violet-400" strokeWidth={1.5} />
-          </motion.div>
-        ))}
-     </div>
-  </div>
-);
+const OUTCOMES = [
+  { t: "Modern", d: "A fresh, premium look across every page and every screen size.", icon: Sparkles },
+  { t: "Structured", d: "Content organised around the company's vision: sectors, services, projects and a clear route to getting in touch.", icon: LayoutGrid },
+  { t: "Found", d: "Built from day one to rank on Google and be cited by AI assistants.", icon: Search },
+];
 
+const STACK = [
+  { layer: "Framework", items: ["Next.js", "React", "TypeScript", "Static export"] },
+  { layer: "Front end", items: ["Tailwind CSS", "GSAP", "Motion"] },
+  { layer: "Search", items: ["JSON-LD", "llms.txt", "robots.txt", "sitemap.xml", "Open Graph"] },
+  {
+    layer: "Hosting & delivery",
+    items: ["Edge CDN", "TLS 1.3", "GitHub Actions", "rsync over SSH", ...(RELEASES.cms ? ["Payload CMS"] : [])],
+  },
+];
+
+/* --------------------------------------------------------------- hero bits */
+
+function Kinetic({ text, highlight, className }: { text: string; highlight: string[]; className: string }) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo("[data-word]", { yPercent: 120 }, { yPercent: 0, duration: 0.9, ease: "expo.out", stagger: 0.08, delay: 0.15 });
+      });
+      return () => mm.revert();
+    },
+    { scope: ref }
+  );
+  return (
+    <h1 ref={ref} className={className}>
+      {text.split(" ").map((w, i) => (
+        <Fragment key={i}>
+          {i > 0 ? " " : null}
+          <span className="inline-block overflow-hidden pb-[0.12em] align-bottom">
+            <span data-word className={`inline-block ${highlight.includes(w) ? "text-pg-500" : ""}`}>
+              {w}
+            </span>
+          </span>
+        </Fragment>
+      ))}
+    </h1>
+  );
+}
+
+/* --------------------------------------------------------------------- page */
 
 export default function PromaxGlobalCaseStudy() {
   return (
-    <main className="mx-auto max-w-5xl px-6 pb-32 pt-40 md:px-10 lg:px-16 lg:pt-48">
-      <motion.header
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-        className="mb-20"
-      >
-        <div className="mb-6 flex items-center gap-3">
-          <span className="h-px w-12 bg-stroke" />
-          <span className="text-xs uppercase tracking-[0.3em] text-muted">
-            Design & Architecture
-          </span>
-        </div>
-        <h1 className="mb-6 font-display text-4xl italic tracking-tight md:text-6xl lg:text-7xl">
-          Promax Global <br className="hidden md:block" />
-          <span className="font-sans font-normal not-italic text-muted">Web Redesign</span>
-        </h1>
-        <div className="flex flex-wrap gap-2">
-          <TechPill name="Next.js" />
-          <TechPill name="Tailwind CSS" />
-          <TechPill name="Framer Motion" />
-          <TechPill name="Design System" />
-        </div>
-      </motion.header>
+    <MotionConfig reducedMotion="user">
+      <main className="selection:bg-pg-500 selection:text-white">
+        {/* ============================================================ HERO */}
+        <section className="relative overflow-hidden px-6 pb-24 pt-36 md:px-10 lg:pt-44">
+          <DotField className="opacity-[0.12] [mask-image:radial-gradient(ellipse_at_30%_30%,black,transparent_70%)]" />
+          <div aria-hidden className="pointer-events-none absolute -right-40 top-20 h-[520px] w-[520px] rounded-full bg-pnavy-600/40 blur-[130px]" />
+          <div aria-hidden className="pointer-events-none absolute -left-40 bottom-0 h-[380px] w-[380px] rounded-full bg-pg-500/15 blur-[120px]" />
 
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-        className="group relative mb-24 aspect-[21/9] w-full overflow-hidden rounded-3xl"
-      >
-        <img
-          src={`/projects/poster/promax-global-redesign.jpg`}
-          alt={`Promax Global hero poster`}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="pointer-events-none absolute inset-0 rounded-3xl border-2 border-text-primary/10 transition-colors duration-500 group-hover:border-text-primary/30" />
-      </motion.div>
-
-      <motion.article
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-      >
-        <div className="mt-16 flex flex-col gap-24">
-          
-          <section>
-            <h2 className="mb-10 text-center font-display text-3xl italic text-text-primary md:text-4xl">
-              The Architecture Restructure
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="flex flex-col gap-6 lg:col-span-2">
-                <h3 className="font-display text-2xl font-bold tracking-tight text-white/90">Brand Separation</h3>
-                <p className="leading-relaxed text-muted">A massive catalogue of specialized products across Aerospace, Oil & Gas, and Security demanded a rigid design system to differentiate brands while maintaining a cohesive corporate identity.</p>
-                <div className="h-[250px] w-full mt-4">
-                  <BrandSeparationVisual />
-                </div>
+          <div className="relative mx-auto max-w-6xl">
+            <div className="grid items-end gap-12 lg:grid-cols-[1.3fr_1fr]">
+              <div>
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: EASE }}>
+                  <Label>Case study · Corporate website</Label>
+                </motion.div>
+                <Kinetic
+                  text="Promax Global"
+                  highlight={["Global"]}
+                  className="font-display text-6xl italic leading-[0.95] tracking-tight md:text-7xl xl:text-8xl"
+                />
+                <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.25, ease: EASE }}>
+                  <p className="mt-4 text-2xl font-light text-white/80 md:text-4xl">
+                    A corporate website built to be <span className="text-pg-200">modern, trusted and fast.</span>
+                  </p>
+                  <p className="mt-6 max-w-2xl leading-relaxed text-muted md:text-lg">
+                    A multi-page corporate website for a group working across ports, infrastructure and national development. It ranks on
+                    Google, it can be read and cited by ChatGPT, Perplexity, Gemini, Claude and many other AI agents and LLMs, its main content
+                    loads in under a second, and it runs on a secured hosting platform with round-the-clock security and monitoring.
+                  </p>
+                  <a
+                    href="https://promaxglobal.ae"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group mt-8 inline-flex items-center gap-2 rounded-full border border-pg-500/60 px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-pg-200 transition-all duration-300 hover:-translate-y-0.5 hover:bg-pg-500 hover:text-white"
+                  >
+                    Visit promaxglobal.ae
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </a>
+                </motion.div>
               </div>
-              
-              <div className="flex flex-col gap-12">
-                <div className="flex flex-col gap-4">
-                  <h3 className="font-display text-2xl font-bold tracking-tight text-white/90">Multiple Stakeholders</h3>
-                  <p className="leading-relaxed text-muted text-sm">Managing feedback loops between executives and department heads required rapid prototyping and an adaptable UI shell.</p>
-                  <div className="h-[150px] w-full mt-2">
-                    <StakeholderVisual />
+
+              {/* Lighthouse at a glance */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
+                className="relative p-px"
+              >
+                <div aria-hidden className="pg-gold-run pointer-events-none absolute inset-0 opacity-60" />
+                <div className="relative bg-[#0d1117] p-6">
+                  <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.25em] text-white/40">Lighthouse · live site</p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {HERO_SCORES.map((s, k) => (
+                      <Ring key={s.label} label={s.label} n={s.n} delay={0.5 + k * 0.1} size="sm" />
+                    ))}
                   </div>
                 </div>
-                
-                <div className="flex flex-col gap-4">
-                  <h3 className="font-display text-2xl font-bold tracking-tight text-white/90">Industry Specialists</h3>
-                  <p className="leading-relaxed text-muted text-sm">Design language had to instantly convey industrial trust to government and enterprise buyers.</p>
-                  <div className="h-[150px] w-full mt-2">
-                    <IndustrySpecialistsVisual />
-                  </div>
+              </motion.div>
+            </div>
+
+            <motion.dl
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
+              className="mt-14 grid grid-cols-1 gap-px border border-white/5 bg-white/5 sm:grid-cols-2 lg:grid-cols-4"
+            >
+              {META.map((m) => (
+                <div key={m.k} className="group bg-bg/90 p-5 transition-colors duration-300 hover:bg-[#0d1117]">
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/35 transition-colors group-hover:text-pg-200">{m.k}</dt>
+                  <dd className="mt-2 text-sm text-white/85">{m.v}</dd>
                 </div>
+              ))}
+            </motion.dl>
+          </div>
+        </section>
+
+        {/* ============================================================ NEEDS */}
+        <section className="px-6 py-24 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Heading ghost="Brief" label="The project" className="mb-10">
+              Project brief
+            </Heading>
+
+            <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
+              <motion.div {...reveal} className="space-y-5 leading-relaxed text-muted md:text-lg">
+                <p>
+                  Promax Global needed its website rebuilt from the ground up. The old site no longer reflected where the company was heading.
+                  It needed to look modern, be structured around the company&apos;s vision and its sectors, and work as hard for the business as
+                  the team does: easy to find, quick to load, safe to run.
+                </p>
+                <p>
+                  InnovateNex brought me in as a freelancer to deliver it. I took the existing content, restructured it around the
+                  company&apos;s portfolio, and rebuilt the whole site on a modern stack. I stayed with the client until it was live.
+                </p>
+              </motion.div>
+
+              <div className="grid gap-px self-start border border-white/[0.07] bg-white/[0.07]">
+                {OUTCOMES.map((o, k) => (
+                  <motion.div
+                    key={o.t}
+                    {...reveal}
+                    transition={{ ...reveal.transition, delay: k * 0.1 }}
+                    className="group relative flex gap-4 bg-[#0d1117] p-5 transition-colors duration-300 hover:bg-[#101823] md:p-6"
+                  >
+                    <span className="absolute inset-y-0 left-0 w-[2px] origin-top scale-y-0 bg-pg-500 transition-transform duration-300 group-hover:scale-y-100" />
+                    <span className="grid h-9 w-9 shrink-0 place-items-center border border-pg-500/40 bg-pg-500/10 transition-transform duration-300 group-hover:-rotate-6">
+                      <o.icon className="h-4 w-4 text-pg-500" strokeWidth={1.6} />
+                    </span>
+                    <span>
+                      <span className="block text-lg font-medium text-white transition-colors group-hover:text-pg-200">{o.t}</span>
+                      <span className="mt-1 block text-sm leading-relaxed text-muted">{o.d}</span>
+                    </span>
+                  </motion.div>
+                ))}
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section>
-             <h2 className="mb-10 font-display text-3xl italic text-text-primary md:text-4xl text-center">
-              A Unified Design System
-            </h2>
-            <div className="mt-12">
-              <Timeline>
-                <TimelineStep title="The Token System" tool="Tailwind CSS">
-                  Replaced rigid, hard-coded colors with a semantic token system spanning multiple brand variants. This ensured immediate visual consistency across the entire aerospace and energy divisions.
-                </TimelineStep>
-                <TimelineStep title="Reusable Layout Shells" tool="Next.js Layouts">
-                  Established robust UI shells for product categories. The data fetching was separated from the presentation layer, allowing rapid content iteration without risking layout breakage.
-                </TimelineStep>
-                <TimelineStep title="Kinetic Typography" tool="Framer Motion">
-                  Introduced subtle, staggered entrance animations on high-intent conversion pages to draw the eye toward critical specifications and certs, increasing engagement by 22%.
-                </TimelineStep>
-              </Timeline>
+        {/* ============================================================ SIGNATURE: how the site gets found (pinned) */}
+        <FoundScroll />
+
+        {/* ============================================================ LIGHTHOUSE */}
+        <section className="px-6 py-28 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Heading ghost="Speed" label="Lighthouse report" className="mb-10">
+              Performance
+            </Heading>
+            <Lighthouse />
+          </div>
+        </section>
+
+        {/* ============================================================ BENTO */}
+        <section className="px-6 pb-32 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Heading ghost="Built" label="Under the hood" className="mb-10">
+              What&apos;s under the hood
+            </Heading>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-5">
+              <Tile
+                title="Search-ready on every page"
+                caption="Each page has its own title, description, canonical address and link-preview card."
+                className="md:col-span-2"
+              >
+                <MetaTagsVisual />
+              </Tile>
+              <Tile title="Readable by AI assistants" caption="AI crawlers are welcomed by name, and an llms.txt guide explains the site to them." className="md:col-span-2">
+                <AiCrawlersVisual />
+              </Tile>
+              <Tile title="Understood as a company" caption="Structured data describes the business, its services and where each page sits." className="md:col-span-2">
+                <EntityGraphVisual />
+              </Tile>
+              <Tile title="Secure connection" caption="HTTPS-only over TLS 1.3, with round-the-clock protection and monitoring at the edge.">
+                <HandshakeVisual />
+              </Tile>
+              <Tile title="Nothing to hack" caption="A pre-built site with no back end to break into.">
+                <NoAttackSurfaceVisual />
+              </Tile>
+              <Tile title="Fast by default" caption="Media cut 84%, then compressed and cached at the edge." className="md:col-span-2">
+                <FastVisual />
+              </Tile>
+              <Tile title="New page in minutes" caption="A content entry becomes a finished page — the same system built every page on the site." className="md:col-span-2">
+                <PagesFromDataVisual />
+              </Tile>
+              <Tile
+                title="Ships on every push"
+                caption="Every change to the main branch is built and deployed automatically."
+                className={RELEASES.cms || RELEASES.arabic ? "md:col-span-2" : "md:col-span-4"}
+              >
+                <ShipVisual />
+              </Tile>
+              {RELEASES.cms && (
+                <Tile title="Editor saves, page updates" caption="Publishing a post refreshes only the pages it affects.">
+                  <CmsRevalidateVisual />
+                </Tile>
+              )}
+              {RELEASES.arabic && (
+                <Tile title="English and Arabic" caption="Right-to-left layout with its own indexable URLs.">
+                  <RtlMirrorVisual />
+                </Tile>
+              )}
             </div>
-          </section>
-          
-        </div>
-      </motion.article>
-    </main>
+          </div>
+        </section>
+
+        {/* ============================================================ MOBILE */}
+        <section className="px-6 pb-32 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Heading ghost="Mobile" label="Responsive" className="mb-6 text-center">
+              Mobile-friendly
+            </Heading>
+            <MobileFan />
+          </div>
+        </section>
+
+        {/* ============================================================ NEXT RELEASES (hidden until live) */}
+        <CmsSection />
+        <ArabicSection />
+
+        {/* ============================================================ ROLES */}
+        <section className="px-6 pb-32 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <Heading ghost="Owned" label="Ownership" className="mb-8">
+              What I owned
+            </Heading>
+            <motion.div {...reveal}>
+              <Roles />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================================ STACK + NEXT */}
+        <section className="px-6 pb-32 md:px-10">
+          <div className="mx-auto max-w-6xl">
+            <motion.div {...reveal}>
+              <Label>Stack</Label>
+            </motion.div>
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {STACK.map((g) => (
+                <motion.div key={g.layer} {...reveal}>
+                  <h3 className="mb-3 text-sm font-medium text-white">{g.layer}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {g.items.map((i) => (
+                      <span
+                        key={i}
+                        className="cursor-default border border-white/10 px-3 py-1 font-mono text-[11px] text-white/60 transition-all duration-300 hover:-translate-y-0.5 hover:border-pg-500/60 hover:text-pg-200"
+                      >
+                        {i}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <motion.div {...reveal} className="mx-auto mt-24 max-w-6xl">
+            <Link
+              href="/case-studies"
+              className="group flex items-center justify-between border border-white/10 p-8 transition-all duration-300 hover:border-pg-500/60 hover:bg-pg-500/[0.04] md:p-10"
+            >
+              <span>
+                <span className="block font-mono text-[11px] uppercase tracking-[0.3em] text-white/40">Keep reading</span>
+                <span className="mt-2 block font-display text-3xl italic md:text-4xl">All case studies</span>
+              </span>
+              <ArrowUpRight className="h-8 w-8 text-white/50 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-pg-500" />
+            </Link>
+          </motion.div>
+        </section>
+      </main>
+    </MotionConfig>
   );
 }
