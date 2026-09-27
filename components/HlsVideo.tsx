@@ -20,7 +20,13 @@ export default function HlsVideo({ className }: { className?: string }) {
 
       if (Hls.isSupported()) {
         if (cancelled) return;
-        hls = new Hls({ enableWorker: true });
+        // Assume a fast link so playback starts on the top rendition — the
+        // home dive scales this video up ~10x. ABR still steps down if needed.
+        hls = new Hls({
+          enableWorker: true,
+          capLevelToPlayerSize: false,
+          abrEwmaDefaultEstimate: 20_000_000,
+        });
         hls.loadSource(HLS_SRC);
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED, () => {

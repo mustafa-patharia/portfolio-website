@@ -23,6 +23,11 @@
     scroll-behavior: smooth;
   }
 
+  /* CSS smooth scrolling fights ScrollTrigger's snap tweens on the home stage. */
+  html:has(.journey) {
+    scroll-behavior: auto;
+  }
+
   body {
     @apply bg-bg text-text-primary font-body antialiased;
     overflow-x: hidden;
@@ -216,4 +221,10 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .pg-gold-run { animation: none; background: rgb(212 175 55 / 0.6); }
+}
+
+/* Over the hero black hole the cursor lens replaces the pointer. */
+html.lens-cursor,
+html.lens-cursor * {
+  cursor: none !important;
 }

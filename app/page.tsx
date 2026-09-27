@@ -5,13 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import LoadingScreen from "@/components/LoadingScreen";
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import AboutMe from "@/components/AboutMe";
-import Works from "@/components/Works";
-import MoreWork from "@/components/MoreWork";
-import SkillsConstellation from "@/components/SkillsConstellation";
-import Stats from "@/components/Stats";
-import Contact from "@/components/Contact";
+import Stage from "@/components/home/Stage";
+import { jumpToScene } from "@/components/home/journey";
 
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,13 +21,11 @@ export default function Index() {
 
   const handleComplete = useCallback(() => setIsLoading(false), []);
 
-  // Sections don't exist in the DOM until loading finishes, so a hash from a
-  // cross-page nav (e.g. /#skills) can't be scrolled to until now.
+  // A hash from a cross-page nav (e.g. /#work) maps to a scene label, which
+  // only has a scroll position once the loader is gone and the stage measured.
   useEffect(() => {
     if (!isLoading && window.location.hash) {
-      document
-        .querySelector(window.location.hash)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      requestAnimationFrame(() => jumpToScene(window.location.hash.slice(1)));
     }
   }, [isLoading]);
 
@@ -48,13 +41,7 @@ export default function Index() {
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <Navbar />
-        <Hero />
-        <AboutMe />
-        <Works />
-        <MoreWork />
-        <SkillsConstellation />
-        <Stats />
-        <Contact />
+        <Stage ready={!isLoading} />
       </motion.main>
     </>
   );

@@ -18,3 +18,5 @@ Claude.md
 docs
 .vscode
 .remember
+# Project MCP config (contains API key)
+.mcp.json

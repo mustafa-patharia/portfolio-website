@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { SCENES, SCENE_EVENT, jumpToScene } from "./home/journey";
 
 const LINKS = [
-  { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
   { label: "Work", href: "#work" },
-  { label: "Skills", href: "#skills" },
-  { label: "Experience", href: "#resume" },
+  { label: "Capabilities", href: "#capabilities", wide: true },
+  { label: "My Journey", href: "#journey", wide: true },
   { label: "Case Studies", href: "/case-studies", page: true },
 ];
 
@@ -24,14 +24,22 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // The home stage reports which scene is settled; mirror it in the pill.
+  useEffect(() => {
+    const onScene = (e: Event) => {
+      const id = (e as CustomEvent<string>).detail;
+      setActive(SCENES.find((s) => s.id === id)?.title ?? "Home");
+    };
+    window.addEventListener(SCENE_EVENT, onScene);
+    return () => window.removeEventListener(SCENE_EVENT, onScene);
+  }, []);
+
   const smoothTo = (e: React.MouseEvent, href: string, label?: string) => {
     e.preventDefault();
     if (label) setActive(label);
     
     if (pathname === "/") {
-      document
-        .querySelector(href)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      jumpToScene(href.slice(1));
     } else {
       window.location.href = `/${href}`;
     }
@@ -80,6 +88,8 @@ export default function Navbar() {
               href={link.href}
               onClick={(e) => smoothTo(e, link.href, link.label)}
               className={`rounded-full px-3 py-1.5 text-xs transition-colors duration-200 sm:px-4 sm:py-2 sm:text-sm ${
+                link.wide ? "hidden md:inline-block" : ""
+              } ${
                 active === link.label
                   ? "bg-stroke/50 text-text-primary"
                   : "text-muted hover:bg-stroke/50 hover:text-text-primary"
