@@ -1,3 +1,5 @@
+import { RELEASES } from "@/components/case-studies/promax/releases";
+
 export interface CaseStudyMeta {
   slug: string;
   title: string;
@@ -10,11 +12,47 @@ export interface CaseStudyMeta {
 export const CASE_STUDIES: CaseStudyMeta[] = [
   {
     slug: "infithra",
-    title: "infithra — Enterprise SaaS Case Study",
-    kicker: "Enterprise · SaaS",
+    title: "Infithra — Enterprise HR & Payroll SaaS",
+    kicker: "Enterprise · Multi-tenant SaaS · HR & Payroll",
+    stack: "Node.js · Angular · Next.js · PostgreSQL · AWS",
     description:
-      "A deep dive into my experience as a lead engineer — focusing on architectural ownership, scaling technical operations, and the interpersonal dynamics of leading a growing engineering team.",
-    image: "/projects/infithra.jpg",
+      "Enterprise HR and payroll platform for the UAE and KSA, built from the ground up as founding engineer: configurable payroll engine, multi-tenant cloud architecture, two-layer access control, 10+ schedulers and NetSuite ledger sync.",
+    image: "/projects/poster/infithra.jpg",
+  },
+  {
+    slug: "smartscan",
+    title: "SmartScan — RFID Warehouse Middleware",
+    kicker: "Enterprise · Warehouse Inventory",
+    stack: "NestJS · PostgreSQL · Next.js · React Native · AWS",
+    description:
+      "RFID warehouse inventory platform I owned end to end as a freelancer: architecture, NetSuite integration, product scope, handheld UX and delivery. Tag-level tracking, Android handheld workflows and durable NetSuite sync.",
+    image: "/projects/poster/smarscan-rfid-warehouse-app.png",
+  },
+  {
+    slug: "netsuite-odoo-pos",
+    title: "Odoo POS × NetSuite — Odoo Addon",
+    kicker: "Enterprise · Odoo Addon · ERP Integration",
+    stack: "Odoo 18 · Python · queue_job · NetSuite RESTlets",
+    description:
+      "Odoo 18 addon I owned end to end as a freelancer: every POS order becomes the right NetSuite invoices, credit memos, payments, refunds and gift certificates, posted in order and never twice. NetSuite pushes the configuration and products in.",
+    image: "/projects/poster/netsuite-odoo-pos-integration.png",
+  },
+  {
+    slug: "promax-global",
+    title: "Corporate Website — Ports & Infrastructure Group",
+    kicker: "Website Development · SEO · GEO",
+    stack: [
+      "Next.js",
+      "Tailwind CSS",
+      "TypeScript",
+      ...(RELEASES.cms ? ["Payload CMS"] : []),
+      ...(RELEASES.arabic ? ["i18n / RTL"] : []),
+    ].join(" · "),
+    description:
+      "A multi-page corporate website I built end to end as a freelancer, made to be found, trusted and fast: SEO 100 and Best Practices 100 on Lighthouse, 0.7 s largest paint, structured data and llms.txt so AI assistants can read and cite it, and a static build served HTTPS-only over TLS 1.3." +
+      (RELEASES.cms ? " Includes a Payload CMS blog running inside the same Next.js app." : "") +
+      (RELEASES.arabic ? " Bilingual English/Arabic with full right-to-left layout." : ""),
+    image: "/projects/poster/promax-gloabal.png",
   },
   {
     slug: "rift",
@@ -23,7 +61,16 @@ export const CASE_STUDIES: CaseStudyMeta[] = [
     stack: "SwiftUI · macOS · AVFoundation · yt-dlp",
     description:
       "A truly native, ad-free YouTube Music client for macOS — hybrid WebView/local playback engine, offline downloads, and a source-agnostic playback architecture.",
-    image: "/projects/rift.png",
+    image: "/projects/poster/rift-music-app.png",
+  },
+  {
+    slug: "get-rounded",
+    title: "GetRounded",
+    kicker: "Open Source · Desktop App",
+    stack: "Python · pywebview · Tailwind CSS",
+    description:
+      "A fully offline desktop app for macOS, Windows, and Linux that instantly rounds image corners. Built with a Python backend and a lightweight HTML/Tailwind frontend via pywebview.",
+    image: "/projects/poster/get-rounded.png",
   },
   {
     slug: "proofhub-task-timer",
@@ -32,7 +79,7 @@ export const CASE_STUDIES: CaseStudyMeta[] = [
     stack: "Swift · SwiftData · ProofHub API",
     description:
       "A native macOS menu-bar time tracker for ProofHub — concurrent task timers, offline-first SwiftData caching, and one-click sync to ProofHub's Bolt API.",
-    image: "/projects/proofhub-task-timer.png",
+    image: "/projects/poster/proofhub-task-timer.png",
   },
 ];
 

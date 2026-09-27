@@ -200,3 +200,20 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Promax case study — the gold arc that orbits the active card (ported from the site's .gold-run) */
+@property --pg-gold-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.pg-gold-run {
+  background: conic-gradient(from var(--pg-gold-angle), transparent 0deg, transparent 200deg, rgb(212 175 55 / 0.5) 268deg, #f6e6a8 310deg, #d4af37 336deg, transparent 360deg);
+  animation: pg-gold-run 3.4s linear infinite;
+}
+@keyframes pg-gold-run {
+  to { --pg-gold-angle: 360deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-gold-run { animation: none; background: rgb(212 175 55 / 0.6); }
+}
