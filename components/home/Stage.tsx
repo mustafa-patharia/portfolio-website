@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import HeroScene from "./HeroScene";
 import PlaceholderScene from "./PlaceholderScene";
+import AboutScene from "./AboutScene";
 import WorkScene from "./WorkScene";
 import { CASE_STUDIES } from "@/lib/case-studies";
 import {
@@ -15,6 +16,7 @@ import {
   ring,
   progress,
   RING_STEP,
+  ABOUT_STEP,
   jumpToScene,
   SCENE_EVENT,
   setJourneyJump,
@@ -81,12 +83,41 @@ export default function Stage({ ready }: { ready: boolean }) {
           { autoAlpha: 0, scale: 0.6, filter: "blur(12px)" },
           { autoAlpha: 1, scale: 1, filter: "blur(0px)", duration: 0.22, ease: "power2.out" },
           1.36
-        );
+        )
+        // The astronaut drifts in out of the dark and the quote's first
+        // half lights up word by word, settled by the About label.
+        .fromTo(
+          ".about-astro",
+          { x: "-12vw", y: "10vh", scale: 0.35, rotation: -28, filter: "blur(10px)" },
+          { x: 0, y: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: 0.5, ease: "power2.out" },
+          1.36
+        )
+        .fromTo(".about-orb", { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: "back.out(1.6)", stagger: { amount: 0.25, from: "random" } }, 1.45)
+        .fromTo(".about-copy", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.25, ease: "power2.out" }, 1.45)
+        .fromTo(".about-wa", { opacity: 0.1 }, { opacity: 1, duration: 0.1, stagger: { amount: 0.25 } }, 1.6);
+
+      // Inside About the astronaut holds while each beat is its own snap
+      // point: the rest of the quote, then one block at a time.
+      const about = SCENES.find((s) => s.id === "about")!.at;
+      tl.fromTo(".about-wb", { opacity: 0.1 }, { opacity: 1, duration: 0.1, stagger: { amount: ABOUT_STEP * 0.55 } }, about + ABOUT_STEP * 0.15)
+        .addLabel("about-1", about + ABOUT_STEP);
+      const blocks = gsap.utils.toArray<HTMLElement>(".about-block", rootRef.current);
+      const pips = gsap.utils.toArray<HTMLElement>(".about-pip", rootRef.current);
+      blocks.forEach((block, k) => {
+        const at = about + (k + 2) * ABOUT_STEP;
+        if (k > 0) {
+          tl.to(blocks[k - 1], { autoAlpha: 0, y: -16, filter: "blur(6px)", duration: ABOUT_STEP * 0.35, ease: "power2.in" }, at - ABOUT_STEP * 0.85);
+        }
+        tl.fromTo(block, { autoAlpha: 0, y: 16, filter: "blur(6px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: ABOUT_STEP * 0.45, ease: "power2.out" }, at - ABOUT_STEP * 0.5)
+          .to(pips[k], { scaleX: 1, duration: ABOUT_STEP * 0.45 }, at - ABOUT_STEP * 0.5)
+          .addLabel(`about-${k + 2}`, at);
+      });
 
       // Transition 2 — the ring forms. About falls past the camera while the
       // seven posters fly in from depth and take their places around you.
       const work = SCENES.find((s) => s.id === "work")!.at;
-      tl.to(scene("about"), { scale: 1.6, autoAlpha: 0, duration: 0.3, ease: "power2.in" }, work - 0.5)
+      tl.to(".about-astro", { x: "-30vw", y: "-8vh", rotation: -18, duration: 0.3, ease: "power2.in" }, work - 0.5)
+        .to(scene("about"), { scale: 1.6, autoAlpha: 0, duration: 0.3, ease: "power2.in" }, work - 0.5)
         .set(scene("work"), { autoAlpha: 1 }, work - 0.4)
         .fromTo(ring, { form: 0 }, { form: 1, duration: 0.4 }, work - 0.4)
         .fromTo(".work-chrome", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out" }, work - 0.2);
@@ -139,7 +170,9 @@ export default function Stage({ ready }: { ready: boolean }) {
       >
         <HeroScene ready={ready} />
         {SCENES.slice(1).map((s, i) =>
-          s.id === "work" ? (
+          s.id === "about" ? (
+            <AboutScene key={s.id} />
+          ) : s.id === "work" ? (
             <WorkScene key={s.id} />
           ) : (
             <PlaceholderScene key={s.id} id={s.id} index={i + 1} title={s.title} note={s.note} />

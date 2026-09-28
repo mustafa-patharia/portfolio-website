@@ -3,11 +3,11 @@
 // where the scene is fully settled — it doubles as the snap/nav label.
 export const SCENES = [
   { id: "home", title: "Home", at: 0, note: "" },
-  { id: "about", title: "About", at: 1.6, note: "Statement, portrait and proof numbers." },
-  { id: "work", title: "Work", at: 3, note: "Seven case studies on a ring around the camera." },
-  { id: "capabilities", title: "Capabilities", at: 6, note: "Horizontal track of what I build, each tied to its proof project." },
-  { id: "journey", title: "My Journey", at: 8.5, note: "A corridor of roles you fly through." },
-  { id: "contact", title: "Contact", at: 11, note: "Back at the black hole — booking, email and socials." },
+  { id: "about", title: "First Contact", at: 2, note: "The astronaut holds while the quote and three blocks step through." },
+  { id: "work", title: "Missions", at: 4.4, note: "Seven case studies on a ring around the camera." },
+  { id: "capabilities", title: "Capabilities", at: 7.4, note: "Horizontal track of what I build, each tied to its proof project." },
+  { id: "journey", title: "My Journey", at: 9.9, note: "A corridor of roles you fly through." },
+  { id: "contact", title: "Open Channel", at: 12.4, note: "Back at the black hole — booking, email and socials." },
 ] as const;
 
 export type SceneId = (typeof SCENES)[number]["id"];
@@ -23,6 +23,11 @@ export const dive = { center: 0, zoom: 0 };
  *  `form` flies the posters in from depth, `turn` is how many cards the
  *  ring has rotated past (0 → last case study). */
 export const ring = { form: 0, turn: 0 };
+
+/** Screens of scroll per beat inside About (labels `about-1`…): the
+ *  quote's second half, then one beat per body block. */
+export const ABOUT_STEP = 0.4;
+export const ABOUT_BLOCKS = 3;
 
 /** Screens of scroll per poster step inside the ring (labels `work-1`…). */
 export const RING_STEP = 0.4;

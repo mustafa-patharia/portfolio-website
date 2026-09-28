@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import { SCENES, SCENE_EVENT, jumpToScene } from "./home/journey";
 
 const LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Work", href: "#work" },
+  { label: "First Contact", href: "#about" },
+  { label: "Missions", href: "#work" },
   { label: "Capabilities", href: "#capabilities", wide: true },
   { label: "My Journey", href: "#journey", wide: true },
   { label: "Case Studies", href: "/case-studies", page: true },
