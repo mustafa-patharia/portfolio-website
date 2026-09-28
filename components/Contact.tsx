@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import HlsVideo from "./HlsVideo";
 
-const SOCIALS = [
+export const SOCIALS = [
   {
     label: "GitHub",
     href: "https://github.com/mustafa-patharia",

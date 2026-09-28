@@ -156,6 +156,10 @@
   .cosmic-btn:active > span:last-child {
     transform: scale(0.97);
   }
+
+  .contact-field {
+    @apply w-full rounded-xl border border-stroke bg-bg/70 px-4 py-3 text-sm text-text-primary outline-none transition-[border-color,box-shadow] duration-300 placeholder:text-muted hover:border-white/20 focus:border-[#89AACC]/70 focus:shadow-[0_0_0_3px_rgba(137,170,204,0.12)];
+  }
 }
 
 @keyframes btn-sweep {

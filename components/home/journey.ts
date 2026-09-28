@@ -7,7 +7,7 @@ export const SCENES = [
   { id: "work", title: "Missions", at: 4.4, note: "Seven case studies on a ring around the camera." },
   { id: "capabilities", title: "Capabilities", at: 7.4, note: "Horizontal track of what I build, each tied to its proof project." },
   { id: "journey", title: "My Journey", at: 9.9, note: "A corridor of roles you fly through." },
-  { id: "contact", title: "Open Channel", at: 12.4, note: "Back at the black hole — booking, email and socials." },
+  { id: "contact", title: "Open Channel", at: 12.4, note: "Inside the hole — booking, email, socials and the satellite relay." },
 ] as const;
 
 export type SceneId = (typeof SCENES)[number]["id"];
@@ -48,4 +48,45 @@ export function setJourneyJump(fn: typeof jump) {
 /** Scrolls to a scene label. Returns false when the stage isn't mounted. */
 export function jumpToScene(id: string) {
   return jump?.(id) ?? false;
+}
+
+/** Calls `enter` each time scene `id` becomes the live one and `leave` when
+ *  it stops being. Returns the unsubscribe. */
+export function onSceneVisit(id: SceneId, enter: () => void, leave: () => void) {
+  let inside = false;
+  const handle = (e: Event) => {
+    const now = (e as CustomEvent<string>).detail === id;
+    if (now === inside) return;
+    inside = now;
+    (now ? enter : leave)();
+  };
+  window.addEventListener(SCENE_EVENT, handle);
+  return () => window.removeEventListener(SCENE_EVENT, handle);
+}
+
+/** A straight pass across a W×H view for fly-bys: a random heading through a
+ *  random point near the middle, entering past one edge and leaving past the
+ *  opposite side, `margin` px off-screen at both ends. `heading` is in
+ *  degrees, screen-space (0 = right, 90 = down). */
+export function crossing(W: number, H: number, margin: number) {
+  const p = { x: W * (0.2 + Math.random() * 0.6), y: H * (0.2 + Math.random() * 0.6) };
+  const a = Math.random() * Math.PI * 2;
+  const dx = Math.cos(a);
+  const dy = Math.sin(a);
+  // Distance from p to the margin box along (sx, sy).
+  const reach = (sx: number, sy: number) =>
+    Math.min(
+      sx > 0 ? (W + margin - p.x) / sx : sx < 0 ? (-margin - p.x) / sx : Infinity,
+      sy > 0 ? (H + margin - p.y) / sy : sy < 0 ? (-margin - p.y) / sy : Infinity
+    );
+  const back = reach(-dx, -dy);
+  const fwd = reach(dx, dy);
+  return {
+    x0: p.x - dx * back,
+    y0: p.y - dy * back,
+    x1: p.x + dx * fwd,
+    y1: p.y + dy * fwd,
+    length: back + fwd,
+    heading: (a * 180) / Math.PI,
+  };
 }

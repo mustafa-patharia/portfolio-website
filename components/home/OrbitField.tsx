@@ -6,7 +6,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { motion } from "framer-motion";
 import Matter from "matter-js";
-import { progress, SCENES } from "./journey";
+import { onSceneVisit, progress, SCENES } from "./journey";
+import { flyby } from "./flyby";
 
 gsap.registerPlugin(useGSAP);
 
@@ -230,10 +231,13 @@ export default function OrbitField() {
     };
   }, []);
 
-  // Planets idle and lean with the cursor; the comet crosses on its own
-  // path every so often, from a new point each pass.
+  // Planets idle and lean with the cursor. Now and then a comet or an
+  // asteroid (picked at random) crosses from any edge to the far side, and
+  // can be grabbed and thrown off course —
+  // never there on arrival: the first pass comes 5–20s after reaching
+  // About, then one every 2–3 minutes.
   useGSAP(
-    () => {
+    (_, safe) => {
       gsap.utils.toArray<HTMLElement>(".about-planet-float").forEach((el, i) => {
         gsap.to(el, { y: i ? -10 : 8, rotation: i ? 4 : -2, duration: 7 + i * 2, ease: "sine.inOut", yoyo: true, repeat: -1 });
       });
@@ -252,16 +256,39 @@ export default function OrbitField() {
       };
       window.addEventListener("pointermove", onMove);
 
+      let unvisit = () => {};
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        gsap.timeline({ repeat: -1, repeatDelay: 14, repeatRefresh: true, delay: 2 })
-          .fromTo(
-            ".about-comet",
-            { x: () => `${60 + Math.random() * 50}vw`, y: () => `${-20 - Math.random() * 10}vh`, autoAlpha: 1 },
-            { x: () => `${-40 + Math.random() * 40}vw`, y: () => `${60 + Math.random() * 40}vh`, duration: 9, ease: "none" }
-          )
-          .set(".about-comet", { autoAlpha: 0 });
+        const layer = layerRef.current!;
+        // The comet's art flies down-left (135°) with its tail behind; the
+        // asteroid just tumbles.
+        const comet = flyby(layer.querySelector<HTMLElement>(".about-comet")!, { speed: 170, art: 135 });
+        const asteroid = flyby(layer.querySelector<HTMLElement>(".about-asteroid")!, { speed: 65 });
+        const pass = safe!(() =>
+          (Math.random() < 0.5 ? comet : asteroid).launch(safe!(() => void gsap.delayedCall(120 + Math.random() * 60, pass)))
+        );
+        const clear = safe!(() => {
+          gsap.killTweensOf(pass);
+          comet.stop();
+          asteroid.stop();
+        });
+        const off = onSceneVisit(
+          "about",
+          safe!(() => {
+            clear();
+            gsap.delayedCall(5 + Math.random() * 15, pass);
+          }),
+          clear
+        );
+        unvisit = () => {
+          off();
+          comet.dispose();
+          asteroid.dispose();
+        };
       }
-      return () => window.removeEventListener("pointermove", onMove);
+      return () => {
+        window.removeEventListener("pointermove", onMove);
+        unvisit();
+      };
     },
     { scope: layerRef }
   );
@@ -283,9 +310,12 @@ export default function OrbitField() {
           </div>
         </div>
       ))}
-      {/* Its tail trails up and to the right, so it always travels down-left. */}
-      <div className="about-comet invisible absolute left-0 top-0 w-14 md:w-20">
+      {/* Fly-bys: driven by flyby(); grab one mid-flight and throw it. */}
+      <div className="about-comet pointer-events-auto invisible absolute left-0 top-0 w-14 cursor-grab touch-none select-none data-[grabbed]:cursor-grabbing md:w-20">
         <Image src="/personal/orbit/comet.png" alt="" width={160} height={158} sizes="80px" draggable={false} className="h-auto w-full" />
+      </div>
+      <div className="about-asteroid pointer-events-auto invisible absolute left-0 top-0 w-10 cursor-grab touch-none select-none data-[grabbed]:cursor-grabbing md:w-14">
+        <Image src="/personal/orbit/asteroid.png" alt="" width={156} height={160} sizes="56px" draggable={false} className="h-auto w-full [filter:brightness(0.8)]" />
       </div>
 
       {OBJECTS.map((o, i) => (

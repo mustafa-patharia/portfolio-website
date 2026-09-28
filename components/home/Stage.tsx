@@ -8,6 +8,7 @@ import HeroScene from "./HeroScene";
 import PlaceholderScene from "./PlaceholderScene";
 import AboutScene from "./AboutScene";
 import WorkScene from "./WorkScene";
+import ContactScene from "./ContactScene";
 import { CASE_STUDIES } from "@/lib/case-studies";
 import {
   JOURNEY_LENGTH,
@@ -137,6 +138,10 @@ export default function Stage({ ready }: { ready: boolean }) {
           .fromTo(scene(s.id), { scale: 0.55, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: "power2.out" }, s.at - 0.3);
       });
 
+      // Open Channel — still inside the hole: the copy and form rise in.
+      const contact = SCENES.find((s) => s.id === "contact")!.at;
+      tl.fromTo(".contact-rise", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out", stagger: 0.06, immediateRender: false }, contact - 0.2);
+
       setJourneyJump((id) => {
         const st = tl.scrollTrigger;
         if (!st || !(id in tl.labels)) return false;
@@ -174,6 +179,8 @@ export default function Stage({ ready }: { ready: boolean }) {
             <AboutScene key={s.id} />
           ) : s.id === "work" ? (
             <WorkScene key={s.id} />
+          ) : s.id === "contact" ? (
+            <ContactScene key={s.id} />
           ) : (
             <PlaceholderScene key={s.id} id={s.id} index={i + 1} title={s.title} note={s.note} />
           )

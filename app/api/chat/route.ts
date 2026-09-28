@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SITE_CONTEXT } from "@/lib/ai-context";
+import { notifyLead } from "@/lib/lead";
 
 export const runtime = "edge";
 
@@ -11,31 +12,6 @@ const CAL_TIMEZONE = "Asia/Dubai";
 interface ChatMessage {
   role: "user" | "model";
   text: string;
-}
-
-const escapeHtml = (s: string) =>
-  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-const stripHeaderInjection = (s: string) => s.replace(/[\r\n]+/g, " ");
-
-async function notifyLead(lead: { name?: string; email?: string; phone?: string; note?: string }) {
-  const resendKey = process.env.RESEND_API_KEY;
-  if (!resendKey) return;
-  const name = stripHeaderInjection(lead.name || "");
-  const email = stripHeaderInjection(lead.email || "");
-  const phone = stripHeaderInjection(lead.phone || "");
-  await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${resendKey}`,
-    },
-    body: JSON.stringify({
-      from: "onboarding@resend.dev",
-      to: "patharia52@gmail.com",
-      subject: `New chat lead: ${name || email}`,
-      html: `<p><strong>Email:</strong> ${escapeHtml(email)}</p><p><strong>Name:</strong> ${escapeHtml(name) || "—"}</p><p><strong>Phone:</strong> ${escapeHtml(phone) || "—"}</p><p><strong>Note:</strong> ${escapeHtml(lead.note || "") || "—"}</p>`,
-    }),
-  }).catch(() => {});
 }
 
 // ponytail: module-scope cache, lives only as long as the edge instance stays warm — fine, one lookup call is cheap either way
