@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { AnimatePresence, motion } from "framer-motion";
 import { CASE_STUDIES } from "@/lib/case-studies";
-import { RESUME } from "@/lib/resumes";
 import {
   JOURNEY_LENGTH,
   RING_STEP,
@@ -12,7 +12,10 @@ import {
   SCENE_EVENT,
   jumpToScene,
   progress,
+  onArrive,
+  type SceneId,
 } from "./journey";
+import StarMap from "./StarMap";
 
 // Home navigation for a site you travel through rather than scroll: two
 // controls in the top-right corner, a depth gauge down the right edge that
@@ -26,17 +29,11 @@ const RING_TICKS = Array.from({ length: CASE_STUDIES.length - 1 }, (_, k) => ({
   title: CASE_STUDIES[k + 1].title.split(" — ")[0],
 }));
 
-const LINKS = [
-  { label: "Case Studies", href: "/case-studies" },
-  { label: "Résumé", href: RESUME.file, download: RESUME.downloadName },
-  { label: "Email", href: "mailto:patharia52@gmail.com" },
-  { label: "GitHub", href: "https://github.com/mustafa-patharia", external: true },
-  { label: "LinkedIn", href: "https://linkedin.com/in/mustafa-patharia", external: true },
-];
-
-export default function JourneyNav() {
-  const [scene, setScene] = useState("home");
+export default function JourneyNav({ scene: initial = "home" }: { scene?: SceneId }) {
+  const router = useRouter();
+  const [scene, setScene] = useState<string>(initial);
   const [open, setOpen] = useState(false);
+  const [veil, setVeil] = useState(false);
 
   useEffect(() => {
     const onScene = (e: Event) => setScene((e as CustomEvent<string>).detail);
@@ -61,9 +58,26 @@ export default function JourneyNav() {
     };
   }, [open]);
 
+  // Nav never shows a scroll through the journey: behind a cover it cuts the
+  // scroll to the label if this page holds it (returning the label's time,
+  // for `onArrive`), or opens the scene's own page (`work-3` → /work#work-3,
+  // home → the full journey) and returns null.
+  const go = (id: string) => {
+    const at = jumpToScene(id, true);
+    if (at !== null) return at;
+    const page = id.split("-")[0];
+    router.push(page === "home" ? "/" : page === id ? `/${page}` : `/${page}#${id}`);
+    return null;
+  };
+
+  // Rail and "Say hi": a quick fade to dark hides the cut.
   const travel = (id: string) => {
     setOpen(false);
-    jumpToScene(id);
+    setVeil(true);
+    window.setTimeout(() => {
+      const at = go(id);
+      if (at !== null) onArrive(at, () => setVeil(false));
+    }, 260);
   };
 
   return (
@@ -73,7 +87,7 @@ export default function JourneyNav() {
         className="fixed right-4 top-4 z-[70] flex items-center gap-2 md:right-6 md:top-6"
       >
         <a
-          href="#contact"
+          href="/contact"
           onClick={(e) => {
             e.preventDefault();
             travel("contact");
@@ -124,7 +138,19 @@ export default function JourneyNav() {
       <SceneRail scene={scene} onTravel={travel} />
 
       <AnimatePresence>
-        {open && <StarMap scene={scene} onTravel={travel} onClose={() => setOpen(false)} />}
+        {open && <StarMap scene={scene} onTravel={go} onClose={() => setOpen(false)} />}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {veil && (
+          <motion.div
+            aria-hidden
+            className="pointer-events-none fixed inset-0 z-[68] bg-bg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.25, ease: "easeIn" } }}
+            exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeOut" } }}
+          />
+        )}
       </AnimatePresence>
     </>
   );
@@ -136,11 +162,12 @@ function SceneRail({ scene, onTravel }: { scene: string; onTravel: (id: string) 
   const fillRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    const fill = fillRef.current!;
     let last = -1;
     const draw = () => {
       if (progress.t === last) return;
       last = progress.t;
-      fillRef.current!.style.transform = `scaleY(${progress.t / JOURNEY_LENGTH})`;
+      fill.style.transform = `scaleY(${progress.t / JOURNEY_LENGTH})`;
     };
     gsap.ticker.add(draw);
     return () => gsap.ticker.remove(draw);
@@ -211,177 +238,5 @@ function SceneRail({ scene, onTravel }: { scene: string; onTravel: (id: string) 
         );
       })}
     </nav>
-  );
-}
-
-/** Full-screen map: the scenes as stars on one orbit, plus everything that
- *  isn't a scene. Picking a star closes the map and flies there. */
-function StarMap({
-  scene,
-  onTravel,
-  onClose,
-}: {
-  scene: string;
-  onTravel: (id: string) => void;
-  onClose: () => void;
-}) {
-  // Stars sit on a shallow arch across the screen (desktop).
-  const stars = SCENES.map((s, i) => {
-    const u = i / (SCENES.length - 1);
-    return { ...s, i, x: 10 + u * 80, y: 58 - Math.sin(u * Math.PI) * 22 };
-  });
-  const path = stars.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
-
-  return (
-    <motion.nav
-      id="star-map"
-      aria-label="Site map"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.35, delay: 0.1 } }}
-      transition={{ duration: 0.4 }}
-      className="fixed inset-0 z-[65] overflow-y-auto bg-bg/85 backdrop-blur-xl"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <motion.span
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        initial={{ scale: 1.15 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 1.1 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 45% at 50% 45%, rgba(78,133,191,0.14), transparent 70%)",
-        }}
-      />
-
-      {/* Desktop: stars on an orbit */}
-      <div className="pointer-events-none absolute inset-0 hidden md:block">
-        <svg
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          className="absolute inset-0 h-full w-full"
-          aria-hidden
-        >
-          <motion.path
-            d={path}
-            fill="none"
-            stroke="url(#orbit)"
-            strokeWidth="0.15"
-            strokeDasharray="0.6 0.8"
-            vectorEffect="non-scaling-stroke"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            exit={{ pathLength: 0, transition: { duration: 0.3 } }}
-            transition={{ duration: 1.1, ease: [0.65, 0, 0.35, 1] }}
-          />
-          <defs>
-            <linearGradient id="orbit" x1="0" x2="1">
-              <stop offset="0" stopColor="#89AACC" stopOpacity="0.2" />
-              <stop offset="0.5" stopColor="#89AACC" stopOpacity="0.8" />
-              <stop offset="1" stopColor="#4E85BF" stopOpacity="0.2" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        {stars.map((s) => {
-          const active = s.id === scene;
-          return (
-            <motion.button
-              key={s.id}
-              type="button"
-              onClick={() => onTravel(s.id)}
-              initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -8, transition: { duration: 0.2 } }}
-              transition={{ duration: 0.6, delay: 0.25 + s.i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-              className="group pointer-events-auto absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-3"
-              style={{ left: `${s.x}%`, top: `${s.y}%` }}
-            >
-              <span className="font-display text-sm italic text-muted">{pad(s.i + 1)}</span>
-              <span className="relative flex h-6 w-6 items-center justify-center">
-                <span
-                  className={`absolute inset-0 rounded-full transition-all duration-500 ${
-                    active
-                      ? "bg-[#4E85BF]/30 shadow-[0_0_24px_6px_rgba(78,133,191,0.6)]"
-                      : "scale-50 bg-[#4E85BF]/0 group-hover:scale-100 group-hover:bg-[#4E85BF]/25 group-hover:shadow-[0_0_20px_4px_rgba(78,133,191,0.5)]"
-                  }`}
-                />
-                <span
-                  className={`relative rounded-full bg-text-primary transition-all duration-300 ${
-                    active ? "h-2.5 w-2.5" : "h-1.5 w-1.5 group-hover:h-2.5 group-hover:w-2.5"
-                  }`}
-                />
-              </span>
-              <span
-                className={`whitespace-nowrap font-display text-3xl italic transition-all duration-300 lg:text-4xl ${
-                  active ? "text-text-primary" : "text-muted group-hover:-translate-y-1 group-hover:text-text-primary"
-                }`}
-              >
-                {s.title}
-              </span>
-            </motion.button>
-          );
-        })}
-      </div>
-
-      {/* Mobile: the same stars down a vertical orbit */}
-      <div className="relative flex min-h-full flex-col justify-center px-8 pb-40 pt-24 md:hidden">
-        <span className="absolute bottom-40 left-[2.35rem] top-24 w-px bg-gradient-to-b from-[#89AACC]/0 via-[#89AACC]/50 to-[#4E85BF]/0" />
-        {stars.map((s) => {
-          const active = s.id === scene;
-          return (
-            <motion.button
-              key={s.id}
-              type="button"
-              onClick={() => onTravel(s.id)}
-              initial={{ opacity: 0, x: -12 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.15 + s.i * 0.06 }}
-              className="relative flex items-center gap-5 py-3 text-left"
-            >
-              <span
-                className={`relative z-10 rounded-full bg-text-primary ${
-                  active ? "h-2.5 w-2.5 shadow-[0_0_16px_4px_rgba(78,133,191,0.7)]" : "ml-0.5 h-1.5 w-1.5 opacity-60"
-                }`}
-              />
-              <span className="font-display text-sm italic text-muted">{pad(s.i + 1)}</span>
-              <span className={`font-display text-4xl italic ${active ? "text-text-primary" : "text-muted"}`}>
-                {s.title}
-              </span>
-            </motion.button>
-          );
-        })}
-      </div>
-
-      <motion.ul
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-        className="fixed inset-x-0 bottom-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 px-6 text-sm md:bottom-12"
-      >
-        {LINKS.map((l) => (
-          <li key={l.label}>
-            <a
-              href={l.href}
-              {...(l.download ? { download: l.download } : {})}
-              {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="group relative inline-flex items-center gap-1 text-muted transition-colors duration-300 hover:text-text-primary"
-            >
-              {l.label}
-              <span
-                aria-hidden
-                className="text-xs transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              >
-                ↗
-              </span>
-              <span className="accent-gradient absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
-            </a>
-          </li>
-        ))}
-      </motion.ul>
-    </motion.nav>
   );
 }

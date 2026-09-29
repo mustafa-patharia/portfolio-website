@@ -24,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
+    ...['about', 'work', 'capabilities', 'journey', 'contact'].map((scene) => ({
+      url: `${baseUrl}/${scene}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
     ...caseStudies,
   ]
 }

@@ -21,30 +21,60 @@ import {
   jumpToScene,
   SCENE_EVENT,
   setJourneyJump,
+  playhead,
+  type SceneId,
 } from "./journey";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
+// A solo page mounts one scene, but the timeline still names every scene's targets.
+gsap.config({ nullTargetWarn: false });
 
 const WORK_COUNT = CASE_STUDIES.length;
+const LAST = SCENES[SCENES.length - 1].id;
+
+/** Scroll with no animation in any browser (some ignore `behavior: "instant"`
+ *  and fall back to CSS smooth scrolling), then sync ScrollTrigger now. */
+function cut(top: number) {
+  const html = document.documentElement;
+  html.style.scrollBehavior = "auto";
+  window.scrollTo(0, top);
+  html.style.removeProperty("scroll-behavior");
+  ScrollTrigger.update();
+}
 
 /**
  * One viewport pinned for the whole home page. Scroll scrubs a single master
  * timeline whose time unit is one screen-height of scroll, so each scene's
  * `at` value is both its timeline label and its scroll position.
+ *
+ * `solo` mounts a single scene on its own page from the same timeline: its
+ * arrival from the journey plays as the entrance, then scroll scrubs only
+ * that scene's own beats.
  */
-export default function Stage({ ready }: { ready: boolean }) {
+export default function Stage({ ready, solo }: { ready: boolean; solo?: Exclude<SceneId, "home"> }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
-    () => {
+    (_, contextSafe) => {
       const scene = (id: string) => `[data-scene="${id}"]`;
       let current = "";
+
+      // Module state outlives a client-side route change; start clean.
+      Object.assign(dive, { center: 0, zoom: 0 });
+      Object.assign(ring, { form: 0, turn: 0 });
+      progress.t = playhead.t = 0;
 
       gsap.set(`[data-scene]:not(${scene("home")})`, { autoAlpha: 0 });
 
       const tl = gsap.timeline({
         defaults: { ease: "none" },
-        scrollTrigger: {
+        ...(solo
+          ? { paused: true, onUpdate: () => void (progress.t = playhead.t = tl.time()) }
+          : { scrollTrigger: homeTrigger(), onUpdate: () => void (playhead.t = tl.time()) }),
+      });
+
+      function homeTrigger(): ScrollTrigger.Vars {
+        return {
           trigger: rootRef.current,
           start: "top top",
           end: `+=${JOURNEY_LENGTH * 100}%`,
@@ -66,8 +96,8 @@ export default function Stage({ ready }: { ready: boolean }) {
             current = id;
             window.dispatchEvent(new CustomEvent(SCENE_EVENT, { detail: id }));
           },
-        },
-      });
+        };
+      }
 
       SCENES.forEach((s) => tl.addLabel(s.id, s.at));
 
@@ -142,12 +172,71 @@ export default function Stage({ ready }: { ready: boolean }) {
       const contact = SCENES.find((s) => s.id === "contact")!.at;
       tl.fromTo(".contact-rise", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out", stagger: 0.06, immediateRender: false }, contact - 0.2);
 
-      setJourneyJump((id) => {
-        const st = tl.scrollTrigger;
-        if (!st || !(id in tl.labels)) return false;
-        window.scrollTo({ top: st.labelToScroll(id), behavior: "smooth" });
-        return true;
+      if (!solo) {
+        setJourneyJump((id, instant) => {
+          const st = tl.scrollTrigger;
+          if (!st || !(id in tl.labels)) return null;
+          const top = st.labelToScroll(id);
+          if (instant) cut(top);
+          else window.scrollTo({ top, behavior: "smooth" });
+          return tl.labels[id];
+        });
+        return () => setJourneyJump(null);
+      }
+
+      // Solo: the scene's own beats (`about-1`…, `work-1`…) are the only
+      // scroll; everything else about the timeline is shared with home.
+      const at = SCENES.find((s) => s.id === solo)!.at;
+      const beats = Object.entries(tl.labels)
+        .filter(([k]) => k.startsWith(`${solo}-`))
+        .map(([, v]) => v)
+        .sort((a, b) => a - b);
+      const end = beats.at(-1) ?? at;
+      const span = end - at;
+      // The last scene's rise-in runs past its label, as it does at the end of home.
+      // A deep link (`/work#work-3`) lands its entrance on that beat.
+      const hash = window.location.hash.slice(1);
+      const deep = beats.includes(tl.labels[hash]) ? tl.labels[hash] : undefined;
+      const settle = deep ?? (solo === LAST ? tl.duration() : at);
+
+      window.dispatchEvent(new CustomEvent(SCENE_EVENT, { detail: solo }));
+      setJourneyJump((id) => (id === solo ? at : null));
+
+      const scrub = contextSafe!(() => {
+        if (span <= 0) return;
+        const proxy = tl.tweenFromTo(at, end, { paused: true, ease: "none" });
+        // Start the scrub where the entrance left the playhead.
+        proxy.progress(((deep ?? at) - at) / span);
+        const st = ScrollTrigger.create({
+          animation: proxy,
+          trigger: rootRef.current,
+          start: "top top",
+          end: `+=${span * 100}%`,
+          pin: true,
+          scrub: 1,
+          snap: {
+            snapTo: [0, ...beats.map((b) => (b - at) / span)],
+            inertia: false,
+            duration: { min: 0.4, max: 1.2 },
+            delay: 0.15,
+            ease: "power2.inOut",
+          },
+        });
+        setJourneyJump((id, instant) => {
+          const t = id === solo ? at : tl.labels[id];
+          if (t === undefined || t < at || t > end) return null;
+          const p = (t - at) / span;
+          const top = st.start + p * (st.end - st.start);
+          if (instant) cut(top);
+          else window.scrollTo({ top, behavior: "smooth" });
+          return t;
+        });
+        if (deep !== undefined) jumpToScene(hash, true);
       });
+
+      // Entrance: the same camera move that brings this scene in on home.
+      tl.seek(solo === "about" ? 1.3 : at - 0.5);
+      tl.tweenTo(settle, { duration: 1.6, ease: "power2.out", onComplete: scrub });
 
       return () => setJourneyJump(null);
     },
@@ -173,8 +262,8 @@ export default function Stage({ ready }: { ready: boolean }) {
           jumpToScene(link.dataset.journey!);
         }}
       >
-        <HeroScene ready={ready} />
-        {SCENES.slice(1).map((s, i) =>
+        {!solo && <HeroScene ready={ready} />}
+        {SCENES.slice(1).filter((s) => !solo || s.id === solo).map((s) =>
           s.id === "about" ? (
             <AboutScene key={s.id} />
           ) : s.id === "work" ? (
@@ -182,7 +271,7 @@ export default function Stage({ ready }: { ready: boolean }) {
           ) : s.id === "contact" ? (
             <ContactScene key={s.id} />
           ) : (
-            <PlaceholderScene key={s.id} id={s.id} index={i + 1} title={s.title} note={s.note} />
+            <PlaceholderScene key={s.id} id={s.id} index={SCENES.indexOf(s)} title={s.title} note={s.note} />
           )
         )}
       </div>

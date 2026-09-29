@@ -154,13 +154,17 @@ const HOLE_START = { x: 0.5, y: 1.0 }; // core on the top edge — only the lowe
 const CAM_START = 16; // Schwarzschild radii — close enough that the lower half fills the top band
 
 export default function BlackHole() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const hostRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current!;
+    // A fresh canvas per run: cleanup loses the context, and a lost context
+    // stays lost on a node React reuses for the next run.
+    const canvas = document.createElement("canvas");
+    canvas.className = "absolute inset-0 h-full w-full opacity-0";
+    hostRef.current!.appendChild(canvas);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const gl = canvas.getContext("webgl", { antialias: false, alpha: false });
-    if (!gl) return;
+    if (!gl) return () => canvas.remove();
 
     const shader = (type: number, src: string) => {
       const s = gl.createShader(type)!;
@@ -172,7 +176,7 @@ export default function BlackHole() {
     gl.attachShader(prog, shader(gl.VERTEX_SHADER, VERT));
     gl.attachShader(prog, shader(gl.FRAGMENT_SHADER, FRAG));
     gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return () => canvas.remove();
     gl.useProgram(prog);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
@@ -265,14 +269,11 @@ export default function BlackHole() {
       window.removeEventListener(SCENE_EVENT, onScene);
       root.classList.remove("lens-cursor");
       gl.getExtension("WEBGL_lose_context")?.loseContext();
+      canvas.remove();
     };
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden
-      className="pointer-events-none absolute inset-0 h-full w-full opacity-0"
-    />
+    <div ref={hostRef} aria-hidden className="pointer-events-none absolute inset-0" />
   );
 }

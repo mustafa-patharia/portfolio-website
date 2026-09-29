@@ -62,6 +62,8 @@ export default function WorkScene() {
   const [active, setActive] = useState(0);
 
   useEffect(() => {
+    const ringEl = ringRef.current!;
+    const viewEl = viewRef.current!;
     const masks = { right: dissolveMask(false), left: dissolveMask(true) };
     const grain = grainTile();
     grainRefs.current.forEach((g) => g && (g.style.backgroundImage = grain));
@@ -70,12 +72,12 @@ export default function WorkScene() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       w = Math.min(vw < 768 ? vw * 0.78 : Math.min(vw * 0.46, 680), (vh * 0.5) / 0.75);
-      const el = ringRef.current!;
+      const el = ringEl;
       el.style.width = `${w}px`;
       el.style.height = `${w * 0.75}px`;
       el.style.marginLeft = `${-w / 2}px`;
       el.style.marginTop = `${(-w * 0.75) / 2}px`;
-      viewRef.current!.style.perspective = `${w * 1.5}px`;
+      viewEl.style.perspective = `${w * 1.5}px`;
       last = "";
     };
 
@@ -89,7 +91,7 @@ export default function WorkScene() {
 
       const radius = w * 1.25;
       // Ring centre sits ahead of the camera, so the camera is inside the ring.
-      ringRef.current!.style.transform = `translateZ(${w}px) rotateY(${turn * STEP}deg)`;
+      ringEl.style.transform = `translateZ(${w}px) rotateY(${turn * STEP}deg)`;
       // Stars slide the way the camera turns, a step's width per poster.
       document.documentElement.style.setProperty("--sky-x", `${-turn * w * 0.6}px`);
 

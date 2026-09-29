@@ -61,6 +61,7 @@ export default function ContactScene() {
   useEffect(() => {
     const root = rootRef.current!;
     const sat = satRef.current!;
+    const earthEl = earthRef.current!;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Layout offsets, not client rects: the stage scales this scene while it
@@ -82,7 +83,7 @@ export default function ContactScene() {
     const w = SAT_W;
     sat.style.width = `${w}px`;
     const measure = () => {
-      const e = offset(earthRef.current!);
+      const e = offset(earthEl);
       base = { x: e.x + e.w / 2, y: e.y + e.h / 2, r: e.w / 2 };
     };
     measure();

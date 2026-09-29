@@ -25,7 +25,7 @@ export default function Index() {
   // only has a scroll position once the loader is gone and the stage measured.
   useEffect(() => {
     if (!isLoading && window.location.hash) {
-      requestAnimationFrame(() => jumpToScene(window.location.hash.slice(1)));
+      requestAnimationFrame(() => jumpToScene(window.location.hash.slice(1), true));
     }
   }, [isLoading]);
 

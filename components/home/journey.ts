@@ -36,18 +36,38 @@ export const RING_STEP = 0.4;
  *  scroll update and read each frame by the scene rail. */
 export const progress = { t: 0 };
 
+/** Where the timeline's playhead actually is (it trails the scroll while the
+ *  scrub catches up), in the same units as `progress`. */
+export const playhead = { t: 0 };
+
+/** Calls `done` once the playhead has settled on `at` (or after `limit` ms,
+ *  whichever is first). Returns the cancel. */
+export function onArrive(at: number, done: () => void, limit = 5000) {
+  const start = performance.now();
+  let still = 0;
+  let raf = requestAnimationFrame(function check(now) {
+    still = Math.abs(playhead.t - at) < 0.01 ? still + 1 : 0;
+    if (still > 3 || now - start > limit) return done();
+    raf = requestAnimationFrame(check);
+  });
+  return () => cancelAnimationFrame(raf);
+}
+
 /** Fired on window with the settled scene id whenever it changes. */
 export const SCENE_EVENT = "journey:scene";
 
-let jump: ((id: string) => boolean) | null = null;
+let jump: ((id: string, instant: boolean) => number | null) | null = null;
 
 export function setJourneyJump(fn: typeof jump) {
   jump = fn;
 }
 
-/** Scrolls to a scene label. Returns false when the stage isn't mounted. */
-export function jumpToScene(id: string) {
-  return jump?.(id) ?? false;
+/** Scrolls to a scene label, flying through the journey or, `instant`,
+ *  cutting the scroll straight there (the scrub then catches up; pair with
+ *  `onArrive` behind a cover). Returns the label's time, or null when this
+ *  page can't reach it. */
+export function jumpToScene(id: string, instant = false) {
+  return jump?.(id, instant) ?? null;
 }
 
 /** Calls `enter` each time scene `id` becomes the live one and `leave` when
