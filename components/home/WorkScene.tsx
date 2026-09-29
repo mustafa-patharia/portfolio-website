@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import gsap from "gsap";
 import { AnimatePresence, motion } from "framer-motion";
 import { CASE_STUDIES } from "@/lib/case-studies";
@@ -155,6 +155,18 @@ export default function WorkScene() {
 
   const study = CASE_STUDIES[active];
 
+  // Going into a case study: the card is what the view transition zooms
+  // past, and the ring's URL keeps the card so Back lands on it again.
+  const enter = (i: number) => (e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    history.replaceState(history.state, "", `#${i ? `work-${i}` : "work"}`);
+    const card = slotRefs.current[i]?.firstElementChild as HTMLElement | null;
+    card?.style.setProperty("view-transition-name", "zoom-card");
+    const html = document.documentElement;
+    html.dataset.nav = "in";
+    window.addEventListener("popstate", () => delete html.dataset.nav, { once: true });
+  };
+
   return (
     <section
       id="work"
@@ -185,6 +197,7 @@ export default function WorkScene() {
                 href={`/case-study/${c.slug}`}
                 aria-label={`Read the ${shortTitle(c.title)} case study`}
                 tabIndex={i === active ? 0 : -1}
+                onClick={enter(i)}
                 className="group relative block h-full w-full overflow-hidden rounded-2xl border border-white/10 bg-surface shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] transition-[border-color,box-shadow] duration-500 hover:border-[#89AACC]/60 hover:shadow-[0_30px_90px_-10px_rgba(78,133,191,0.55)]"
               >
                 <Image
@@ -244,6 +257,7 @@ export default function WorkScene() {
             </h2>
             <Link
               href={`/case-study/${study.slug}`}
+              onClick={enter(active)}
               className="group mt-1 inline-flex items-center gap-2 text-sm text-text-primary"
             >
               <span className="relative">

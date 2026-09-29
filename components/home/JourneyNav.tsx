@@ -29,7 +29,8 @@ const RING_TICKS = Array.from({ length: CASE_STUDIES.length - 1 }, (_, k) => ({
   title: CASE_STUDIES[k + 1].title.split(" — ")[0],
 }));
 
-export default function JourneyNav({ scene: initial = "home" }: { scene?: SceneId }) {
+/** `rail: false` drops the depth gauge on pages outside the journey. */
+export default function JourneyNav({ scene: initial = "home", rail = true }: { scene?: SceneId; rail?: boolean }) {
   const router = useRouter();
   const [scene, setScene] = useState<string>(initial);
   const [open, setOpen] = useState(false);
@@ -60,13 +61,12 @@ export default function JourneyNav({ scene: initial = "home" }: { scene?: SceneI
 
   // Nav never shows a scroll through the journey: behind a cover it cuts the
   // scroll to the label if this page holds it (returning the label's time,
-  // for `onArrive`), or opens the scene's own page (`work-3` → /work#work-3,
-  // home → the full journey) and returns null.
+  // for `onArrive`); from anywhere else it enters the journey on home at
+  // that label (`/#contact`) and returns null.
   const go = (id: string) => {
     const at = jumpToScene(id, true);
     if (at !== null) return at;
-    const page = id.split("-")[0];
-    router.push(page === "home" ? "/" : page === id ? `/${page}` : `/${page}#${id}`);
+    router.push(id === "home" ? "/" : `/#${id}`);
     return null;
   };
 
@@ -135,7 +135,7 @@ export default function JourneyNav({ scene: initial = "home" }: { scene?: SceneI
         </button>
       </nav>
 
-      <SceneRail scene={scene} onTravel={travel} />
+      {rail && <SceneRail scene={scene} onTravel={travel} />}
 
       <AnimatePresence>
         {open && <StarMap scene={scene} onTravel={go} onClose={() => setOpen(false)} />}

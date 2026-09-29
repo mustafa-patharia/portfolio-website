@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import HlsVideo from "./HlsVideo";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import BlackHole from "./home/BlackHole";
+
+const EMAIL = "patharia52@gmail.com";
 
 export const SOCIALS = [
   {
@@ -20,27 +22,21 @@ export const SOCIALS = [
     ),
   },
   {
-    label: "Twitter",
-    href: "https://twitter.com/mustafa-patharia",
+    label: "X",
+    href: "https://x.com/PathariaMustafa",
     icon: (
-      <path d="M20.5 6.2c-.6.27-1.3.46-2 .54a3.5 3.5 0 0 0 1.53-1.93 6.9 6.9 0 0 1-2.2.85 3.47 3.47 0 0 0-5.9 3.16A9.83 9.83 0 0 1 4.7 5.15a3.47 3.47 0 0 0 1.07 4.63 3.4 3.4 0 0 1-1.57-.43v.04a3.47 3.47 0 0 0 2.78 3.4 3.5 3.5 0 0 1-1.56.06 3.47 3.47 0 0 0 3.24 2.41A6.96 6.96 0 0 1 3 16.7a9.8 9.8 0 0 0 5.32 1.56c6.38 0 9.87-5.29 9.87-9.87 0-.15 0-.3-.01-.45A7.06 7.06 0 0 0 20.5 6.2z" />
+      <path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z" />
     ),
   },
 ];
 
 export default function Contact() {
-  const marqueeRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to(marqueeRef.current, {
-        xPercent: -50,
-        duration: 40,
-        ease: "none",
-        repeat: -1,
-      });
-    });
-    return () => ctx.revert();
-  }, []);
+  const [copied, setCopied] = useState(false);
+  const copyEmail = async () => {
+    await navigator.clipboard?.writeText(EMAIL).catch(() => {});
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
+  };
 
   return (
     <section
@@ -48,100 +44,94 @@ export default function Contact() {
       className="relative overflow-hidden pb-8 pt-16 md:pb-12 md:pt-20"
     >
       <div className="absolute inset-0 overflow-hidden">
-        <HlsVideo className="scale-y-[-1]" />
-        <div className="absolute inset-0 bg-black/60" />
+        <BlackHole at="bottom" />
         <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-bg to-transparent" />
       </div>
 
       <div className="relative z-10">
-        {/* Marquee (Hidden per request)
-        <div className="mb-16 overflow-hidden md:mb-24">
-          <div ref={marqueeRef} className="flex w-max whitespace-nowrap">
-            {Array.from({ length: 10 }).map((_, i) => (
-              <span
-                key={i}
-                className="font-display text-5xl italic text-text-primary/30 md:text-7xl lg:text-8xl"
-              >
-                {MARQUEE_TEXT}
-              </span>
-            ))}
-          </div>
-        </div>
-        */}
-
         {/* CTA */}
         <div className="mx-auto max-w-[1200px] px-6 text-center md:px-10 lg:px-16">
-          <p className="mb-5 text-xs uppercase tracking-[0.3em] text-muted">
-            Let&rsquo;s work together
-          </p>
-          <h2 className="mb-10 text-4xl leading-tight tracking-tight text-text-primary md:text-6xl">
-            Have a project in{" "}
-            <span className="font-display italic">mind?</span>
+          <h2 className="mb-4 text-4xl leading-tight tracking-tight text-text-primary md:text-6xl">
+            Have something worth{" "}
+            <span className="font-display italic">building?</span>
           </h2>
+          <p className="mx-auto mb-10 max-w-md text-sm leading-relaxed text-text-primary/70 md:text-base">
+            Tell me what you&apos;re building and where it&apos;s stuck. Every
+            message reaches me directly, and I reply personally.
+          </p>
 
-          <a
-            href="mailto:patharia52@gmail.com"
-            className="cosmic-btn group relative inline-flex rounded-full transition-transform duration-300 hover:scale-105"
-          >
-            <span
-              className="accent-gradient-animated pointer-events-none absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-              style={{ inset: "-2px" }}
-            />
-            <span className="relative inline-flex items-center gap-2 rounded-full bg-text-primary px-8 py-4 text-sm text-bg transition-colors duration-300 group-hover:bg-bg group-hover:text-text-primary">
-              patharia52@gmail.com
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button
+              data-cal-link="mustafa-patharia/quick-chat"
+              data-cal-namespace="quick-chat"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+              className="cosmic-btn group relative rounded-full transition-transform duration-300 hover:scale-105"
+            >
               <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              >
-                ↗
+                className="accent-gradient-animated pointer-events-none absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                style={{ inset: "-2px" }}
+              />
+              <span className="relative flex items-center gap-2 rounded-full bg-text-primary px-8 py-4 text-sm text-bg transition-colors duration-300 group-hover:bg-bg group-hover:text-text-primary">
+                Book a call
+                <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
+                  →
+                </span>
               </span>
-            </span>
-          </a>
-        </div>
+            </button>
 
-        {/* Connect & follow */}
-        <div className="mx-auto mt-20 max-w-[1200px] px-6 md:px-10 lg:px-16">
-          <div className="mb-8 flex items-center gap-4">
-            <span className="h-px flex-1 bg-stroke" />
-            <span className="text-xs uppercase tracking-[0.3em] text-muted">
-              Connect &amp; Follow
-            </span>
-            <span className="h-px flex-1 bg-stroke" />
+            <button
+              onClick={copyEmail}
+              aria-label={`Copy ${EMAIL}`}
+              className="cosmic-btn group relative rounded-full transition-transform duration-300 hover:scale-105"
+            >
+              <span
+                className="accent-gradient-animated pointer-events-none absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                style={{ inset: "-2px" }}
+              />
+              <span className="relative block min-w-[15rem] rounded-full border-2 border-stroke bg-bg px-8 py-4 text-sm text-text-primary transition-colors duration-300 group-hover:border-transparent">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={copied ? "copied" : "email"}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.2 }}
+                    className="block"
+                  >
+                    {copied ? "Copied to clipboard" : EMAIL}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+            </button>
           </div>
 
-          <nav className="flex flex-wrap items-center justify-center gap-3">
+          <nav aria-label="Social profiles" className="mt-6 flex items-center justify-center gap-2">
             {SOCIALS.map((s) => (
               <a
                 key={s.label}
                 href={s.href}
                 target="_blank"
                 rel="noreferrer"
-                className="cosmic-btn group relative rounded-full transition-transform duration-300 hover:-translate-y-0.5"
+                aria-label={s.label}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-surface/60 text-muted backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#89AACC]/60 hover:text-text-primary"
               >
-                <span
-                  className="accent-gradient-animated pointer-events-none absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  style={{ inset: "-1px" }}
-                />
-                <span className="relative flex items-center gap-2.5 rounded-full border border-stroke bg-surface/70 px-5 py-2.5 text-sm text-muted backdrop-blur-md transition-colors duration-300 group-hover:border-transparent group-hover:bg-bg group-hover:text-text-primary">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="opacity-70 transition-opacity duration-300 group-hover:opacity-100">
-                    {s.icon}
-                  </svg>
-                  {s.label}
-                </span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  {s.icon}
+                </svg>
               </a>
             ))}
           </nav>
         </div>
 
         {/* Footer bar */}
-        <div className="mx-auto mt-16 max-w-[1200px] px-6 md:px-10 lg:px-16">
+        <div className="mx-auto mt-20 max-w-[1200px] px-6 md:px-10 lg:px-16">
           <div className="flex flex-col items-center justify-between gap-6 border-t border-stroke pt-8 sm:flex-row">
             <span className="flex items-center gap-2 rounded-full border border-stroke px-3 py-1.5 text-xs text-muted">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
               </span>
-              Open to Work
+              Available for freelance
             </span>
 
             <span className="text-xs text-muted">

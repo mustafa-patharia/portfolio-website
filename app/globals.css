@@ -220,6 +220,11 @@
   }
 }
 
+/* Server HTML always carries the loader; skipped visits hide it before paint. */
+html[data-skip-loader] .loading-screen {
+  display: none;
+}
+
 /* GSAP entrance targets start hidden to avoid a flash before the timeline runs */
 .name-reveal,
 .blur-in {
@@ -257,8 +262,58 @@
   .pg-gold-run { animation: none; background: rgb(212 175 55 / 0.6); }
 }
 
+/* Site-wide lens cursor (LensCursor): plain page areas hide the pointer;
+   anything that sets its own cursor (links, buttons, grab handles) keeps it,
+   and fields keep their text caret. */
+html.site-cursor body {
+  cursor: none;
+}
+html.site-cursor :is(input, textarea, select, [contenteditable="true"]) {
+  cursor: text;
+}
+
 /* Over the hero black hole the cursor lens replaces the pointer. */
 html.lens-cursor,
 html.lens-cursor * {
   cursor: none !important;
+}
+
+/* Route changes are camera moves. Going in (`data-nav="in"`, set by a work
+   card): the card swells toward the camera and fades, the page falls back
+   past it, and the next page rises out of depth. Anything else, including
+   the browser's back button, pulls back out the same way in reverse. */
+::view-transition-old(root) {
+  animation: vt-recede 0.6s cubic-bezier(0.55, 0, 0.75, 0.3) both;
+}
+::view-transition-new(root) {
+  animation: vt-approach 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both;
+}
+html[data-nav="in"]::view-transition-old(root) {
+  animation: vt-pass 0.7s cubic-bezier(0.55, 0, 0.75, 0.3) both;
+}
+html[data-nav="in"]::view-transition-new(root) {
+  animation: vt-surface 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s both;
+}
+::view-transition-old(zoom-card) {
+  animation: vt-card 0.75s cubic-bezier(0.5, 0, 0.7, 0.4) both;
+}
+@keyframes vt-pass {
+  to { opacity: 0; transform: scale(1.25); filter: blur(10px); }
+}
+@keyframes vt-surface {
+  from { opacity: 0; transform: scale(0.82); filter: blur(14px); }
+}
+@keyframes vt-recede {
+  to { opacity: 0; transform: scale(0.82); filter: blur(10px); }
+}
+@keyframes vt-approach {
+  from { opacity: 0; transform: scale(1.2); filter: blur(12px); }
+}
+@keyframes vt-card {
+  60% { opacity: 1; }
+  to { opacity: 0; transform: scale(2.6); filter: blur(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
 }

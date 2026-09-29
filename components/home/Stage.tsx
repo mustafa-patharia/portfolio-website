@@ -177,8 +177,11 @@ export default function Stage({ ready, solo }: { ready: boolean; solo?: Exclude<
           const st = tl.scrollTrigger;
           if (!st || !(id in tl.labels)) return null;
           const top = st.labelToScroll(id);
-          if (instant) cut(top);
-          else window.scrollTo({ top, behavior: "smooth" });
+          if (instant) {
+            cut(top);
+            // Land on the label now rather than scrubbing through the journey.
+            st.getTween()?.progress(1);
+          } else window.scrollTo({ top, behavior: "smooth" });
           return tl.labels[id];
         });
         return () => setJourneyJump(null);

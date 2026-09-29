@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import Navbar from "@/components/Navbar";
+import JourneyNav from "@/components/home/JourneyNav";
 import Footer from "@/components/Contact";
 import InfithraCaseStudy from "@/components/case-studies/Infithra";
 import RiftCaseStudy from "@/components/case-studies/Rift";
@@ -18,7 +18,7 @@ export default function CaseStudyClient({ slug }: { slug: string }) {
 
   return (
     <div className="min-h-screen text-text-primary selection:bg-text-primary selection:text-bg">
-      <Navbar />
+      <JourneyNav scene="work" rail={false} />
 
       {slug === "infithra" && <InfithraCaseStudy />}
       {slug === "rift" && <RiftCaseStudy />}

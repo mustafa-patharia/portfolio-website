@@ -42,10 +42,10 @@ const PLANETS = [
   { src: "earth", w: 480, h: 480, depth: 64, dir: [0.7, -1], className: "hidden md:block right-[17vw] top-[13vh] w-[3.6vw]" },
 ] as const;
 
-type Spark ={ x: number; y: number; vx: number; vy: number; life: number; max: number; size: number };
+type Spark = { x: number; y: number; vx: number; vy: number; life: number; max: number; size: number };
 // The jump: `t` spins the drive up (0→1) toward the chosen body, the page
 // cuts under the flash, then `out` spins it down (0→1) as the map fades.
-type Warp = { i: number; t: number; out: number; flash: number; x: number; y: number };
+type Warp = { i: number; t: number; out: number; flash: number };
 type Deep = { x: number; y: number; z: number; pz: number; c: string; size: number };
 const FOCAL = 420; // hyperspace camera focal length, px
 const FAR = 3000; // deepest star
@@ -125,9 +125,8 @@ export default function StarMap({
     const stars = SCENES.map(() => ({ x: 0, y: 0, depth: 0, mx: 0, my: 0, focus: 1, lx: NaN, ly: NaN }));
     let time = 0;
 
-    // Hyperspace: stars in depth streak past a vanishing point that swings
-    // from the chosen body to the centre; rings rush by; frames fade instead
-    // of clearing, so everything trails.
+    // Hyperspace: stars in depth streak past the screen's centre; rings rush
+    // by; frames fade instead of clearing, so everything trails.
     let deep: Deep[] = [];
     const rings = Array.from({ length: RINGS }, (_, i) => ({ z: 200 + (i / RINGS) * RING_SPAN }));
     const seed = (p: Deep, far: boolean) => {
@@ -149,9 +148,8 @@ export default function StarMap({
         });
       }
       const s = warp.out > 0 ? 1 - warp.out : warp.t;
-      const aim = Math.min(1, warp.t * 1.6);
-      const vx = warp.x + (W / 2 - warp.x) * aim;
-      const vy = warp.y + (H / 2 - warp.y) * aim;
+      const vx = W / 2;
+      const vy = H / 2;
 
       ctx.globalCompositeOperation = "source-over";
       ctx.fillStyle = `rgba(3,5,10,${warp.out > 0 ? 0.16 + 0.3 * warp.out : 0.05 + 0.15 * warp.t})`;
@@ -316,10 +314,6 @@ export default function StarMap({
       }
 
       if (warp) {
-        if (Number.isNaN(warp.x)) {
-          warp.x = stars[warp.i].x;
-          warp.y = stars[warp.i].y;
-        }
         hyperspace(warp, dt);
         return;
       }
@@ -461,7 +455,7 @@ export default function StarMap({
     hoverRef.current = i;
     setHover(i);
     setJumping(true);
-    const warp: Warp = { i, t: 0, out: 0, flash: 0, x: NaN, y: NaN };
+    const warp: Warp = { i, t: 0, out: 0, flash: 0 };
     warpRef.current = warp;
     warpTween.current = gsap
       .timeline()
@@ -491,7 +485,7 @@ export default function StarMap({
       animate={arriving ? { opacity: 0, transition: { duration: 1, delay: 0.25, ease: "easeInOut" } } : { opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: landed ? 0 : 0.4 } }}
       transition={{ duration: 0.4 }}
-      className="fixed inset-0 z-[65] overflow-y-auto bg-bg/85 backdrop-blur-xl"
+      className="fixed inset-0 z-[65] overflow-y-auto bg-bg/100 backdrop-blur-3xl"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <motion.span
@@ -575,24 +569,21 @@ export default function StarMap({
                 )}
                 <span className="absolute -inset-5 scale-0 rounded-full bg-[radial-gradient(circle,rgba(137,170,204,0.45),transparent_68%)] transition-transform duration-500 ease-out group-hover:scale-100 group-focus-visible:scale-100" />
                 <span
-                  className={`absolute inset-0 rounded-full transition-all duration-500 ${
-                    current
-                      ? "bg-[#4E85BF]/30 shadow-[0_0_24px_6px_rgba(78,133,191,0.6)]"
-                      : "scale-50 group-hover:scale-100 group-hover:bg-[#4E85BF]/25 group-hover:shadow-[0_0_20px_4px_rgba(78,133,191,0.5)] group-focus-visible:scale-100 group-focus-visible:bg-[#4E85BF]/25"
-                  }`}
+                  className={`absolute inset-0 rounded-full transition-all duration-500 ${current
+                    ? "bg-[#4E85BF]/30 shadow-[0_0_24px_6px_rgba(78,133,191,0.6)]"
+                    : "scale-50 group-hover:scale-100 group-hover:bg-[#4E85BF]/25 group-hover:shadow-[0_0_20px_4px_rgba(78,133,191,0.5)] group-focus-visible:scale-100 group-focus-visible:bg-[#4E85BF]/25"
+                    }`}
                 />
                 <span
-                  className={`relative rounded-full bg-text-primary transition-all duration-300 ${
-                    current ? "h-2.5 w-2.5" : "h-1.5 w-1.5 group-hover:h-2.5 group-hover:w-2.5 group-focus-visible:h-2.5 group-focus-visible:w-2.5"
-                  }`}
+                  className={`relative rounded-full bg-text-primary transition-all duration-300 ${current ? "h-2.5 w-2.5" : "h-1.5 w-1.5 group-hover:h-2.5 group-hover:w-2.5 group-focus-visible:h-2.5 group-focus-visible:w-2.5"
+                    }`}
                 />
               </span>
               <span
-                className={`relative whitespace-nowrap font-display text-3xl italic transition-[color,letter-spacing] duration-500 lg:text-4xl ${
-                  current
-                    ? "text-text-primary"
-                    : "text-muted group-hover:tracking-wide group-hover:text-text-primary group-focus-visible:text-text-primary"
-                }`}
+                className={`relative whitespace-nowrap font-display text-3xl italic transition-[color,letter-spacing] duration-500 lg:text-4xl ${current
+                  ? "text-text-primary"
+                  : "text-muted group-hover:tracking-wide group-hover:text-text-primary group-focus-visible:text-text-primary"
+                  }`}
               >
                 {s.title}
                 <span className="accent-gradient absolute -bottom-1 left-0 h-px w-full origin-center scale-x-0 transition-transform duration-500 group-hover:scale-x-100 group-focus-visible:scale-x-100" />
@@ -619,9 +610,8 @@ export default function StarMap({
               className="relative flex items-center gap-5 py-3 text-left"
             >
               <span
-                className={`relative z-10 rounded-full bg-text-primary ${
-                  current ? "h-2.5 w-2.5 shadow-[0_0_16px_4px_rgba(78,133,191,0.7)]" : "ml-0.5 h-1.5 w-1.5 opacity-60"
-                }`}
+                className={`relative z-10 rounded-full bg-text-primary ${current ? "h-2.5 w-2.5 shadow-[0_0_16px_4px_rgba(78,133,191,0.7)]" : "ml-0.5 h-1.5 w-1.5 opacity-60"
+                  }`}
               />
               <span className="w-6 text-xs tabular-nums tracking-[0.2em] text-muted">{pad(i + 1)}</span>
               <span className={`font-display text-4xl italic ${current ? "text-text-primary" : "text-muted"}`}>

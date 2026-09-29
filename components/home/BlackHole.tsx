@@ -28,6 +28,7 @@ uniform vec2 uLens;      // cursor lens, device px (y up)
 uniform float uLensOn;
 uniform float uEinstein;
 uniform float uHorizon;
+uniform vec3 uVoid;      // empty-space colour, before the tonemap
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p) {
@@ -56,7 +57,7 @@ float fbmP(vec2 p, float P) {
 
 vec3 stars(vec3 d) {
   vec2 uv = vec2(atan(d.z, d.x), asin(clamp(d.y, -1.0, 1.0)));
-  vec3 col = vec3(0.012, 0.016, 0.028) + vec3(0.02, 0.035, 0.07) * fbm(uv * 3.0) * fbm(uv * 1.3 + 4.0);
+  vec3 col = uVoid + vec3(0.02, 0.035, 0.07) * fbm(uv * 3.0) * fbm(uv * 1.3 + 4.0);
   for (int l = 0; l < 2; l++) {
     float scale = l == 0 ? 55.0 : 130.0;
     vec2 g = uv * scale, id = floor(g), f = fract(g) - 0.5;
@@ -83,11 +84,11 @@ vec3 disc(vec3 hp, vec3 dir, out float a) {
   float t = smoothstep(13.0, 2.6, rr);                 // 1 at the hot inner edge
   // Site accent, pushed deeper: saturated blue outside, #4E85BF → #89AACC
   // through the middle, a pale ice-blue (never white) at the hot inner edge.
-  vec3 col = mix(vec3(0.07, 0.2, 0.62), vec3(0.2, 0.44, 0.86), smoothstep(0.0, 0.5, t));
-  col = mix(col, vec3(0.42, 0.62, 0.94), smoothstep(0.4, 0.8, t));
-  col = mix(col, vec3(0.7, 0.84, 1.0), smoothstep(0.8, 1.0, t));
+  vec3 col = mix(vec3(0.12, 0.24, 0.58), vec3(0.27, 0.47, 0.82), smoothstep(0.0, 0.5, t));
+  col = mix(col, vec3(0.5, 0.66, 0.9), smoothstep(0.4, 0.8, t));
+  col = mix(col, vec3(0.8, 0.88, 1.0), smoothstep(0.8, 1.0, t));
   vec3 v = normalize(vec3(-hp.z, 0.0, hp.x));          // orbital velocity
-  float beam = 1.0 + 0.5 * dot(v, -normalize(dir));    // Doppler beaming
+  float beam = 1.0 + 0.2 * dot(v, -normalize(dir));    // Doppler beaming
   a = smoothstep(13.0, 9.0, rr) * smoothstep(2.6, 3.4, rr) * clamp(0.25 + 0.8 * n, 0.0, 1.0);
   return col * (0.25 + 1.2 * n) * (0.45 + 1.3 * t * t) * beam * beam;
 }
@@ -150,10 +151,18 @@ void main() {
   gl_FragColor = vec4(col, 1.0);
 }`;
 
-const HOLE_START = { x: 0.5, y: 1.0 }; // core on the top edge — only the lower half shows until the scroll
-const CAM_START = 16; // Schwarzschild radii — close enough that the lower half fills the top band
+const CAM_START = 16; // Schwarzschild radii — close enough that the half hole fills its band
+// Empty space before the tonemap. The hero keeps its deep blue-black
+// (#03040c on screen); the footer's tonemaps to the page's #0a0a0a so the
+// canvas has no edge against the page.
+const VOID_HERO = [0.012, 0.016, 0.028] as const;
+const VOID_FOOTER = [0.0497, 0.0398, 0.0295] as const;
+const FOOTER_Y = 0.06; // footer core height (0 = bottom edge) — raised so more than half the hole shows
 
-export default function BlackHole() {
+/** `top` is the hero: core on the top edge, only the lower half shows until
+ *  the scroll dives in. `bottom` is the site footer: core on the bottom edge,
+ *  the upper half and the disc's lensed arc rising over it, no dive. */
+export default function BlackHole({ at = "top" }: { at?: "top" | "bottom" }) {
   const hostRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -189,7 +198,7 @@ export default function BlackHole() {
     const U = {
       res: u("uRes"), time: u("uTime"), center: u("uCenter"), camDist: u("uCamDist"),
       tilt: u("uTilt"), fov: u("uFov"), lens: u("uLens"), lensOn: u("uLensOn"),
-      einstein: u("uEinstein"), horizon: u("uHorizon"),
+      einstein: u("uEinstein"), horizon: u("uHorizon"), void: u("uVoid"),
     };
 
     // Rendered below device resolution — the glow hides it, the GPU thanks us.
@@ -222,23 +231,36 @@ export default function BlackHole() {
     window.addEventListener("pointermove", onMove, { passive: true });
     document.addEventListener("pointerleave", onLeave);
 
-    // Only draw while the hero is the live scene — one WebGL canvas at a time.
+    // Only draw while the hole is on screen (the hero is the live scene, or
+    // the footer is scrolled into view) — one WebGL canvas at a time.
+    const hero = at === "top";
+    let live = true;
+    let seen = true;
     let active = true;
     let raf = 0;
-    const onScene = (e: Event) => {
-      const next = (e as CustomEvent<string>).detail === "home";
+    const sync = () => {
+      const next = live && seen;
       if (next && !active) raf = requestAnimationFrame(frame);
       active = next;
       if (!next) root.classList.remove("lens-cursor");
     };
-    window.addEventListener(SCENE_EVENT, onScene);
+    const onScene = (e: Event) => {
+      live = (e as CustomEvent<string>).detail === "home";
+      sync();
+    };
+    if (hero) window.addEventListener(SCENE_EVENT, onScene);
+    const io = new IntersectionObserver(([entry]) => {
+      seen = entry.isIntersecting;
+      sync();
+    });
+    if (!hero) io.observe(canvas);
 
     const start = performance.now();
     const frame = (now: number) => {
       if (!active) return;
       if (!reduced) raf = requestAnimationFrame(frame);
 
-      const zoom = dive.zoom;
+      const zoom = hero ? dive.zoom : 0;
       lens.x += (target.x - lens.x) * 0.12;
       lens.y += (target.y - lens.y) * 0.12;
       lens.on += (target.on * (1 - Math.min(1, zoom * 4)) - lens.on) * 0.08;
@@ -247,7 +269,7 @@ export default function BlackHole() {
       const aspect = canvas.width / canvas.height;
       gl.uniform2f(U.res, canvas.width, canvas.height);
       gl.uniform1f(U.time, reduced ? 20 : (now - start) / 1000);
-      gl.uniform2f(U.center, HOLE_START.x, HOLE_START.y + (0.5 - HOLE_START.y) * dive.center);
+      gl.uniform2f(U.center, 0.5, hero ? 1 - 0.5 * dive.center : FOOTER_Y);
       // Exponential approach: apparent size grows at a steady rate all the way in.
       gl.uniform1f(U.camDist, CAM_START * Math.pow(0.8 / CAM_START, zoom));
       gl.uniform1f(U.tilt, 0.1 + 0.18 * zoom);
@@ -256,6 +278,7 @@ export default function BlackHole() {
       gl.uniform1f(U.lensOn, lens.on);
       gl.uniform1f(U.einstein, 34 * scale);
       gl.uniform1f(U.horizon, 13 * scale);
+      gl.uniform3f(U.void, ...(hero ? VOID_HERO : VOID_FOOTER));
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       canvas.style.opacity = "1";
     };
@@ -264,6 +287,7 @@ export default function BlackHole() {
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      io.disconnect();
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerleave", onLeave);
       window.removeEventListener(SCENE_EVENT, onScene);
@@ -271,7 +295,7 @@ export default function BlackHole() {
       gl.getExtension("WEBGL_lose_context")?.loseContext();
       canvas.remove();
     };
-  }, []);
+  }, [at]);
 
   return (
     <div ref={hostRef} aria-hidden className="pointer-events-none absolute inset-0" />

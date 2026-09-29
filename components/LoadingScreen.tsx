@@ -46,7 +46,7 @@ export default function LoadingScreen({
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] bg-bg"
+      className="loading-screen fixed inset-0 z-[9999] bg-bg"
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
     >

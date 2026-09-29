@@ -80,5 +80,5 @@ Why I went freelance: I'd grown deeply in the HRMS domain at KPI and wanted to b
 Code samples: github.com/mustafa-patharia. Open to a paid trial task — happy to discuss. Outside coding: sketching, music, movies/TV, and I'm a big Marvel/superhero fan (Spider-Man's my favorite) — always up for talking about the next Marvel release.
 
 ## Contact & links
-Email: patharia52@gmail.com. GitHub: github.com/mustafa-patharia. LinkedIn: linkedin.com/in/mustafa-patharia. Twitter/X: @mustafa-patharia. Open to freelance/full-time work — visitors can use the "Schedule Meet" button to book a call directly.
+Email: patharia52@gmail.com. GitHub: github.com/mustafa-patharia. LinkedIn: linkedin.com/in/mustafa-patharia. X: @PathariaMustafa (x.com/PathariaMustafa). Open to freelance/full-time work — visitors can use the "Schedule Meet" button to book a call directly.
 `.trim();
